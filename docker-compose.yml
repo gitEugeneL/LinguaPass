@@ -1,0 +1,21 @@
+services:
+  
+  identity.api.database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - identity.api.database:/var/lib/postgresql/data:rw
+    networks:
+      - linguaPass.backend
+
+volumes:
+  identity.api.database:
+
+networks:
+  linguaPass.backend:
+    driver: bridge
