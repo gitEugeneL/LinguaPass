@@ -22,6 +22,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25D0C42C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityApi", "Services\Identity\IdentityApi\IdentityApi.csproj", "{6DE16E2A-0FB0-4E38-A5D5-C051A4AB6692}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityCollection", "IdentityCollection", "{4CA8CE42-9259-4B9A-8F3E-4570F90D6F83}"
+	ProjectSection(SolutionItems) = preProject
+		Services\Identity\IdentityCollection\registration.bru = Services\Identity\IdentityCollection\registration.bru
+		Services\Identity\IdentityCollection\bruno.json = Services\Identity\IdentityCollection\bruno.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +40,7 @@ Global
 		{0B87972B-042A-4CAF-BE23-81DE2EC53492} = {9CA7FC62-ADCC-4C38-BC93-33D9F905E07F}
 		{25D0C42C-5878-4CCC-8913-80A3721167DD} = {0B87972B-042A-4CAF-BE23-81DE2EC53492}
 		{6DE16E2A-0FB0-4E38-A5D5-C051A4AB6692} = {0B87972B-042A-4CAF-BE23-81DE2EC53492}
+		{4CA8CE42-9259-4B9A-8F3E-4570F90D6F83} = {0B87972B-042A-4CAF-BE23-81DE2EC53492}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6DE16E2A-0FB0-4E38-A5D5-C051A4AB6692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

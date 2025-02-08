@@ -7,6 +7,7 @@ public static class DataInitializer
 {
     public static void SeedData(AppDbContext context)
     {
+        context.Database.EnsureCreated();
         SeedRoles(context);
     }
 
