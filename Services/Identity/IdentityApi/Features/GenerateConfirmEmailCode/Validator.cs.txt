@@ -1,0 +1,15 @@
+using FluentValidation;
+
+namespace IdentityApi.Features.ConfirmEmailInit;
+
+public class Validator : AbstractValidator<Command>
+{
+    public Validator()
+    {
+        RuleFor(command => command.ClientUri)
+            .NotEmpty();
+
+        RuleFor(command => command.CurrentUserId)
+            .NotEmpty();
+    }
+}
