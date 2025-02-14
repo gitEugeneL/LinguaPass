@@ -17,6 +17,10 @@ internal class Handler(
     IConfiguration configuration
 ) : IRequestHandler<Command, Result<Output>>
 {
+    private readonly int _loginLockoutMinutes = int.Parse(configuration["Authentication:LoginLockout.AddMin"]!);
+    private readonly int _maxLoginAttempts = int.Parse(configuration["Authentication:LoginLockout.MaxLoginCount"]!);
+    private readonly int _refreshTokenMaxCount = int.Parse(configuration["Authentication:RefreshToken.MaxCount"]!);
+
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
     {
         var validationResult = await validator.ValidateAsync(command, ct);
@@ -32,27 +36,26 @@ internal class Handler(
         if (user is null)
             return Result<Output>.Failure(Error.AuthenticationError("login or password is incorrect"));
 
-        switch (user.LoginLocked)
-        {
-            case true when user.LoginLockExpires >= DateTime.UtcNow:
-                return Result<Output>.Failure(Error.AuthenticationError("account is locked"));
+        if (IsAccountLocked(user))
+            return Result<Output>.Failure(Error.AuthenticationError("account is locked"));
 
-            case true when user.LoginLockExpires < DateTime.UtcNow:
-                ResetLoginLock(user);
-                break;
+        if (!passwordService.VerifyPasswordHash(command.Password, user.PwdHash, user.PwdSalt))
+        {
+            ProcessFailedLogin(user, _maxLoginAttempts, _loginLockoutMinutes);
+            await dbContext.SaveChangesAsync(ct);
+            return Result<Output>.Failure(Error.AuthenticationError("login or password is incorrect"));
         }
 
         if (!passwordService.VerifyPasswordHash(command.Password, user.PwdHash, user.PwdSalt))
         {
-            ProcessFailedLogin(user);
+            ProcessFailedLogin(user, _maxLoginAttempts, _loginLockoutMinutes);
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(Error.AuthenticationError("login or password is incorrect"));
         }
 
         ResetLoginLock(user);
 
-        var refreshTokenMaxCount = int.Parse(configuration.GetSection("Authentication:RefreshToken.MaxCount").Value!);
-        if (user.RefreshTokens.Count >= refreshTokenMaxCount)
+        if (user.RefreshTokens.Count >= _refreshTokenMaxCount)
             user.RefreshTokens.Remove(user.RefreshTokens.OrderBy(rt => rt.Expires).First());
 
         var accessToken = securityService.GenerateAccessToken(user);
@@ -64,15 +67,13 @@ internal class Handler(
         return Result<Output>.Success(new Output(accessToken, refreshToken, user.EmailConfirmed));
     }
 
-    private void ProcessFailedLogin(User user)
+    private static void ProcessFailedLogin(User user, int maxLoginAttempts, int loginLockoutMinutes)
     {
-        var tries = int.Parse(configuration.GetSection("Authentication:LoginLockout.MaxLoginCount").Value!);
-        var minutes = int.Parse(configuration.GetSection("Authentication:LoginLockout.AddMin").Value!);
-
         user.LoginFailedCount++;
-        if (user.LoginFailedCount < tries) return;
+        if (user.LoginFailedCount < maxLoginAttempts) return;
+
         user.LoginLocked = true;
-        user.LoginLockExpires = DateTime.UtcNow.AddMinutes(minutes);
+        user.LoginLockExpires = DateTime.UtcNow.AddMinutes(loginLockoutMinutes);
     }
 
     private static void ResetLoginLock(User user)
@@ -80,5 +81,20 @@ internal class Handler(
         user.LoginLocked = false;
         user.LoginLockExpires = null;
         user.LoginFailedCount = 0;
+    }
+
+    private static bool IsAccountLocked(User user)
+    {
+        switch (user.LoginLocked)
+        {
+            case true when user.LoginLockExpires >= DateTime.UtcNow:
+                return true;
+
+            case true when user.LoginLockExpires < DateTime.UtcNow:
+                ResetLoginLock(user);
+                break;
+        }
+
+        return false;
     }
 }

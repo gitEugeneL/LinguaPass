@@ -20,7 +20,7 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
             new("isEmailConfirmed", user.EmailConfirmed.ToString())
         };
 
-        var settings = configuration.GetSection("Authentication:AccessToken.SecurityKey").Value!;
+        var settings = configuration["Authentication:AccessToken.SecurityKey"]!;
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -28,8 +28,7 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
         var descriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(
-                int.Parse(configuration.GetSection("Authentication:AccessToken.AddMin").Value!)),
+            Expires = DateTime.UtcNow.AddMinutes(int.Parse(configuration["Authentication:AccessToken.AddMin"]!)),
             SigningCredentials = credentials
         };
         var handler = new JwtSecurityTokenHandler();
@@ -44,7 +43,7 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
         {
             Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(265)),
             Expires = DateTime.UtcNow.AddDays(
-                int.Parse(configuration.GetSection("Authentication:RefreshToken.AddDays").Value!)),
+                int.Parse(configuration["Authentication:RefreshToken.AddDays"]!)),
             User = user
         };
     }
