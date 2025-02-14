@@ -2,14 +2,14 @@ using FluentValidation;
 
 namespace IdentityApi.Features.Registration;
 
-public sealed class RegistrationValidator : AbstractValidator<RegistrationCommand>
+public sealed class Validator : AbstractValidator<Command>
 {
-    public RegistrationValidator()
+    public Validator()
     {
         RuleFor(command => command.Email)
             .NotEmpty()
             .EmailAddress()
-            .WithMessage("Please provide a valid email address.");
+            .WithMessage("Please provide a valid email address");
 
         RuleFor(command => command.Password)
             .NotEmpty()
@@ -24,7 +24,8 @@ public sealed class RegistrationValidator : AbstractValidator<RegistrationComman
             .WithMessage("Passwords do not match");
 
         RuleFor(command => command.Age)
+            .NotEmpty()
             .InclusiveBetween(18, 120)
-            .WithMessage("Age must be between 18 and 120.");
+            .WithMessage("Age must be between 18 and 120");
     }
 }

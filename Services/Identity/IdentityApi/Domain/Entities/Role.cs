@@ -1,8 +1,11 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace IdentityApi.Domain.Entities;
 
-public sealed class Role : IdentityRole
+public sealed class Role
 {
-    public string? Description { get; init; } = string.Empty;
+    public Guid Id { get; init; }
+    public required string Name { get; init; }
+
+    /*** Relations ***/
+
+    public List<User> Users { get; init; } = [];
 }

@@ -1,13 +1,13 @@
 namespace IdentityApi.Utils.CustomResult;
 
-public record Error(object Message, string Code)
+public record Error(object Message)
 {
     public static Error ValidationError(Dictionary<string, string[]> body)
     {
         return new ValidationError(body);
     }
 
-    public static Error AuthenticationError(IEnumerable<string>? body)
+    public static Error AuthenticationError(string body)
     {
         return new AuthenticationError(body);
     }
@@ -23,10 +23,10 @@ public record Error(object Message, string Code)
     }
 }
 
-public sealed record ValidationError(Dictionary<string, string[]> Body) : Error(Body, "VALIDATION_ERROR");
+public sealed record ValidationError(Dictionary<string, string[]> Body) : Error(Body);
 
-public sealed record AuthenticationError(IEnumerable<string> Body) : Error(Body, "AUTHENTICATION_ERROR");
+public sealed record AuthenticationError(string Body) : Error(Body);
 
-public sealed record NotFoundError(string Body) : Error(Body, "NOTFOUND_ERROR");
+public sealed record NotFoundError(string Body) : Error(Body);
 
-public sealed record ConflictError(string Body) : Error(Body, "CONFLICT_ERROR");
+public sealed record ConflictError(string Body) : Error(Body);

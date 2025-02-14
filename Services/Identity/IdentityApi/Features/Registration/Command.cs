@@ -3,10 +3,9 @@ using MediatR;
 
 namespace IdentityApi.Features.Registration;
 
-public record RegistrationCommand(
-    string ClientUri,
+public record Command(
     string Email,
     string Password,
     string ConfirmPassword,
     int Age
-) : IRequest<Result<RegistrationResult>>;
+) : IRequest<Result<Output>>;

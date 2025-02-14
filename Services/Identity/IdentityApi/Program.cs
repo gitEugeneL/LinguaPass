@@ -1,12 +1,21 @@
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 using Carter;
 using FluentValidation;
 using IdentityApi.Data;
-using IdentityApi.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using IdentityApi.Helpers;
+using IdentityApi.Services;
+using IdentityApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddScoped<IPasswordService, PasswordService>()
+    .AddScoped<ISecurityService, SecurityService>();
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -23,30 +32,54 @@ builder.Services.AddMediatR(config =>
 /*** Carter configuration ***/
 builder.Services.AddCarter();
 
-/*** Configure Identity ***/
-builder.Services.AddIdentity<User, Role>(options =>
+/*** Authentication configuration ***/
+var authConfiguration = builder.Configuration.GetSection("Authentication");
+builder.Services.AddAuthentication(options =>
     {
-        options.Lockout.AllowedForNewUsers = true;
-        options.Lockout.MaxFailedAccessAttempts = 10;
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-        options.User.RequireUniqueEmail = true;
-        options.Password.RequiredLength = 8;
-        options.Password.RequireDigit = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireNonAlphanumeric = true;
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidateIssuerSigningKey = true,
+            ValidateLifetime = true,
+            ValidAudience = authConfiguration.GetSection("Audience").Value,
+            ValidIssuer = authConfiguration.GetSection("Issuer").Value,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(authConfiguration.GetSection("AccessToken.SecurityKey").Value!))
+        };
+    });
+
+/*** Authentication roles policies ***/
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy(Roles.Customer.Name, policy =>
+        policy
+            .RequireClaim(ClaimTypes.Email)
+            .RequireClaim(ClaimTypes.NameIdentifier)
+            .RequireClaim(ClaimTypes.Role)
+            .RequireRole(Roles.Customer.Name)
+            .RequireClaim("isEmailConfirmed")
+    )
+    .AddPolicy(Roles.Admin.Name, policy =>
+        policy
+            .RequireClaim(ClaimTypes.Email)
+            .RequireClaim(ClaimTypes.NameIdentifier)
+            .RequireClaim(ClaimTypes.Role)
+            .RequireRole(Roles.Admin.Name)
+            .RequireClaim("isEmailConfirmed"));
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     /*** Seed develop data ***/
-    using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetService<AppDbContext>()!;
-    DataInitializer.SeedData(context);
+    // using var scope = app.Services.CreateScope();
+    // var context = scope.ServiceProvider.GetService<AppDbContext>()!;
+    // DataInitializer.SeedData(context);
 }
 
 app.MapCarter();

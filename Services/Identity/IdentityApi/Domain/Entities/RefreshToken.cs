@@ -8,5 +8,5 @@ public sealed class RefreshToken
 
     // Relations
     public required User User { get; init; }
-    public required string UserId { get; init; }
+    public Guid UserId { get; init; }
 }
