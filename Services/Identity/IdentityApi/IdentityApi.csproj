@@ -28,7 +28,6 @@
         <Folder Include="Data\Migrations\"/>
         <Folder Include="Features\ConfirmEmail\"/>
         <Folder Include="Features\Logout\"/>
-        <Folder Include="Features\Refresh\"/>
     </ItemGroup>
 
 </Project>

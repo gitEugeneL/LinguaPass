@@ -2,7 +2,7 @@ using IdentityApi.Domain.Entities;
 
 namespace IdentityApi.Services.Interfaces;
 
-public interface ISecurityService
+public interface ITokenService
 {
     string GenerateAccessToken(User user);
 

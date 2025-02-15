@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityApi.Services;
 
-internal class SecurityService(IConfiguration configuration) : ISecurityService
+internal class TokenService(IConfiguration configuration) : ITokenService
 {
     public string GenerateAccessToken(User user)
     {

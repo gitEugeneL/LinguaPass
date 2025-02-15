@@ -1,21 +1,18 @@
 using System.Reflection;
 using System.Security.Claims;
-using System.Text;
 using Carter;
 using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Helpers;
 using IdentityApi.Services;
 using IdentityApi.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddScoped<IPasswordService, PasswordService>()
-    .AddScoped<ISecurityService, SecurityService>();
+    .AddScoped<ITokenService, TokenService>();
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -33,26 +30,26 @@ builder.Services.AddMediatR(config =>
 builder.Services.AddCarter();
 
 /*** Authentication configuration ***/
-var authConfiguration = builder.Configuration.GetSection("Authentication");
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = true,
-            ValidateIssuer = true,
-            ValidateIssuerSigningKey = true,
-            ValidateLifetime = true,
-            ValidAudience = authConfiguration.GetSection("Audience").Value,
-            ValidIssuer = authConfiguration.GetSection("Issuer").Value,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(authConfiguration.GetSection("AccessToken.SecurityKey").Value!))
-        };
-    });
+// var authConfiguration = builder.Configuration.GetSection("Authentication");
+// builder.Services.AddAuthentication(options =>
+// {
+// options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+// options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+// })
+// .AddJwtBearer(options =>
+// {
+// options.TokenValidationParameters = new TokenValidationParameters
+// {
+// ValidateAudience = true,
+// ValidateIssuer = true,
+// ValidateIssuerSigningKey = true,
+// ValidateLifetime = true,
+// ValidAudience = authConfiguration.GetSection("Audience").Value,
+// ValidIssuer = authConfiguration.GetSection("Issuer").Value,
+// IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+// .GetBytes(authConfiguration.GetSection("AccessToken.SecurityKey").Value!))
+// };
+// });
 
 /*** Authentication roles policies ***/
 builder.Services.AddAuthorizationBuilder()

@@ -2,15 +2,15 @@ using Carter;
 using IdentityApi.Contracts;
 using MediatR;
 
-namespace IdentityApi.Features.Login;
+namespace IdentityApi.Features.Refresh;
 
 public class Endpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/login", async (LoginRequest request, ISender sender, CancellationToken ct) =>
+        app.MapPost("/refresh", async (RefreshRequest request, ISender sender, CancellationToken ct) =>
         {
-            var command = new Command(request.Email, request.Password);
+            var command = new Command(request.RefreshToken, request.UserId);
             var result = await sender.Send(command, ct);
 
             return result.Map<IResult>(

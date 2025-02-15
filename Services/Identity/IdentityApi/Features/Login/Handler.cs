@@ -13,7 +13,7 @@ internal class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
     IPasswordService passwordService,
-    ISecurityService securityService,
+    ITokenService tokenService,
     IConfiguration configuration
 ) : IRequestHandler<Command, Result<Output>>
 {
@@ -58,8 +58,8 @@ internal class Handler(
         if (user.RefreshTokens.Count >= _refreshTokenMaxCount)
             user.RefreshTokens.Remove(user.RefreshTokens.OrderBy(rt => rt.Expires).First());
 
-        var accessToken = securityService.GenerateAccessToken(user);
-        var refreshToken = securityService.GenerateRefreshToken(user);
+        var accessToken = tokenService.GenerateAccessToken(user);
+        var refreshToken = tokenService.GenerateRefreshToken(user);
 
         user.RefreshTokens.Add(refreshToken);
         await dbContext.SaveChangesAsync(ct);
