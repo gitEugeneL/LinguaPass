@@ -1,4 +1,4 @@
-using IdentityApi.Utils.CustomResult;
+using IdentityApi.Utils;
 using MediatR;
 
 namespace IdentityApi.Features.Registration;

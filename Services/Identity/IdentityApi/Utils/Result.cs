@@ -1,4 +1,4 @@
-namespace IdentityApi.Utils.CustomResult;
+namespace IdentityApi.Utils;
 
 public record Result<T>
 {

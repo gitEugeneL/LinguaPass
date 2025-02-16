@@ -3,7 +3,7 @@ using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Domain.Entities;
 using IdentityApi.Services.Interfaces;
-using IdentityApi.Utils.CustomResult;
+using IdentityApi.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

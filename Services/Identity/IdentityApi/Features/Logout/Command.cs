@@ -1,7 +1,7 @@
 using IdentityApi.Utils;
 using MediatR;
 
-namespace IdentityApi.Features.Refresh;
+namespace IdentityApi.Features.Logout;
 
 public sealed record Command(
     string RefreshToken,

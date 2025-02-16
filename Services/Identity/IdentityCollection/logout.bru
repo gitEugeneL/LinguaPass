@@ -1,0 +1,18 @@
+meta {
+  name: logout
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:5297/logout
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "refreshToken": "CF53dfWSQdHUdmuGdwVzhQYQSfGBsaZ0fdctzHcOQ0vmQzUIDeQgW2WvFt7pQuEpZEgkUXPi5Td/kqdwdzka53R6Wa5HNV1uZFzCrNOUHUc1ubwVrx5DDlDALjT5Vf9i5JOQiWd54GWbAxpTyOgHkhA8lAKWBOxTF2wXM4yWcwyKtPm2zTvMkL1O6AXqC4niXqR7uhphTR/mww8dvNvglPTkIzuyVlkSeo/eqPaToE66IckwHACczKzpiIQwkEkr5QSiB0JQE00DARdROT+WzzCf8fNgjCNHIgL8G8J5wv0ucSirFS41W5/U259KymKUc57kGVtQhyeke64Wykhjii3LxRBaYzNMKg==",
+    "userId": "019505f6-b506-7386-a85e-cfd622e159e4"
+  }
+}
