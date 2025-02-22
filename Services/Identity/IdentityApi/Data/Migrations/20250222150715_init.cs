@@ -39,6 +39,7 @@ namespace IdentityApi.Data.Migrations
                     ConfirmLocked = table.Column<bool>(type: "boolean", nullable: false),
                     LoginFailedCount = table.Column<int>(type: "integer", nullable: false),
                     ConfirmFailedCount = table.Column<int>(type: "integer", nullable: false),
+                    GenerateCodeCount = table.Column<int>(type: "integer", nullable: false),
                     LoginLockExpires = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ConfirmLockExpires = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -102,7 +103,7 @@ namespace IdentityApi.Data.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("00000000-0000-0000-0000-000000000001"), "Admin" },
+                    { new Guid("00000000-0000-0000-0000-000000000001"), "ADMIN" },
                     { new Guid("00000000-0000-0000-0000-000000000002"), "Customer" }
                 });
 

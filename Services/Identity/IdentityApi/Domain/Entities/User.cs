@@ -3,17 +3,19 @@ namespace IdentityApi.Domain.Entities;
 public sealed class User
 {
     public Guid Id { get; init; }
-    public required string Email { get; set; }
+    public required string Email { get; init; }
     public required int Age { get; init; }
     public required byte[] PwdHash { get; init; }
     public required byte[] PwdSalt { get; init; }
 
     public bool EmailConfirmed { get; set; }
     public bool LoginLocked { get; set; }
-
     public bool ConfirmLocked { get; set; }
+
     public int LoginFailedCount { get; set; }
     public int ConfirmFailedCount { get; set; }
+    public int GenerateCodeCount { get; set; }
+
     public DateTime? LoginLockExpires { get; set; }
     public DateTime? ConfirmLockExpires { get; set; }
 
@@ -26,6 +28,5 @@ public sealed class User
     public List<RefreshToken> RefreshTokens { get; init; } = [];
     public required Role Role { get; init; }
     public Guid RoleId { get; init; }
-
-    public ConfirmationCode? ConfirmationCode { get; set; }
+    public ConfirmationCode? ConfirmationCode { get; init; }
 }

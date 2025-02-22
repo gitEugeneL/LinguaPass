@@ -1,3 +1,0 @@
-namespace IdentityApi.Features.ConfirmEmailInit;
-
-public sealed record Output(string Message);

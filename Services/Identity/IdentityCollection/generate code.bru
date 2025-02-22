@@ -1,0 +1,21 @@
+meta {
+  name: generate code
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:5297/generate-code
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk1MWZiMC02YmRlLTc2N2YtYmRiYS0xOWE4MjI2ZmU1YzMiLCJlbWFpbCI6IkRFVkBERVYuQ09NIiwicm9sZSI6IkNVU1RPTUVSIiwiaXNFbWFpbENvbmZpcm1lZCI6IkZhbHNlIiwibmJmIjoxNzQwMDAxMzI5LCJleHAiOjE3NDAwMDQ5MjksImlhdCI6MTc0MDAwMTMyOX0.7nHkaWgbeA3dTEcOAVKlZ59bU3hg37-tnRzPCR7MdT62TNhH85izVw7m87fS0mxIrjJLDi1tm9vkld5p02JDfw
+}
+
+body:json {
+  {
+    "email": "hello"
+  }
+}

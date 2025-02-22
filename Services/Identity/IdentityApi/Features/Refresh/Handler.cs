@@ -11,7 +11,7 @@ namespace IdentityApi.Features.Refresh;
 internal class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
-    ITokenService tokenService
+    ISecurityService securityService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
@@ -34,17 +34,24 @@ internal class Handler(
         if (dbResult?.User is null)
             return Result<Output>.Failure(Error.AuthenticationError("User not found or token invalid"));
 
-        if (dbResult.RefreshToken is null || dbResult.RefreshToken.Expires < DateTime.UtcNow)
+        if (dbResult.RefreshToken is null || !securityService.RefreshTokenIsExpired(dbResult.RefreshToken))
             return Result<Output>.Failure(Error.AuthenticationError("Token expired or invalid"));
 
-        var accessToken = tokenService.GenerateAccessToken(dbResult.User);
-        var refreshToken = tokenService.GenerateRefreshToken(dbResult.User);
+        var accessToken = securityService.GenerateAccessToken(dbResult.User);
+        var refreshToken = securityService.GenerateRefreshToken(dbResult.User);
 
         dbResult.User.RefreshTokens.Remove(dbResult.RefreshToken);
         dbResult.User.RefreshTokens.Add(refreshToken);
 
         await dbContext.SaveChangesAsync(ct);
 
-        return Result<Output>.Success(new Output(accessToken, refreshToken, dbResult.User.EmailConfirmed));
+        return Result<Output>.Success(
+            new Output(
+                accessToken.token,
+                refreshToken.Token,
+                accessToken.expires,
+                refreshToken.Expires,
+                dbResult.User.EmailConfirmed
+            ));
     }
 }

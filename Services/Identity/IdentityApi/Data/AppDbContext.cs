@@ -1,4 +1,5 @@
 using IdentityApi.Domain.Entities;
+using IdentityApi.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Data;
@@ -39,8 +40,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         /*** Seed default data ***/
 
         builder.Entity<Role>().HasData(
-            Helpers.Roles.Admin,
-            Helpers.Roles.Customer
+            AppConstants.Admin,
+            AppConstants.Customer
         );
     }
 }

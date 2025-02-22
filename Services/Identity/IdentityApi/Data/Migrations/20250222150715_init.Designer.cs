@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IdentityApi.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250214193344_init")]
+    [Migration("20250222150715_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -90,7 +90,7 @@ namespace IdentityApi.Data.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Name = "Admin"
+                            Name = "ADMIN"
                         },
                         new
                         {
@@ -130,6 +130,9 @@ namespace IdentityApi.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("GenerateCodeCount")
+                        .HasColumnType("integer");
 
                     b.Property<int>("LoginFailedCount")
                         .HasColumnType("integer");

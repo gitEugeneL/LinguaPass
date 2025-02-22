@@ -14,9 +14,14 @@ public class Endpoint : ICarterModule
             var result = await sender.Send(command, ct);
 
             return result.Map<IResult>(
-                r => Results.Ok(new LoginOrRefreshResponse(r.AccessToken, r.RefreshToken, r.IsEmailConfirmed)),
-                e => Results.BadRequest(e.Message)
-            );
+                r => Results.Ok(
+                    new LoginOrRefreshResponse(
+                        r.AccessToken,
+                        r.RefreshToken,
+                        r.AccessTokenExpires,
+                        r.RefreshTokenExpires,
+                        r.IsEmailConfirmed)),
+                e => Results.BadRequest(e.Message));
         });
     }
 }

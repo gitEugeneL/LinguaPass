@@ -13,12 +13,14 @@ internal class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
     IPasswordService passwordService,
-    ITokenService tokenService,
+    ISecurityService securityService,
     IConfiguration configuration
 ) : IRequestHandler<Command, Result<Output>>
 {
-    private readonly int _loginLockoutMinutes = int.Parse(configuration["Authentication:LoginLockout.AddMin"]!);
-    private readonly int _maxLoginAttempts = int.Parse(configuration["Authentication:LoginLockout.MaxLoginCount"]!);
+    private readonly int _loginLockoutMinutes =
+        int.Parse(configuration["Authentication:LoginLockout.Lifetime.Minutes"]!);
+
+    private readonly int _maxLoginAttempts = int.Parse(configuration["Authentication:LoginLockout.MaxAttempts"]!);
     private readonly int _refreshTokenMaxCount = int.Parse(configuration["Authentication:RefreshToken.MaxCount"]!);
 
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
@@ -33,54 +35,54 @@ internal class Handler(
             .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
 
-        if (user is null)
-            return Result<Output>.Failure(Error.AuthenticationError("login or password is incorrect"));
 
-        if (IsAccountLocked(user))
-            return Result<Output>.Failure(Error.AuthenticationError("account is locked"));
+        if (user is null || IsAccountLocked(user))
+            return Result<Output>.Failure(
+                Error.AuthenticationError("login or password is incorrect or account is locked"));
 
-        if (!passwordService.VerifyPasswordHash(command.Password, user.PwdHash, user.PwdSalt))
+
+        if (IsAttemptLimitExceeded(user, _maxLoginAttempts, _loginLockoutMinutes))
         {
-            ProcessFailedLogin(user, _maxLoginAttempts, _loginLockoutMinutes);
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("login or password is incorrect"));
+            return Result<Output>.Failure(Error.AuthenticationError("Too many login attempts"));
         }
 
         if (!passwordService.VerifyPasswordHash(command.Password, user.PwdHash, user.PwdSalt))
         {
-            ProcessFailedLogin(user, _maxLoginAttempts, _loginLockoutMinutes);
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("login or password is incorrect"));
+            return Result<Output>.Failure(
+                Error.AuthenticationError("login or password is incorrect or account is locked"));
         }
-
-        ResetLoginLock(user);
 
         if (user.RefreshTokens.Count >= _refreshTokenMaxCount)
             user.RefreshTokens.Remove(user.RefreshTokens.OrderBy(rt => rt.Expires).First());
 
-        var accessToken = tokenService.GenerateAccessToken(user);
-        var refreshToken = tokenService.GenerateRefreshToken(user);
+        var accessToken = securityService.GenerateAccessToken(user);
+        var refreshToken = securityService.GenerateRefreshToken(user);
 
         user.RefreshTokens.Add(refreshToken);
         await dbContext.SaveChangesAsync(ct);
 
-        return Result<Output>.Success(new Output(accessToken, refreshToken, user.EmailConfirmed));
+        return Result<Output>.Success(
+            new Output(
+                accessToken.token,
+                refreshToken.Token,
+                accessToken.expires,
+                refreshToken.Expires,
+                user.EmailConfirmed
+            ));
     }
 
-    private static void ProcessFailedLogin(User user, int maxLoginAttempts, int loginLockoutMinutes)
+    private static bool IsAttemptLimitExceeded(User user, int maxAttempts, int lockoutMinutes)
     {
         user.LoginFailedCount++;
-        if (user.LoginFailedCount < maxLoginAttempts) return;
+
+        if (user.LoginFailedCount <= maxAttempts)
+            return false;
 
         user.LoginLocked = true;
-        user.LoginLockExpires = DateTime.UtcNow.AddMinutes(loginLockoutMinutes);
-    }
-
-    private static void ResetLoginLock(User user)
-    {
-        user.LoginLocked = false;
-        user.LoginLockExpires = null;
-        user.LoginFailedCount = 0;
+        user.LoginLockExpires = DateTime.UtcNow.AddMinutes(lockoutMinutes);
+        return true;
     }
 
     private static bool IsAccountLocked(User user)
@@ -91,7 +93,9 @@ internal class Handler(
                 return true;
 
             case true when user.LoginLockExpires < DateTime.UtcNow:
-                ResetLoginLock(user);
+                user.LoginLocked = false;
+                user.LoginLockExpires = null;
+                user.LoginFailedCount = 0;
                 break;
         }
 

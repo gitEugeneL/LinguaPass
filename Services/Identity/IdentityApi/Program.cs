@@ -1,9 +1,7 @@
 using System.Reflection;
-using System.Security.Claims;
 using Carter;
 using FluentValidation;
 using IdentityApi.Data;
-using IdentityApi.Helpers;
 using IdentityApi.Services;
 using IdentityApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddScoped<IPasswordService, PasswordService>()
-    .AddScoped<ITokenService, TokenService>();
+    .AddScoped<ISecurityService, SecurityService>();
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -29,6 +27,11 @@ builder.Services.AddMediatR(config =>
 /*** Carter configuration ***/
 builder.Services.AddCarter();
 
+// --------------------------------------------------------------
+
+/*** Authentication policies configure ***/
+// builder.Services.Configure();
+
 /*** Authentication configuration ***/
 // var authConfiguration = builder.Configuration.GetSection("Authentication");
 // builder.Services.AddAuthentication(options =>
@@ -40,8 +43,8 @@ builder.Services.AddCarter();
 // {
 // options.TokenValidationParameters = new TokenValidationParameters
 // {
-// ValidateAudience = true,
-// ValidateIssuer = true,
+// ValidateAudience = false, //
+// ValidateIssuer = false, //
 // ValidateIssuerSigningKey = true,
 // ValidateLifetime = true,
 // ValidAudience = authConfiguration.GetSection("Audience").Value,
@@ -51,33 +54,10 @@ builder.Services.AddCarter();
 // };
 // });
 
-/*** Authentication roles policies ***/
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy(Roles.Customer.Name, policy =>
-        policy
-            .RequireClaim(ClaimTypes.Email)
-            .RequireClaim(ClaimTypes.NameIdentifier)
-            .RequireClaim(ClaimTypes.Role)
-            .RequireRole(Roles.Customer.Name)
-            .RequireClaim("isEmailConfirmed")
-    )
-    .AddPolicy(Roles.Admin.Name, policy =>
-        policy
-            .RequireClaim(ClaimTypes.Email)
-            .RequireClaim(ClaimTypes.NameIdentifier)
-            .RequireClaim(ClaimTypes.Role)
-            .RequireRole(Roles.Admin.Name)
-            .RequireClaim("isEmailConfirmed"));
+
+//--------------------------------------------------------------------------------------
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    /*** Seed develop data ***/
-    // using var scope = app.Services.CreateScope();
-    // var context = scope.ServiceProvider.GetService<AppDbContext>()!;
-    // DataInitializer.SeedData(context);
-}
 
 app.MapCarter();
 

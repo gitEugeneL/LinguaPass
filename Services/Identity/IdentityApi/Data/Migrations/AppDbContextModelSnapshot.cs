@@ -87,7 +87,7 @@ namespace IdentityApi.Data.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Name = "Admin"
+                            Name = "ADMIN"
                         },
                         new
                         {
@@ -127,6 +127,9 @@ namespace IdentityApi.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("GenerateCodeCount")
+                        .HasColumnType("integer");
 
                     b.Property<int>("LoginFailedCount")
                         .HasColumnType("integer");
