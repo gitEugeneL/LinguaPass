@@ -8,15 +8,20 @@ public sealed class Validator : AbstractValidator<Command>
     {
         RuleFor(command => command.Email)
             .NotEmpty()
-            .EmailAddress()
-            .WithMessage("Please provide a valid email address");
+            .EmailAddress();
 
         RuleFor(command => command.Password)
             .NotEmpty()
-            .MinimumLength(8)
-            .MaximumLength(20)
-            .Matches(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$")
-            .WithMessage("The password must contain at least one letter, one special character, and one digit");
+            .Length(8, 20)
+            .WithMessage("Password must be between 8 and 20 characters")
+            .Must(p => p.Any(char.IsLetter))
+            .WithMessage("Password must contain letters")
+            .Must(p => p.Any(char.IsUpper))
+            .WithMessage("Password must contain upper case")
+            .Must(p => p.Any(char.IsDigit))
+            .WithMessage("Password must contain digits")
+            .Must(p => p.Any(c => !char.IsLetterOrDigit(c)))
+            .WithMessage("Password must contain special characters");
 
         RuleFor(command => command.ConfirmPassword)
             .NotEmpty()
