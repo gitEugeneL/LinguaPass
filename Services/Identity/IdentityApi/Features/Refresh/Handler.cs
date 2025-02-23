@@ -35,7 +35,7 @@ internal class Handler(
         if (dbResult?.User is null)
             return Result<Output>.Failure(Error.AuthenticationError("User not found or token invalid"));
 
-        if (dbResult.RefreshToken is null || !securityService.RefreshTokenIsExpired(dbResult.RefreshToken))
+        if (dbResult.RefreshToken is null || !securityService.IsRefreshTokenExpired(dbResult.RefreshToken))
             return Result<Output>.Failure(Error.AuthenticationError("Token expired or invalid"));
 
         var accessToken = securityService.GenerateAccessToken(dbResult.User);

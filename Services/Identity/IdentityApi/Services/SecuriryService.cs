@@ -41,14 +41,6 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
         return (token, expires);
     }
 
-    public (string code, DateTime expires) GenerateCode(User user)
-    {
-        var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
-        var expires = DateTime.UtcNow.AddMinutes(int.Parse(configuration["Authentication:Code.Lifetime.Minutes"]!));
-        var code = Random.Shared.Next((int)Math.Pow(10, codeLength - 1), (int)Math.Pow(10, codeLength)).ToString();
-        return (code, expires);
-    }
-
     public (string token, DateTime expires) GenerateRefreshToken(User user)
     {
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(265));
@@ -58,15 +50,34 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
         return (token, expires);
     }
 
+    public bool IsRefreshTokenValid(RefreshToken refreshToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public (string code, DateTime expires) GenerateCode(User user)
+    {
+        var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
+        var expires = DateTime.UtcNow.AddMinutes(int.Parse(configuration["Authentication:Code.Lifetime.Minutes"]!));
+        var code = Random.Shared.Next((int)Math.Pow(10, codeLength - 1), (int)Math.Pow(10, codeLength)).ToString();
+        return (code, expires);
+    }
+
+    public bool IsCodeValid(User user, string code)
+    {
+        return user.ConfirmationCode is not null
+               && user.ConfirmationCode.Code == code && user.ConfirmationCode.Expires >= DateTime.UtcNow;
+    }
+
+    public bool IsRefreshTokenExpired(RefreshToken refreshToken)
+    {
+        return refreshToken.Expires >= DateTime.UtcNow;
+    }
+
     public void UpdateRefreshToken(User user)
     {
         var maxCount = int.Parse(configuration["Authentication:RefreshToken.MaxCount"]!);
         if (user.RefreshTokens.Count >= maxCount)
             user.RefreshTokens.Remove(user.RefreshTokens.OrderBy(rt => rt.Expires).First());
-    }
-
-    public bool RefreshTokenIsExpired(RefreshToken refreshToken)
-    {
-        return refreshToken.Expires >= DateTime.UtcNow;
     }
 }

@@ -5,8 +5,8 @@ public sealed class User
     public Guid Id { get; init; }
     public required string Email { get; init; }
     public required int Age { get; init; }
-    public required byte[] PwdHash { get; init; }
-    public required byte[] PwdSalt { get; init; }
+    public required byte[] PwdHash { get; set; }
+    public required byte[] PwdSalt { get; set; }
 
     public bool EmailConfirmed { get; set; }
     public bool LoginLocked { get; set; }

@@ -4,7 +4,9 @@ namespace IdentityApi.Services.Interfaces;
 
 public interface ISecurityService
 {
-    bool RefreshTokenIsExpired(RefreshToken refreshToken);
+    bool IsRefreshTokenExpired(RefreshToken refreshToken);
+
+    bool IsRefreshTokenValid(RefreshToken refreshToken);
 
     (string token, DateTime expires) GenerateAccessToken(User user);
 
@@ -13,4 +15,6 @@ public interface ISecurityService
     void UpdateRefreshToken(User user);
 
     (string code, DateTime expires) GenerateCode(User user);
+
+    bool IsCodeValid(User user, string code);
 }
