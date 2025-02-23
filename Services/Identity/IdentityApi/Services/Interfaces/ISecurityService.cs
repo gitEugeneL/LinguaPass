@@ -8,7 +8,9 @@ public interface ISecurityService
 
     (string token, DateTime expires) GenerateAccessToken(User user);
 
-    RefreshToken GenerateRefreshToken(User user); // todo переделать
+    (string token, DateTime expires) GenerateRefreshToken(User user);
+
+    void UpdateRefreshToken(User user);
 
     (string code, DateTime expires) GenerateCode(User user);
 }

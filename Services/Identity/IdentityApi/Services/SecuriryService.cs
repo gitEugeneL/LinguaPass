@@ -10,30 +10,6 @@ namespace IdentityApi.Services;
 
 internal class SecurityService(IConfiguration configuration) : ISecurityService
 {
-    public RefreshToken GenerateRefreshToken(User user)
-    {
-        return new RefreshToken
-        {
-            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(265)),
-            Expires = DateTime.UtcNow.AddDays(
-                int.Parse(configuration["Authentication:RefreshToken.Lifetime.Days"]!)),
-            User = user
-        };
-    }
-
-    public bool RefreshTokenIsExpired(RefreshToken refreshToken)
-    {
-        return refreshToken.Expires >= DateTime.UtcNow;
-    }
-
-    public (string code, DateTime expires) GenerateCode(User user)
-    {
-        var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
-        var expires = DateTime.UtcNow.AddMinutes(int.Parse(configuration["Authentication:Code.Lifetime.Minutes"]!));
-        var code = Random.Shared.Next((int)Math.Pow(10, codeLength - 1), (int)Math.Pow(10, codeLength)).ToString();
-        return (code, expires);
-    }
-
     public (string token, DateTime expires) GenerateAccessToken(User user)
     {
         var claims = new List<Claim>
@@ -63,5 +39,34 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
         var token = handler.WriteToken(handler.CreateToken(descriptor));
 
         return (token, expires);
+    }
+
+    public (string code, DateTime expires) GenerateCode(User user)
+    {
+        var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
+        var expires = DateTime.UtcNow.AddMinutes(int.Parse(configuration["Authentication:Code.Lifetime.Minutes"]!));
+        var code = Random.Shared.Next((int)Math.Pow(10, codeLength - 1), (int)Math.Pow(10, codeLength)).ToString();
+        return (code, expires);
+    }
+
+    public (string token, DateTime expires) GenerateRefreshToken(User user)
+    {
+        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(265));
+        var expires = DateTime.UtcNow.AddDays(
+            int.Parse(configuration["Authentication:RefreshToken.Lifetime.Days"]!));
+
+        return (token, expires);
+    }
+
+    public void UpdateRefreshToken(User user)
+    {
+        var maxCount = int.Parse(configuration["Authentication:RefreshToken.MaxCount"]!);
+        if (user.RefreshTokens.Count >= maxCount)
+            user.RefreshTokens.Remove(user.RefreshTokens.OrderBy(rt => rt.Expires).First());
+    }
+
+    public bool RefreshTokenIsExpired(RefreshToken refreshToken)
+    {
+        return refreshToken.Expires >= DateTime.UtcNow;
     }
 }

@@ -1,6 +1,7 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
+using IdentityApi.Domain.Entities;
 using IdentityApi.Services.Interfaces;
 using IdentityApi.Utils;
 using MediatR;
@@ -41,16 +42,22 @@ internal class Handler(
         var refreshToken = securityService.GenerateRefreshToken(dbResult.User);
 
         dbResult.User.RefreshTokens.Remove(dbResult.RefreshToken);
-        dbResult.User.RefreshTokens.Add(refreshToken);
+        dbResult.User.RefreshTokens.Add(
+            new RefreshToken
+            {
+                Token = refreshToken.token,
+                Expires = refreshToken.expires,
+                User = dbResult.User
+            });
 
         await dbContext.SaveChangesAsync(ct);
 
         return Result<Output>.Success(
             new Output(
                 accessToken.token,
-                refreshToken.Token,
+                refreshToken.token,
                 accessToken.expires,
-                refreshToken.Expires,
+                refreshToken.expires,
                 dbResult.User.EmailConfirmed
             ));
     }

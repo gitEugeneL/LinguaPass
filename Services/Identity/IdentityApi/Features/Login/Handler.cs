@@ -14,15 +14,9 @@ internal class Handler(
     IValidator<Command> validator,
     IPasswordService passwordService,
     ISecurityService securityService,
-    IConfiguration configuration
+    IConfirmationService confirmationService
 ) : IRequestHandler<Command, Result<Output>>
 {
-    private readonly int _loginLockoutMinutes =
-        int.Parse(configuration["Authentication:LoginLockout.Lifetime.Minutes"]!);
-
-    private readonly int _maxLoginAttempts = int.Parse(configuration["Authentication:LoginLockout.MaxAttempts"]!);
-    private readonly int _refreshTokenMaxCount = int.Parse(configuration["Authentication:RefreshToken.MaxCount"]!);
-
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
     {
         var validationResult = await validator.ValidateAsync(command, ct);
@@ -36,12 +30,12 @@ internal class Handler(
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
 
 
-        if (user is null || IsAccountLocked(user))
+        if (user is null || confirmationService.IsLoginLocked(user))
             return Result<Output>.Failure(
                 Error.AuthenticationError("login or password is incorrect or account is locked"));
 
 
-        if (IsAttemptLimitExceeded(user, _maxLoginAttempts, _loginLockoutMinutes))
+        if (confirmationService.IsLoginAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(Error.AuthenticationError("Too many login attempts"));
@@ -49,56 +43,38 @@ internal class Handler(
 
         if (!passwordService.VerifyPasswordHash(command.Password, user.PwdHash, user.PwdSalt))
         {
+            user.LoginFailedCount++;
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(
                 Error.AuthenticationError("login or password is incorrect or account is locked"));
         }
 
-        if (user.RefreshTokens.Count >= _refreshTokenMaxCount)
-            user.RefreshTokens.Remove(user.RefreshTokens.OrderBy(rt => rt.Expires).First());
+        confirmationService.ResetLoginLockout(user);
+        securityService.UpdateRefreshToken(user);
 
         var accessToken = securityService.GenerateAccessToken(user);
         var refreshToken = securityService.GenerateRefreshToken(user);
 
-        user.RefreshTokens.Add(refreshToken);
+        await dbContext
+            .RefreshTokens
+            .AddAsync(
+                new RefreshToken
+                {
+                    Token = refreshToken.token,
+                    Expires = refreshToken.expires,
+                    User = user
+                },
+                ct);
+
         await dbContext.SaveChangesAsync(ct);
 
         return Result<Output>.Success(
             new Output(
                 accessToken.token,
-                refreshToken.Token,
+                refreshToken.token,
                 accessToken.expires,
-                refreshToken.Expires,
+                refreshToken.expires,
                 user.EmailConfirmed
             ));
-    }
-
-    private static bool IsAttemptLimitExceeded(User user, int maxAttempts, int lockoutMinutes)
-    {
-        user.LoginFailedCount++;
-
-        if (user.LoginFailedCount <= maxAttempts)
-            return false;
-
-        user.LoginLocked = true;
-        user.LoginLockExpires = DateTime.UtcNow.AddMinutes(lockoutMinutes);
-        return true;
-    }
-
-    private static bool IsAccountLocked(User user)
-    {
-        switch (user.LoginLocked)
-        {
-            case true when user.LoginLockExpires >= DateTime.UtcNow:
-                return true;
-
-            case true when user.LoginLockExpires < DateTime.UtcNow:
-                user.LoginLocked = false;
-                user.LoginLockExpires = null;
-                user.LoginFailedCount = 0;
-                break;
-        }
-
-        return false;
     }
 }
