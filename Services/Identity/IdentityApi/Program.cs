@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddScoped<IPasswordService, PasswordService>()
-    .AddScoped<ISecurityService, SecurityService>();
+    .AddScoped<ISecurityService, SecurityService>()
+    .AddScoped<IConfirmationService, ConfirmationService>();
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -26,36 +27,6 @@ builder.Services.AddMediatR(config =>
 
 /*** Carter configuration ***/
 builder.Services.AddCarter();
-
-// --------------------------------------------------------------
-
-/*** Authentication policies configure ***/
-// builder.Services.Configure();
-
-/*** Authentication configuration ***/
-// var authConfiguration = builder.Configuration.GetSection("Authentication");
-// builder.Services.AddAuthentication(options =>
-// {
-// options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-// options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-// })
-// .AddJwtBearer(options =>
-// {
-// options.TokenValidationParameters = new TokenValidationParameters
-// {
-// ValidateAudience = false, //
-// ValidateIssuer = false, //
-// ValidateIssuerSigningKey = true,
-// ValidateLifetime = true,
-// ValidAudience = authConfiguration.GetSection("Audience").Value,
-// ValidIssuer = authConfiguration.GetSection("Issuer").Value,
-// IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-// .GetBytes(authConfiguration.GetSection("AccessToken.SecurityKey").Value!))
-// };
-// });
-
-
-//--------------------------------------------------------------------------------------
 
 var app = builder.Build();
 

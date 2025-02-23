@@ -28,7 +28,6 @@
         <Folder Include="Data\Migrations\"/>
         <Folder Include="Features\ChangeEmail\"/>
         <Folder Include="Features\ChangePassword\"/>
-        <Folder Include="Features\ConfirmEmail\"/>
         <Folder Include="Features\ResetPassword\"/>
     </ItemGroup>
 
