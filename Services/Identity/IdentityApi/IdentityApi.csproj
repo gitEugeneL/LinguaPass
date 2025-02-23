@@ -26,8 +26,6 @@
 
     <ItemGroup>
         <Folder Include="Data\Migrations\"/>
-        <Folder Include="Features\ChangeEmail\"/>
-        <Folder Include="Features\ChangePassword\"/>
     </ItemGroup>
 
 </Project>

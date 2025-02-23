@@ -4,8 +4,8 @@ namespace IdentityApi.Helpers;
 
 public abstract class AppConstants
 {
-    public const string AdminRole = "ADMIN";
-    public const string CustomerRole = "Customer";
+    private const string AdminRole = "ADMIN";
+    private const string CustomerRole = "CUSTOMER";
 
     public static readonly Role Admin = new()
         { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = AdminRole };

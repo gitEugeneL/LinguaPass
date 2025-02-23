@@ -50,11 +50,6 @@ internal class SecurityService(IConfiguration configuration) : ISecurityService
         return (token, expires);
     }
 
-    public bool IsRefreshTokenValid(RefreshToken refreshToken)
-    {
-        throw new NotImplementedException();
-    }
-
     public (string code, DateTime expires) GenerateCode(User user)
     {
         var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
