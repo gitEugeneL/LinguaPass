@@ -35,3 +35,5 @@ app.MapCarter();
 app.UseHttpsRedirection();
 
 app.Run();
+
+public abstract partial class Program;
