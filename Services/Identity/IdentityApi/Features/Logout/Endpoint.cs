@@ -8,7 +8,8 @@ public class Endpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/logout", async (RefreshOrLogoutRequest request, ISender sender, CancellationToken ct) =>
+        app.MapPost("/logout", async (RefreshOrLogoutRequest
+            request, ISender sender, CancellationToken ct) =>
         {
             var command = new Command(request.RefreshToken, request.UserId);
             var result = await sender.Send(command, ct);

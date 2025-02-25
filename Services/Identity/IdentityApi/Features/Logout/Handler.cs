@@ -7,23 +7,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Features.Logout;
 
-internal class Handler(
+public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator) : IRequestHandler<Command, Result<Output>>
 {
+    public const string InvalidData = "Invalid token or user";
+
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
             return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
 
-        var dbResult = await dbContext
+        var refreshToken = await dbContext
             .RefreshTokens
-            .Where(rt => rt.Token == command.RefreshToken && rt.UserId == command.UserId)
-            .ExecuteDeleteAsync(ct) > 0;
+            .FirstOrDefaultAsync(rt => rt.Token == command.RefreshToken
+                                       && rt.UserId == command.UserId, ct);
 
-        return dbResult
-            ? Result<Output>.Success(new Output(dbResult))
-            : Result<Output>.Failure(new Error("Invalid token or user"));
+        if (refreshToken is null)
+            return Result<Output>.Failure(new Error(InvalidData));
+
+        dbContext.Remove(refreshToken);
+        return Result<Output>.Success(new Output(true));
     }
 }
