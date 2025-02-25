@@ -9,12 +9,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Features.Refresh;
 
-internal class Handler(
+public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
     ISecurityService securityService
 ) : IRequestHandler<Command, Result<Output>>
 {
+    public const string InvalidUser = "User not found or token invalid";
+    public const string InvalidToken = "Token expired or invalid";
+
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
     {
         var validationResult = await validator.ValidateAsync(command, ct);
@@ -33,10 +36,10 @@ internal class Handler(
             .FirstOrDefaultAsync(ct);
 
         if (dbResult?.User is null)
-            return Result<Output>.Failure(new Error("User not found or token invalid"));
+            return Result<Output>.Failure(new Error(InvalidUser));
 
         if (dbResult.RefreshToken is null || !securityService.IsRefreshTokenExpired(dbResult.RefreshToken))
-            return Result<Output>.Failure(new Error("Token expired or invalid"));
+            return Result<Output>.Failure(new Error(InvalidToken));
 
         var accessToken = securityService.GenerateAccessToken(dbResult.User);
         var refreshToken = securityService.GenerateRefreshToken(dbResult.User);

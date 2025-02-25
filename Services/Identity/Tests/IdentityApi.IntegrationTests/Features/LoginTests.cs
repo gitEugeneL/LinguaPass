@@ -22,7 +22,7 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         var accessTokenMinutes = int.Parse(_configuration["Authentication:AccessToken.Lifetime.Minutes"]!);
         var refreshTokenDays = int.Parse(_configuration["Authentication:RefreshToken.Lifetime.Days"]!);
 
-        await _client.PostAsJsonAsync("registration", new RegistrationRequest(email, password, password, 18));
+        await TestExtensions.RegistrationAsync(_client, email, password, password);
         var request = new LoginRequest(email, password);
 
         // Act
@@ -45,8 +45,8 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
     }
 
     [Theory]
-    [InlineData("mailt@mail.test", "strongPwd!1")]
-    [InlineData("mail1@mail.test", "myPassword12@")]
+    [InlineData("mailt23@mail.test", "strongPwd!1")]
+    [InlineData("mail43@mail.test", "myPassword12@")]
     public async Task Login_WithInvalidUser_ReturnsErrorMessage(string email, string password)
     {
         // Arrange
@@ -64,12 +64,12 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
     }
 
     [Theory]
-    [InlineData("mailt@mail.test", "strongPwd!1")]
-    [InlineData("mail1@mail.test", "myPassword12@")]
+    [InlineData("mailt99@mail.test", "strongPwd!1")]
+    [InlineData("mail1123@mail.test", "myPassword12@")]
     public async Task Login_WithValidUserAndInvalidPassword_ReturnsErrorMessage(string email, string password)
     {
         // Arrange
-        await _client.PostAsJsonAsync("registration", new RegistrationRequest(email, password, password, 18));
+        await TestExtensions.RegistrationAsync(_client, email, password, password);
         var request = new LoginRequest(email, "invalid-password123");
 
         // Act
