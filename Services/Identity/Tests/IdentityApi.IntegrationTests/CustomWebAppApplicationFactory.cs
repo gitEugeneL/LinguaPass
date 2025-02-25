@@ -4,12 +4,19 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 public class CustomWebAppApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureAppConfiguration((context, config) =>
+        {
+            // Add configuration file
+            config.AddJsonFile("appsettings.json", true, true);
+        });
+
         builder.ConfigureTestServices(services =>
         {
             // Remove dbContext (.net9 solution)
@@ -19,8 +26,9 @@ public class CustomWebAppApplicationFactory : WebApplicationFactory<Program>
                 services.Remove(descriptor);
 
             // Add InMemoryDatabase
+            var dbName = Guid.NewGuid().ToString();
             services.AddDbContext<AppDbContext>(options =>
-                options.UseInMemoryDatabase("testDb"));
+                options.UseInMemoryDatabase(dbName));
 
             // Init migrations and seed data
             using var scope = services.BuildServiceProvider().CreateScope();

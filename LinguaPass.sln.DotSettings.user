@@ -8,13 +8,17 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AResults_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003Fhome_003Flihon_003F_002Econfig_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fbdfaeda492d549149f26f01af8c0ddd63b800_003F96_003F7b26d23a_003FResults_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AType_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003Fhome_003Flihon_003F_002Econfig_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fb8417950f7e54f048304227d9faf80e9d1be00_003Fa8_003F9c9baf1d_003FType_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AValidationResult_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003Fhome_003Flihon_003F_002Econfig_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F8bb416a5d4877933636ae22013c47cc636987118e78a2cf94d52c71eeaa577_003FValidationResult_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=CodeStyle/@EntryIndexedValue">On</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=NamingFilter/@EntryIndexedValue">On</s:String>
+	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">On</s:String>
+	<s:Boolean x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/EnableInlayHints/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7f73924f_002Db838_002D48c4_002D9ac9_002D08f256b7f5c8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Logout_ValidRequest_ReturnsNoContent" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::8D09408A-8BA2-4530-B6FB-4BF4A9B3165F::net9.0::IdentityApi.IntegrationTests.Features.RegistrationTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::8D09408A-8BA2-4530-B6FB-4BF4A9B3165F::net9.0::IdentityApi.IntegrationTests.Features.LoginTests.Login_WithValidUser_ReturnsLoginData&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::8D09408A-8BA2-4530-B6FB-4BF4A9B3165F::net9.0::IdentityApi.IntegrationTests.Features.LoginTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e6987701_002D0761_002D44dd_002D85a6_002D70a035033507/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Registration_WithValidBody_CreateNewCustomer" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;xUnit::8D09408A-8BA2-4530-B6FB-4BF4A9B3165F::net9.0::IdentityApi.IntegrationTests.UnitTest1.Test1&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	
+	</wpf:ResourceDictionary>
