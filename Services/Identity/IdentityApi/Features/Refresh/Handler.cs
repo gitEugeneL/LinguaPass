@@ -2,8 +2,8 @@ using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Domain.Entities;
+using IdentityApi.Helpers;
 using IdentityApi.Services.Interfaces;
-using IdentityApi.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ internal class Handler(
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
-            return Result<Output>.Failure(Error.ValidationError(validationResult.GetValidationProblems()));
+            return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
 
         var dbResult = await dbContext
             .Users
@@ -33,10 +33,10 @@ internal class Handler(
             .FirstOrDefaultAsync(ct);
 
         if (dbResult?.User is null)
-            return Result<Output>.Failure(Error.AuthenticationError("User not found or token invalid"));
+            return Result<Output>.Failure(new Error("User not found or token invalid"));
 
         if (dbResult.RefreshToken is null || !securityService.IsRefreshTokenExpired(dbResult.RefreshToken))
-            return Result<Output>.Failure(Error.AuthenticationError("Token expired or invalid"));
+            return Result<Output>.Failure(new Error("Token expired or invalid"));
 
         var accessToken = securityService.GenerateAccessToken(dbResult.User);
         var refreshToken = securityService.GenerateRefreshToken(dbResult.User);

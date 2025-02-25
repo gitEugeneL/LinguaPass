@@ -1,8 +1,8 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
+using IdentityApi.Helpers;
 using IdentityApi.Services.Interfaces;
-using IdentityApi.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ internal class Handler(
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
-            return Result<Output>.Failure(Error.ValidationError(validationResult.GetValidationProblems()));
+            return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
 
         var user = await dbContext
             .Users
@@ -29,19 +29,19 @@ internal class Handler(
                                       && u.EmailConfirmed == true, ct);
 
         if (user is null || confirmationService.IsConfirmLocked(user))
-            return Result<Output>.Failure(Error.AuthenticationError("User not found or account is locked"));
+            return Result<Output>.Failure(new Error("User not found or account is locked"));
 
         if (confirmationService.IsConfirmAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("Too many reset password attempts"));
+            return Result<Output>.Failure(new Error("Too many reset password attempts"));
         }
 
         if (!securityService.IsCodeValid(user, command.Code))
         {
             user.ConfirmFailedCount++;
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("User not found or code is invalid"));
+            return Result<Output>.Failure(new Error("User not found or code is invalid"));
         }
 
         confirmationService.ResetConfirmLockout(user);

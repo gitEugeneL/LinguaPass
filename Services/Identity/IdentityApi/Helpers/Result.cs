@@ -1,4 +1,4 @@
-namespace IdentityApi.Utils;
+namespace IdentityApi.Helpers;
 
 public record Result<T>
 {
@@ -35,3 +35,5 @@ public record Result<T>
         return IsSuccess ? onSuccess(Value!) : onFailure(Error!);
     }
 }
+
+public sealed record Error(object Message);

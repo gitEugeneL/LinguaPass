@@ -19,7 +19,7 @@ public class Endpoint : ICarterModule
                 );
                 var result = await sender.Send(command, ct);
                 return result.Map<IResult>(
-                    r => Results.Ok(r.UserId),
+                    r => Results.Ok(new RegistrationResponse(r.UserId)),
                     e => Results.BadRequest(e.Message)
                 );
             });

@@ -2,8 +2,8 @@ using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Domain.Entities;
+using IdentityApi.Helpers;
 using IdentityApi.Services.Interfaces;
-using IdentityApi.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,7 @@ internal class Handler(
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
-            return Result<Output>.Failure(Error.ValidationError(validationResult.GetValidationProblems()));
+            return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
 
         var user = await dbContext
             .Users
@@ -28,14 +28,14 @@ internal class Handler(
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
 
         if (user is null || confirmationService.IsConfirmLocked(user))
-            return Result<Output>.Failure(Error.AuthenticationError("User is not found or account is locked"));
+            return Result<Output>.Failure(new Error("User is not found or account is locked"));
 
         user.GenerateCodeCount++;
 
         if (confirmationService.IsGenerateCodeAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("Too many code generation attempts"));
+            return Result<Output>.Failure(new Error("Too many code generation attempts"));
         }
 
         var confirmationCode = user.ConfirmationCode;

@@ -1,7 +1,7 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
-using IdentityApi.Utils;
+using IdentityApi.Helpers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ internal class Handler(
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
-            return Result<Output>.Failure(Error.ValidationError(validationResult.GetValidationProblems()));
+            return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
 
         var dbResult = await dbContext
             .RefreshTokens
@@ -24,6 +24,6 @@ internal class Handler(
 
         return dbResult
             ? Result<Output>.Success(new Output(dbResult))
-            : Result<Output>.Failure(Error.AuthenticationError("Invalid token or user"));
+            : Result<Output>.Failure(new Error("Invalid token or user"));
     }
 }

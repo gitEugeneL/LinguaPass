@@ -1,4 +1,4 @@
-using IdentityApi.Utils;
+using IdentityApi.Helpers;
 using MediatR;
 
 namespace IdentityApi.Features.ConfirmEmail;

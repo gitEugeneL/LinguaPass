@@ -1,8 +1,8 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
+using IdentityApi.Helpers;
 using IdentityApi.Services.Interfaces;
-using IdentityApi.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ internal class Handler(
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
-            return Result<Output>.Failure(Error.ValidationError(validationResult.GetValidationProblems()));
+            return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
 
         var user = await dbContext
             .Users
@@ -28,20 +28,19 @@ internal class Handler(
                                       && u.EmailConfirmed == false, ct);
 
         if (user?.ConfirmationCode is null || confirmationService.IsConfirmLocked(user))
-            return Result<Output>.Failure(
-                Error.AuthenticationError("User not found or account is locked or email is confirmed"));
+            return Result<Output>.Failure(new Error("User not found or account is locked or email is confirmed"));
 
         if (confirmationService.IsConfirmAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("Too many login attempts"));
+            return Result<Output>.Failure(new Error("Too many login attempts"));
         }
 
         if (!securityService.IsCodeValid(user, command.Code))
         {
             user.ConfirmFailedCount++;
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(Error.AuthenticationError("Invalid code"));
+            return Result<Output>.Failure(new Error("Invalid code"));
         }
 
         confirmationService.ResetConfirmLockout(user);
