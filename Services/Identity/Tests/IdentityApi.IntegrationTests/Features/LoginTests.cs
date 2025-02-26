@@ -82,4 +82,29 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
+
+    [Theory]
+    [InlineData("mailt99@dev.test", "strongPwd!1")]
+    [InlineData("mail1123@dev.test", "myPassword12@")]
+    public async Task Login_WithValidUserAndInvalidPasswordAndMultipleAttempts_ReturnsErrorMessage(string email,
+        string password)
+    {
+        // Arrange
+        var loginMaxAttempts = int.Parse(_configuration["Authentication:LoginLockout.MaxAttempts"]!);
+
+        await TestExtensions.RegistrationAsync(_client, email, password, password);
+        for (var i = 0; i <= loginMaxAttempts; i++)
+            await _client.PostAsJsonAsync("login", new LoginRequest(email, "invalid-password"));
+
+        // Act
+        // login with valid password
+        var response = await _client.PostAsJsonAsync("login", new LoginRequest(email, password));
+        var result = await TestExtensions.DeserializeResponse<string>(response);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().Be(Handler.InvalidLoginData);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
 }
