@@ -54,9 +54,9 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         // generate confirm code
         await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
         // get invalid fake code
-        var validCode = new string(Enumerable.Repeat('0', codeLength).ToArray());
+        var invalidCode = new string(Enumerable.Repeat('0', codeLength).ToArray());
 
-        var request = new ConfirmEmailRequest(validCode, email);
+        var request = new ConfirmEmailRequest(invalidCode, email);
 
         // Act
         var response = await _client.PostAsJsonAsync("confirm-email", request);

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Features.ResetPassword;
 
-internal class Handler(
+public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
     ILockoutService lockoutService,
@@ -16,6 +16,8 @@ internal class Handler(
     IPasswordService passwordService
 ) : IRequestHandler<Command, Result<Output>>
 {
+    public const string InvalidUser = "User not found or account is locked";
+
     public async Task<Result<Output>> Handle(Command command, CancellationToken ct)
     {
         var validationResult = await validator.ValidateAsync(command, ct);
@@ -29,19 +31,19 @@ internal class Handler(
                                       && u.EmailConfirmed == true, ct);
 
         if (user is null || lockoutService.IsConfirmLocked(user))
-            return Result<Output>.Failure(new Error("User not found or account is locked"));
+            return Result<Output>.Failure(new Error(InvalidUser));
 
         if (lockoutService.IsConfirmAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(new Error("Too many reset password attempts"));
+            return Result<Output>.Failure(new Error(InvalidUser));
         }
 
         if (!confirmationService.IsCodeValid(user, command.Code))
         {
             user.ConfirmFailedCount++;
             await dbContext.SaveChangesAsync(ct);
-            return Result<Output>.Failure(new Error("User not found or code is invalid"));
+            return Result<Output>.Failure(new Error(InvalidUser));
         }
 
         lockoutService.ResetConfirmLockout(user);
