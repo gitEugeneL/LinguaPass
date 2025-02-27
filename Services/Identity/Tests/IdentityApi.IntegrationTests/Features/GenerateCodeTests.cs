@@ -64,7 +64,6 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
         // Arrange
         var codeMaxAttempts = int.Parse(_configuration["Authentication:Code.MaxAttempts"]!);
 
-
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         var request = new GenerateCoreRequest(email);
 

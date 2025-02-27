@@ -12,8 +12,8 @@ namespace IdentityApi.Features.GenerateCode;
 public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
-    ISecurityService securityService,
-    IConfirmationService confirmationService
+    IConfirmationService confirmationService,
+    ILockoutService lockoutService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public const string InvalidData = "User is not found or account is locked";
@@ -29,19 +29,19 @@ public class Handler(
             .Include(u => u.ConfirmationCode)
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
 
-        if (user is null || confirmationService.IsConfirmLocked(user))
+        if (user is null || lockoutService.IsConfirmLocked(user))
             return Result<Output>.Failure(new Error(InvalidData));
 
         user.GenerateCodeCount++;
 
-        if (confirmationService.IsGenerateCodeAttemptLimitExceeded(user))
+        if (lockoutService.IsGenerateCodeAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(new Error(InvalidData));
         }
 
         var confirmationCode = user.ConfirmationCode;
-        var (code, expires) = securityService.GenerateCode(user);
+        var (code, expires) = confirmationService.GenerateCode();
 
         if (confirmationCode is null)
         {

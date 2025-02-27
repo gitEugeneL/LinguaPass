@@ -11,8 +11,8 @@ namespace IdentityApi.Features.ResetPassword;
 internal class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
+    ILockoutService lockoutService,
     IConfirmationService confirmationService,
-    ISecurityService securityService,
     IPasswordService passwordService
 ) : IRequestHandler<Command, Result<Output>>
 {
@@ -28,23 +28,23 @@ internal class Handler(
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper()
                                       && u.EmailConfirmed == true, ct);
 
-        if (user is null || confirmationService.IsConfirmLocked(user))
+        if (user is null || lockoutService.IsConfirmLocked(user))
             return Result<Output>.Failure(new Error("User not found or account is locked"));
 
-        if (confirmationService.IsConfirmAttemptLimitExceeded(user))
+        if (lockoutService.IsConfirmAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(new Error("Too many reset password attempts"));
         }
 
-        if (!securityService.IsCodeValid(user, command.Code))
+        if (!confirmationService.IsCodeValid(user, command.Code))
         {
             user.ConfirmFailedCount++;
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(new Error("User not found or code is invalid"));
         }
 
-        confirmationService.ResetConfirmLockout(user);
+        lockoutService.ResetConfirmLockout(user);
 
         passwordService.CreatePasswordHash(command.Password, out var passwordHash, out var passwordSalt);
         user.PwdHash = passwordHash;

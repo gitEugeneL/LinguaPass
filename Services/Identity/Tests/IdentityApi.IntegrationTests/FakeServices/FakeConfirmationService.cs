@@ -1,15 +1,20 @@
 using IdentityApi.Domain.Entities;
 using IdentityApi.Services.Interfaces;
+using Microsoft.Extensions.Configuration;
 
-namespace IdentityApi.Services;
+namespace IdentityApi.IntegrationTests.FakeServices;
 
-public class ConfirmationService(IConfiguration configuration) : IConfirmationService
+public class FakeConfirmationService(IConfiguration configuration) : IConfirmationService
 {
+    public const char ValidCodeChar = '1';
+
     public (string code, DateTime expires) GenerateCode()
     {
-        var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
         var expires = DateTime.UtcNow.AddMinutes(int.Parse(configuration["Authentication:Code.Lifetime.Minutes"]!));
-        var code = Random.Shared.Next((int)Math.Pow(10, codeLength - 1), (int)Math.Pow(10, codeLength)).ToString();
+        var codeLength = int.Parse(configuration["Authentication:Code.Length"]!);
+
+        var code = new string(Enumerable.Repeat(ValidCodeChar, codeLength).ToArray());
+
         return (code, expires);
     }
 

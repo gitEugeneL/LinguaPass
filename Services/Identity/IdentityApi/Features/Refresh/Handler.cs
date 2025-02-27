@@ -12,7 +12,7 @@ namespace IdentityApi.Features.Refresh;
 public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
-    ISecurityService securityService
+    ITokenService tokenService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public const string InvalidUser = "User not found or token invalid";
@@ -38,11 +38,11 @@ public class Handler(
         if (dbResult?.User is null)
             return Result<Output>.Failure(new Error(InvalidUser));
 
-        if (dbResult.RefreshToken is null || !securityService.IsRefreshTokenExpired(dbResult.RefreshToken))
+        if (dbResult.RefreshToken is null || !tokenService.IsRefreshTokenExpired(dbResult.RefreshToken))
             return Result<Output>.Failure(new Error(InvalidToken));
 
-        var accessToken = securityService.GenerateAccessToken(dbResult.User);
-        var refreshToken = securityService.GenerateRefreshToken(dbResult.User);
+        var accessToken = tokenService.GenerateAccessToken(dbResult.User);
+        var refreshToken = tokenService.GenerateRefreshToken(dbResult.User);
 
         dbResult.User.RefreshTokens.Remove(dbResult.RefreshToken);
         dbResult.User.RefreshTokens.Add(

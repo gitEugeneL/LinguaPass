@@ -1,4 +1,6 @@
 using IdentityApi.Data;
+using IdentityApi.IntegrationTests.FakeServices;
+using IdentityApi.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -35,6 +37,9 @@ public class CustomWebAppApplicationFactory : WebApplicationFactory<Program>
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             db.Database.EnsureCreated();
             SeedTestData(db);
+
+            // Add fake confirmation service (generate confirm code)
+            services.AddScoped<IConfirmationService, FakeConfirmationService>();
         });
     }
 

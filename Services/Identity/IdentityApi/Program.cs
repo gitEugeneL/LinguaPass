@@ -10,8 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddScoped<IPasswordService, PasswordService>()
-    .AddScoped<ISecurityService, SecurityService>()
-    .AddScoped<IConfirmationService, ConfirmationService>();
+    .AddScoped<ITokenService, TokenService>()
+    .AddScoped<IConfirmationService, ConfirmationService>()
+    .AddScoped<ILockoutService, LockoutService>();
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>

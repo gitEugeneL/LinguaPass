@@ -13,8 +13,8 @@ public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
     IPasswordService passwordService,
-    ISecurityService securityService,
-    IConfirmationService confirmationService
+    ITokenService tokenService,
+    ILockoutService lockoutService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public const string InvalidLoginData = "login or password is incorrect or account is locked";
@@ -31,10 +31,10 @@ public class Handler(
             .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
 
-        if (user is null || confirmationService.IsLoginLocked(user))
+        if (user is null || lockoutService.IsLoginLocked(user))
             return Result<Output>.Failure(new Error(InvalidLoginData));
 
-        if (confirmationService.IsLoginAttemptLimitExceeded(user))
+        if (lockoutService.IsLoginAttemptLimitExceeded(user))
         {
             await dbContext.SaveChangesAsync(ct);
             return Result<Output>.Failure(new Error(InvalidLoginData));
@@ -47,11 +47,11 @@ public class Handler(
             return Result<Output>.Failure(new Error(InvalidLoginData));
         }
 
-        confirmationService.ResetLoginLockout(user);
-        securityService.UpdateRefreshToken(user);
+        lockoutService.ResetLoginLockout(user);
+        tokenService.UpdateRefreshToken(user);
 
-        var accessToken = securityService.GenerateAccessToken(user);
-        var refreshToken = securityService.GenerateRefreshToken(user);
+        var accessToken = tokenService.GenerateAccessToken(user);
+        var refreshToken = tokenService.GenerateRefreshToken(user);
 
         await dbContext
             .RefreshTokens
