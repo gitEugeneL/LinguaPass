@@ -59,7 +59,6 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         string newPassword)
     {
         // Arrange
-        // Arrange
         var codeLength = int.Parse(_configuration["Authentication:Code.Length"]!);
         // registration
         await TestExtensions.RegistrationAsync(_client, email, password, password);
