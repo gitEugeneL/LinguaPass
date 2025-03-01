@@ -4,7 +4,7 @@ using IdentityApi.Services.Interfaces;
 
 namespace IdentityApi.Services;
 
-internal sealed class PasswordService : IPasswordService
+public sealed class PasswordService : IPasswordService
 {
     public void CreatePasswordHash(string password, out byte[] hash, out byte[] salt)
     {
