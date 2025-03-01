@@ -15,13 +15,20 @@
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=NamingFilter/@EntryIndexedValue">On</s:String>
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/FiltersState/=SpellingFilter/@EntryIndexedValue">On</s:String>
 	<s:Boolean x:Key="/Default/Environment/InlayHints/GeneralInlayHintsOptions/EnableInlayHints/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=50d76a3c_002D4d1b_002D467b_002D8ee2_002D17d9bd3ac811/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Logout_WithValidUserAndValidRefreshToken_ReturnsLogoutData" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=50d76a3c_002D4d1b_002D467b_002D8ee2_002D17d9bd3ac811/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Logout_WithValidUserAndValidRefreshToken_ReturnsLogoutData" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Project Location="/data/University/LinguaPass" Presentation="&amp;lt;Services&amp;gt;\&amp;lt;Identity&amp;gt;\&amp;lt;Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c68c644f_002D81fc_002D4bbd_002Dba36_002D29dd5c937b26/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ResetPasswordTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=58c56b00_002Df81e_002D48fd_002Da74f_002Dc8e84271fcf4/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="3" Name="Continuous Testing" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Solution /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c68c644f_002D81fc_002D4bbd_002Dba36_002D29dd5c937b26/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ResetPasswordTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::8D09408A-8BA2-4530-B6FB-4BF4A9B3165F::net9.0::IdentityApi.IntegrationTests.Features.ResetPasswordTests&lt;/TestId&gt;
     &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Features.LoginCommandTests.ValidLoginCommand_PassesValidation&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Services.ConfirmationServiceTests.IsCodeValid_ShouldReturnTrue_WhenCodeIsValidAndNotExpired&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Services.ConfirmationServiceTests.IsCodeValid_WithInvalidCode_ReturnsFalse&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Services.ConfirmationServiceTests.IsCodeValid_WithCorrectAndExpiredCode_ReturnsFalse&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Services.ConfirmationServiceTests.IsCodeValid_WithNullCode_ReturnsFalse&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	

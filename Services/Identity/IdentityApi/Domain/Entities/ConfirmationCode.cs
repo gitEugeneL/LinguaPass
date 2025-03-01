@@ -7,6 +7,6 @@ public sealed class ConfirmationCode
     public required DateTime Expires { get; set; }
 
     // Relations
-    public required User User { get; init; }
+    public User User { get; init; }
     public Guid UserId { get; init; }
 }
