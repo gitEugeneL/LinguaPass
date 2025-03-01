@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityApi.Services;
 
-internal class TokenService(IConfiguration configuration) : ITokenService
+public class TokenService(IConfiguration configuration) : ITokenService
 {
     public (string token, DateTime expires) GenerateAccessToken(User user)
     {
@@ -50,7 +50,7 @@ internal class TokenService(IConfiguration configuration) : ITokenService
         return (token, expires);
     }
 
-    public bool IsRefreshTokenExpired(RefreshToken refreshToken)
+    public bool IsRefreshTokenActive(RefreshToken refreshToken)
     {
         return refreshToken.Expires >= DateTime.UtcNow;
     }

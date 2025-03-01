@@ -1,6 +1,4 @@
 using FluentAssertions;
-using IdentityApi.Domain.Entities;
-using IdentityApi.Helpers;
 using IdentityApi.Services;
 using Microsoft.Extensions.Configuration;
 
@@ -10,25 +8,9 @@ public class ConfirmationServiceTests
 {
     private const int CodeLength = 6;
     private const int CodeLifeTimeMinutes = 5;
-
     private const string ValidCode = "111111";
 
-    private static readonly User TestUser = new()
-    {
-        Email = "user@user.com",
-        Age = 20,
-        PwdHash = [],
-        PwdSalt = [],
-        Role = AppConstants.Customer,
-        ConfirmationCode = new ConfirmationCode
-        {
-            Code = ValidCode,
-            Expires = DateTime.UtcNow.AddMinutes(CodeLength)
-        }
-    };
-
     private readonly IConfiguration _configuration;
-
 
     public ConfirmationServiceTests()
     {
@@ -75,9 +57,10 @@ public class ConfirmationServiceTests
     {
         // Arrange
         var service = new ConfirmationService(_configuration);
+        var user = TestExtensions.GetFakeUser(ValidCode, DateTime.UtcNow.AddMinutes(CodeLifeTimeMinutes));
 
         // Act
-        var result = service.IsCodeValid(TestUser, ValidCode);
+        var result = service.IsCodeValid(user, ValidCode);
 
         // Assert
         result.Should().BeTrue();
@@ -87,13 +70,14 @@ public class ConfirmationServiceTests
     [InlineData("000012")]
     [InlineData("124")]
     [InlineData("657657")]
-    public void IsCodeValid_WithInvalidCode_ReturnsFalse(string code)
+    public void IsCodeValid_WithInvalidCode_ReturnsFalse(string invalidCode)
     {
         // Arrange
         var service = new ConfirmationService(_configuration);
+        var user = TestExtensions.GetFakeUser(ValidCode, DateTime.UtcNow.AddMinutes(CodeLifeTimeMinutes));
 
         // Act
-        var result = service.IsCodeValid(TestUser, code);
+        var result = service.IsCodeValid(user, invalidCode);
 
         // Assert
         result.Should().BeFalse();
@@ -105,10 +89,10 @@ public class ConfirmationServiceTests
         // Arrange
         var service = new ConfirmationService(_configuration);
 
-        TestUser.ConfirmationCode!.Expires = DateTime.MinValue;
+        var user = TestExtensions.GetFakeUser(ValidCode, DateTime.MinValue);
 
         // Act
-        var result = service.IsCodeValid(TestUser, ValidCode);
+        var result = service.IsCodeValid(user, ValidCode);
 
         // Assert
         result.Should().BeFalse();
@@ -120,10 +104,11 @@ public class ConfirmationServiceTests
         // Arrange
         var service = new ConfirmationService(_configuration);
 
-        TestUser.ConfirmationCode = null;
+        var user = TestExtensions.GetFakeUser(ValidCode, DateTime.UtcNow.AddMinutes(CodeLifeTimeMinutes));
+        user.ConfirmationCode = null;
 
         // Act
-        var result = service.IsCodeValid(TestUser, ValidCode);
+        var result = service.IsCodeValid(user, ValidCode);
 
         // Assert
         result.Should().BeFalse();

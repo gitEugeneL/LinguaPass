@@ -10,5 +10,5 @@ public interface ITokenService
 
     void UpdateRefreshToken(User user);
 
-    bool IsRefreshTokenExpired(RefreshToken refreshToken);
+    bool IsRefreshTokenActive(RefreshToken refreshToken);
 }

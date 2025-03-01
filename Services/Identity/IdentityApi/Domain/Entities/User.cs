@@ -25,7 +25,7 @@ public sealed class User
 
     /*** Relations ***/
 
-    public List<RefreshToken> RefreshTokens { get; init; } = [];
+    public List<RefreshToken> RefreshTokens { get; set; } = [];
     public required Role Role { get; init; }
     public Guid RoleId { get; init; }
     public ConfirmationCode? ConfirmationCode { get; set; }

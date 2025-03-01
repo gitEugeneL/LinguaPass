@@ -38,7 +38,7 @@ public class Handler(
         if (dbResult?.User is null)
             return Result<Output>.Failure(new Error(InvalidUser));
 
-        if (dbResult.RefreshToken is null || !tokenService.IsRefreshTokenExpired(dbResult.RefreshToken))
+        if (dbResult.RefreshToken is null || !tokenService.IsRefreshTokenActive(dbResult.RefreshToken))
             return Result<Output>.Failure(new Error(InvalidToken));
 
         var accessToken = tokenService.GenerateAccessToken(dbResult.User);
