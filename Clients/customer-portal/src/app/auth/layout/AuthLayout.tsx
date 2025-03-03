@@ -7,7 +7,10 @@ export default function AuthLayout() {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.presentationWrapper}>
-          LOGO
+          <div className={styles.titleBlock}>
+            <h1 className={styles.title}>LinguaPass</h1>
+            <p className={styles.description}>We Make Your Dreams Come True</p>
+          </div>
           <AuthBanner />
         </div>
         <div className={styles.separator} />
