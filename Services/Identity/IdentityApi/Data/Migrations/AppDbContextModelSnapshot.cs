@@ -92,7 +92,7 @@ namespace IdentityApi.Data.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Name = "Customer"
+                            Name = "CUSTOMER"
                         });
                 });
 
@@ -101,9 +101,6 @@ namespace IdentityApi.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
 
                     b.Property<int>("ConfirmFailedCount")
                         .HasColumnType("integer");

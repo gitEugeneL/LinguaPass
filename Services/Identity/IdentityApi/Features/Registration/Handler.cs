@@ -32,7 +32,6 @@ public class Handler(
         var user = new User
         {
             Email = command.Email.ToUpper(),
-            Age = command.Age,
             Role = customerRole,
             PwdHash = passwordHash,
             PwdSalt = passwordSalt

@@ -27,10 +27,5 @@ public sealed class Validator : AbstractValidator<Command>
             .NotEmpty()
             .Equal(command => command.Password)
             .WithMessage("Passwords do not match");
-
-        RuleFor(command => command.Age)
-            .NotEmpty()
-            .InclusiveBetween(18, 120)
-            .WithMessage("Age must be between 18 and 120");
     }
 }

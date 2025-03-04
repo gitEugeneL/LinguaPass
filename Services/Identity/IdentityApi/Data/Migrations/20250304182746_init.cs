@@ -31,7 +31,6 @@ namespace IdentityApi.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: false),
-                    Age = table.Column<int>(type: "integer", nullable: false),
                     PwdHash = table.Column<byte[]>(type: "bytea", nullable: false),
                     PwdSalt = table.Column<byte[]>(type: "bytea", nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
@@ -104,7 +103,7 @@ namespace IdentityApi.Data.Migrations
                 values: new object[,]
                 {
                     { new Guid("00000000-0000-0000-0000-000000000001"), "ADMIN" },
-                    { new Guid("00000000-0000-0000-0000-000000000002"), "Customer" }
+                    { new Guid("00000000-0000-0000-0000-000000000002"), "CUSTOMER" }
                 });
 
             migrationBuilder.CreateIndex(

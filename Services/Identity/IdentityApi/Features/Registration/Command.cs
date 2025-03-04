@@ -6,6 +6,5 @@ namespace IdentityApi.Features.Registration;
 public record Command(
     string Email,
     string Password,
-    string ConfirmPassword,
-    int Age
+    string ConfirmPassword
 ) : IRequest<Result<Output>>;

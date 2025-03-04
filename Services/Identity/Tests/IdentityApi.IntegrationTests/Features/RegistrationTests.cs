@@ -17,7 +17,7 @@ public class RegistrationTests(CustomWebAppApplicationFactory factory) : IClassF
         (string email, string password, string confirmPassword, int age)
     {
         // Arrange
-        var request = new RegistrationRequest(email, password, confirmPassword, age);
+        var request = new RegistrationRequest(email, password, confirmPassword);
 
         // Act
         var response = await _client.PostAsJsonAsync("registration", request);
@@ -33,7 +33,7 @@ public class RegistrationTests(CustomWebAppApplicationFactory factory) : IClassF
     public async Task Registration_WithExistingUser_ReturnsErrorMessage()
     {
         // Arrange
-        var request = new RegistrationRequest("test@email.com", "strongPwd!1", "strongPwd!1", 30);
+        var request = new RegistrationRequest("test@email.com", "strongPwd!1", "strongPwd!1");
 
         // Act
         var response = new HttpResponseMessage();

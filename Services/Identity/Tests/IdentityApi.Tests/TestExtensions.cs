@@ -10,7 +10,6 @@ public static class TestExtensions
         return new User
         {
             Email = "user@user.com",
-            Age = 20,
             PwdHash = [],
             PwdSalt = [],
             Role = AppConstants.Customer,

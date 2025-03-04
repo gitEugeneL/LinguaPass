@@ -14,8 +14,7 @@ public class Endpoint : ICarterModule
                 var command = new Command(
                     request.Email,
                     request.Password,
-                    request.ConfirmPassword,
-                    request.Age
+                    request.ConfirmPassword
                 );
                 var result = await sender.Send(command, ct);
                 return result.Map<IResult>(

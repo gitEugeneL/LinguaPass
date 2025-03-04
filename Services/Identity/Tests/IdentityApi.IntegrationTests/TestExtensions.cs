@@ -20,7 +20,7 @@ public static class TestExtensions
         string confirmPassword,
         int age = 18)
     {
-        var request = new RegistrationRequest(email, password, confirmPassword, age);
+        var request = new RegistrationRequest(email, password, confirmPassword);
         var response = await client.PostAsJsonAsync("registration", request);
         return await DeserializeResponse<RegistrationResponse>(response);
     }

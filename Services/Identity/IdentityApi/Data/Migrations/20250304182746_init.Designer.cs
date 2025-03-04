@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IdentityApi.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250222150715_init")]
+    [Migration("20250304182746_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace IdentityApi.Data.Migrations
                         new
                         {
                             Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Name = "Customer"
+                            Name = "CUSTOMER"
                         });
                 });
 
@@ -104,9 +104,6 @@ namespace IdentityApi.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
 
                     b.Property<int>("ConfirmFailedCount")
                         .HasColumnType("integer");
