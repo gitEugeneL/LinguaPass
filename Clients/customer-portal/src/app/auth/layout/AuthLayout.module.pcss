@@ -31,12 +31,6 @@
   margin: 0 30px;
 }
 
-.separator {
-  width: 1px;
-  height: 85%;
-  background-color: var(--grey-3-color);
-}
-
 @media (--breakpoint-tablet) {
   .presentationWrapper {
     flex: 1;
@@ -66,6 +60,11 @@
     font-weight: var(--font-weight-regular);
   }
 
+  .separator {
+    width: 1px;
+    height: 85%;
+    background-color: var(--grey-3-color);
+  }
 }
 
 @media (--breakpoint-laptop) {
@@ -73,13 +72,13 @@
     width: 100%;
     margin: 0 50px;
   }
-
+  
   .wrapper {
     width: 800px;
     height: 710px;
     background-color: var(--white-color);
     border-radius: var(--normal-radius);
-    box-shadow: $shadow-2;
+    box-shadow: var(--shadow-1);
   }
 }
 
