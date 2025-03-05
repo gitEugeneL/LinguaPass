@@ -7,6 +7,7 @@ interface RegistrationState {
   userId: string | null;
   error: string | null;
   isLoading: boolean;
+  resetError: () => void;
   registration: (data: RegistrationRequest) => void;
 }
 
@@ -15,6 +16,8 @@ export const useRegistrationState = create<RegistrationState>((set) => ({
   isLoading: false,
   isSuccess: false,
   error: null,
+
+  resetError: () => set({ error: null }),
 
   registration: async (request: RegistrationRequest) => {
     set({ isLoading: true, error: null });

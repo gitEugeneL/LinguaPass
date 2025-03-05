@@ -19,9 +19,17 @@ export default function RegistrationForm() {
 
   const isLoading = useRegistrationState((state) => state.isLoading);
   const error = useRegistrationState((state) => state.error);
+  const resetError = useRegistrationState((state) => state.resetError);
   const registration = useRegistrationState((state) => state.registration);
 
-  // block submit button
+  // reset error (unmount component)
+  useEffect(() => {
+    return () => {
+      resetError();
+    };
+  }, [resetError]);
+
+  // block submit button (multiply clicking)
   useEffect(() => {
     if (isSubmitting && !isLoading) {
       const timer = setTimeout(() => {
@@ -31,7 +39,7 @@ export default function RegistrationForm() {
     }
   }, [isSubmitting, isLoading]);
 
-  // show error response if email already exists
+  // show error response if email already exists (email input)
   useEffect(() => {
     if (error && !isLoading) {
       setError('email', { type: 'manual', message: error });
