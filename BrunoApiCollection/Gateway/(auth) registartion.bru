@@ -1,11 +1,11 @@
 meta {
-  name: registration
+  name: (auth) registartion
   type: http
   seq: 2
 }
 
 post {
-  url: http://localhost:5297/registration
+  url: http://localhost:5224/auth/registration
   body: json
   auth: none
 }
@@ -14,7 +14,6 @@ body:json {
   {
     "email": "dev1@dev.com",
     "password": "devDev123!",
-    "confirmPassword": "devDev123!",
-    "age": "18"
+    "confirmPassword": "devDev123!"
   }
 }
