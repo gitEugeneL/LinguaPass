@@ -57,6 +57,7 @@ public class Handler(
 
         return Result<Output>.Success(
             new Output(
+                dbResult.User.Id,
                 accessToken.token,
                 refreshToken.token,
                 accessToken.expires,

@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using IdentityApi.Contracts;
 using IdentityApi.Features.Login;
+using IdentityApi.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,18 +29,28 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         // Act
         var response = await _client.PostAsJsonAsync("login", request);
         var result = await TestExtensions.DeserializeResponse<LoginOrRefreshResponse>(response);
+        var cookies = response.Headers.GetValues("Set-Cookie").ToList();
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
 
         // Assert
         result.Should().NotBeNull();
         result.IsEmailConfirmed.Should().BeFalse();
         result.AccessToken.Should().NotBeNullOrEmpty();
-        result.RefreshToken.Should().NotBeNullOrEmpty();
 
         result.AccessTokenExpires.Should()
             .BeCloseTo(DateTime.UtcNow.AddMinutes(accessTokenMinutes), TimeSpan.FromSeconds(3));
 
         result.RefreshTokenExpires.Should()
             .BeCloseTo(DateTime.UtcNow.AddDays(refreshTokenDays), TimeSpan.FromSeconds(3));
+
+        cookies.Should().Contain(c => c.Contains(CookieSetter.RefreshCookie));
+        refreshTokenCookie.Should().Contain("refreshToken=");
+        refreshTokenCookie.Should().Contain("secure");
+        refreshTokenCookie.Should().Contain("httponly");
+        refreshTokenCookie.Should().Contain("samesite=strict");
+
+        refreshTokenCookie.Should()
+            .Contain($"expires={DateTime.UtcNow.AddDays(refreshTokenDays):R}");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }

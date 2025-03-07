@@ -1,5 +1,6 @@
 using Carter;
 using IdentityApi.Contracts;
+using IdentityApi.Utils;
 using MediatR;
 
 namespace IdentityApi.Features.Logout;
@@ -9,12 +10,20 @@ public class Endpoint : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost("/logout", async (RefreshOrLogoutRequest
-            request, ISender sender, CancellationToken ct) =>
+            request, HttpContext httpContext, ISender sender, CancellationToken ct) =>
         {
-            var command = new Command(request.RefreshToken, request.UserId);
+            // Read refresh token (secure cookie) 
+            var userRefreshToken = CookieSetter.ReadCookie(httpContext);
+            var command = new Command(userRefreshToken, request.UserId);
             var result = await sender.Send(command, ct);
+
             return result.Map<IResult>(
-                r => Results.NoContent(),
+                r =>
+                {
+                    // remove refresh token (secure cookie)
+                    CookieSetter.RemoveCookie(httpContext);
+                    return Results.NoContent();
+                },
                 e => Results.BadRequest(e.Message));
         });
     }

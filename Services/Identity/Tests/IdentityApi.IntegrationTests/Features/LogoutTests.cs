@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using FluentAssertions;
 using IdentityApi.Contracts;
 using IdentityApi.Features.Logout;
+using IdentityApi.Utils;
 
 namespace IdentityApi.IntegrationTests.Features;
 
@@ -18,12 +19,18 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
     {
         // Arrange
         var registrationResult = await TestExtensions.RegistrationAsync(_client, email, password, password);
-        var loginResult = await TestExtensions.LoginAsync(_client, email, password);
-
-        var request = new RefreshOrLogoutRequest(loginResult.RefreshToken, registrationResult.UserId);
+        var loginResponse = await _client.PostAsJsonAsync("login", new LoginRequest(email, password));
+        // read cookie
+        var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        // set cookie
+        _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         // Act
-        var response = await _client.PostAsJsonAsync("logout", request);
+        var response = await _client.PostAsJsonAsync("logout", new RefreshOrLogoutRequest(registrationResult.UserId));
+        var logoutCookies = response.Headers.GetValues("Set-Cookie").ToList();
+        logoutCookies.Should().Contain(c =>
+            c.Contains($"{CookieSetter.RefreshCookie}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"));
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -38,16 +45,13 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
         var registrationResult = await TestExtensions.RegistrationAsync(_client, email, password, password);
 
         var invalidRefreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(256));
-        var request = new RefreshOrLogoutRequest(invalidRefreshToken, registrationResult.UserId);
+
+        _client.DefaultRequestHeaders.Add("Cookie", invalidRefreshToken);
 
         // Act
-        var response = await _client.PostAsJsonAsync("logout", request);
-        var result = await TestExtensions.DeserializeResponse<string>(response);
+        var response = await _client.PostAsJsonAsync("logout", new RefreshOrLogoutRequest(registrationResult.UserId));
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(Handler.InvalidData);
-
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
@@ -58,19 +62,20 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
     {
         // Arrange
         var registrationResult = await TestExtensions.RegistrationAsync(_client, email, password, password);
-        var loginResult = await TestExtensions.LoginAsync(_client, email, password);
+        var loginResponse = await _client.PostAsJsonAsync("login", new LoginRequest(email, password));
+        // read cookie
+        var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        // set cookie
+        _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
-        var request = new RefreshOrLogoutRequest(loginResult.RefreshToken, registrationResult.UserId);
-        await _client.PostAsJsonAsync("refresh", request);
+        await _client.PostAsJsonAsync("refresh", new RefreshOrLogoutRequest(registrationResult.UserId));
+        _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         // Act
-        var response = await _client.PostAsJsonAsync("logout", request);
-        var result = await TestExtensions.DeserializeResponse<string>(response);
+        var response = await _client.PostAsJsonAsync("logout", new RefreshOrLogoutRequest(registrationResult.UserId));
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(Handler.InvalidData);
-
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
@@ -81,10 +86,15 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
     {
         // Arrange
         await TestExtensions.RegistrationAsync(_client, email, password, password);
-        var loginResult = await TestExtensions.LoginAsync(_client, email, password);
+        var loginResponse = await _client.PostAsJsonAsync("login", new LoginRequest(email, password));
+        // read cookie
+        var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        // set cookie
+        _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         var invalidUserId = Guid.NewGuid();
-        var request = new RefreshOrLogoutRequest(loginResult.RefreshToken, invalidUserId);
+        var request = new RefreshOrLogoutRequest(invalidUserId);
 
         // Act
         var response = await _client.PostAsJsonAsync("logout", request);

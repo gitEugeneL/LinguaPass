@@ -68,6 +68,7 @@ public class Handler(
 
         return Result<Output>.Success(
             new Output(
+                user.Id,
                 accessToken.token,
                 refreshToken.token,
                 accessToken.expires,
