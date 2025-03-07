@@ -1,26 +1,31 @@
 import { create } from 'zustand';
-import { RegistrationRequest, RegistrationResponse } from './registration.models.ts';
 import axios, { AxiosError } from 'axios';
 import { authUrls } from '../auth.urls.ts';
+import { RegistrationRequest, RegistrationResponse } from './registration.models.ts';
 
-interface RegistrationState {
+interface RegistrationStore {
   userId: string | null;
   error: string | null;
   isLoading: boolean;
   resetError: () => void;
-  registration: (data: RegistrationRequest) => void;
+  registration: (email: string, password: string, confirmPassword: string) => void;
 }
 
-export const useRegistrationState = create<RegistrationState>((set) => ({
+export const useRegistrationStore = create<RegistrationStore>((set) => ({
   userId: null,
   isLoading: false,
-  isSuccess: false,
   error: null,
 
   resetError: () => set({ error: null }),
 
-  registration: async (request: RegistrationRequest) => {
+  registration: async (email, password, confirmPassword) => {
     set({ isLoading: true, error: null });
+
+    const request: RegistrationRequest = {
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    };
 
     try {
       const { data } = await axios.post<RegistrationResponse>(authUrls.registration, request);

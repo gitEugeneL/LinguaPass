@@ -1,4 +1,3 @@
-import { useRegistrationState } from '../../../store/auth/registration/registration.state.ts';
 import { useForm } from 'react-hook-form';
 import {
   RegistrationFormSchema,
@@ -10,17 +9,14 @@ import PasswordInput from '../../../components/PasswordInput/PasswordInput.tsx';
 import Button from '../../../UI/Button/Button.tsx';
 import styles from './RegistrationForm.module.pcss';
 import Notification from '../../../UI/Notification/Notification.tsx';
-import { RegistrationRequest } from '../../../store/auth/registration/registration.models.ts';
-import { useEffect, useState } from 'react';
-import { TIMER } from '../../../helpers/contans.tsx';
+import { useEffect } from 'react';
+import { useRegistrationStore } from '../../../store/auth/registration/registration.store.ts';
 
 export default function RegistrationForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const isLoading = useRegistrationState((state) => state.isLoading);
-  const error = useRegistrationState((state) => state.error);
-  const resetError = useRegistrationState((state) => state.resetError);
-  const registration = useRegistrationState((state) => state.registration);
+  const isLoading = useRegistrationStore((state) => state.isLoading);
+  const error = useRegistrationStore((state) => state.error);
+  const resetError = useRegistrationStore((state) => state.resetError);
+  const registration = useRegistrationStore((state) => state.registration);
 
   // reset error (unmount component)
   useEffect(() => {
@@ -29,44 +25,25 @@ export default function RegistrationForm() {
     };
   }, [resetError]);
 
-  // block submit button (multiply clicking)
-  useEffect(() => {
-    if (isSubmitting && !isLoading) {
-      const timer = setTimeout(() => {
-        setIsSubmitting(false);
-      }, TIMER);
-      return () => clearTimeout(timer);
-    }
-  }, [isSubmitting, isLoading]);
-
-  // show error response if email already exists (email input)
+  // reset email set focus and set error if email already exists (email input)
   useEffect(() => {
     if (error && !isLoading) {
+      resetField('email');
+      setFocus('email');
       setError('email', { type: 'manual', message: error });
-      const timer = setTimeout(() => {
-        setError('email', {});
-      }, TIMER);
-      return () => clearTimeout(timer);
     }
   }, [error, isLoading]);
 
   const formSubmit = async (schema: RegistrationFormSchema) => {
-    if (isSubmitting) {
-      return;
-    }
-    const request: RegistrationRequest = {
-      email: schema.email,
-      password: schema.password,
-      confirmPassword: schema.confirmPassword
-    };
-    setIsSubmitting(true);
-    registration(request);
+    registration(schema.email, schema.password, schema.confirmPassword);
   };
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    resetField,
+    setFocus,
     setError
   } = useForm<RegistrationFormSchema>({
     resolver: yupResolver(RegistrationFormValidationSchema),
@@ -81,7 +58,6 @@ export default function RegistrationForm() {
   return (
     <>
       <Notification message={error} />
-
       <form onSubmit={handleSubmit(formSubmit)}>
         <div className={styles.formWrapper}>
           <CustomInput
@@ -109,12 +85,7 @@ export default function RegistrationForm() {
           />
         </div>
 
-        <Button
-          name='Create account'
-          size='large'
-          isLoading={isLoading}
-          appearance={isSubmitting && !isLoading ? 'disabled' : 'primary'}
-        />
+        <Button name='Create account' size='large' isLoading={isLoading} />
       </form>
     </>
   );
