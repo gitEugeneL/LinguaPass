@@ -1,3 +1,3 @@
 export interface NotificationProps {
-  message: string | null;
+  message: string | undefined;
 }

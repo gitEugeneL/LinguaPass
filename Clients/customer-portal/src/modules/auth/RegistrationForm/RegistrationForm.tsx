@@ -9,28 +9,32 @@ import PasswordInput from '../../../components/PasswordInput/PasswordInput.tsx';
 import Button from '../../../UI/Button/Button.tsx';
 import styles from './RegistrationForm.module.pcss';
 import Notification from '../../../UI/Notification/Notification.tsx';
-import { useEffect } from 'react';
-import { useRegistrationStore } from '../../../store/auth/registration/registration.store.ts';
+import { useEffect, useState } from 'react';
+import { useAuthStore } from '../../../store/auth/auth.store.ts';
 
 export default function RegistrationForm() {
-  const isLoading = useRegistrationStore((state) => state.isLoading);
-  const error = useRegistrationStore((state) => state.error);
-  const resetError = useRegistrationStore((state) => state.resetError);
-  const registration = useRegistrationStore((state) => state.registration);
+  const [localError, setLocalError] = useState<string | undefined>(undefined);
 
-  // reset error (unmount component)
+  const isLoading = useAuthStore((state) => state.isLoading);
+  const error = useAuthStore((state) => state.error);
+  const resetError = useAuthStore((state) => state.resetError);
+  const registration = useAuthStore((state) => state.registration);
+
+  // local error for notifications
   useEffect(() => {
-    return () => {
-      resetError();
-    };
-  }, [resetError]);
+    if (error) {
+      setLocalError(error);
+    }
+    // reset main error
+    resetError();
+  }, [error]);
 
-  // reset email set focus and set error if email already exists (email input)
+  // inputs error config
   useEffect(() => {
     if (error && !isLoading) {
       resetField('email');
       setFocus('email');
-      setError('email', { type: 'manual', message: error });
+      setError('email', { type: 'manual', message: localError });
     }
   }, [error, isLoading]);
 
@@ -57,7 +61,7 @@ export default function RegistrationForm() {
 
   return (
     <>
-      <Notification message={error} />
+      <Notification message={localError} />
       <form onSubmit={handleSubmit(formSubmit)}>
         <div className={styles.formWrapper}>
           <CustomInput

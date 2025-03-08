@@ -1,5 +1,6 @@
 import { IDENTITY } from '../../helpers/api.tsx';
 
 export const authUrls = {
-  registration: `${IDENTITY}/registration`
+  registration: `${IDENTITY}/registration`,
+  login: `${IDENTITY}/login`
 };
