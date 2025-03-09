@@ -20,3 +20,7 @@ export interface LoginOrRefreshResponse {
   refreshTokenExpires: Date;
   isEmailConfirmed: boolean;
 }
+
+export interface RefreshOrLogoutRequest {
+  userId: string;
+}

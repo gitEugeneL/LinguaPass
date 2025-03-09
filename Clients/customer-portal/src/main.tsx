@@ -5,8 +5,14 @@ import { RouterProvider } from 'react-router/dom';
 import LoginPage from './app/auth/pages/LoginPage/LoginPage.tsx';
 import './assets/styles/index.pcss';
 import RegistrationPage from './app/auth/pages/RegistrationPage/RegistrationPage.tsx';
+import AuthProvider from './app/AuthProvider.tsx';
 
 const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AuthProvider>hello world</AuthProvider>
+  },
+
   {
     path: '/auth',
     element: <AuthLayout />,
@@ -27,6 +33,4 @@ const router = createBrowserRouter([
   }
 ]);
 
-createRoot(document.getElementById('root')!).render(
-  <RouterProvider router={router} />
-);
+createRoot(document.getElementById('root')!).render(<RouterProvider router={router} />);

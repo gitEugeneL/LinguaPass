@@ -7,5 +7,5 @@ export interface LoginFormSchema {
 
 export const LoginFormValidationSchema = yup.object({
   email: yup.string().required('Email is required').email('Invalid email'),
-  password: yup.string().required('Password is required').max(20, 'Too long')
+  password: yup.string().required('Password is required').min(8, 'Too short').max(20, 'Too long')
 });

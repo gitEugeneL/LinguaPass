@@ -1,7 +1,6 @@
 import { NotificationProps } from './notification.pros.ts';
 import { useEffect, useState } from 'react';
 import styles from './Notification.module.pcss';
-import { TIMER } from '../../helpers/contans.tsx';
 
 export default function Notification({ message }: NotificationProps) {
   const [isShown, setIsShown] = useState<boolean>(false);
@@ -18,7 +17,7 @@ export default function Notification({ message }: NotificationProps) {
         setIsShown(false);
         setIsFading(false);
       });
-    }, TIMER);
+    }, 3000);
     return () => {
       clearTimeout(timerId);
     };
