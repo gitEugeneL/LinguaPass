@@ -1,8 +1,15 @@
-import { Outlet } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 import { AuthBanner } from './icons/AuthBanner.tsx';
 import styles from './AuthLayout.module.pcss';
+import { useAuthStore } from '../../../store/auth/auth.store.ts';
 
 export default function AuthLayout() {
+  const refreshTokenExpires = useAuthStore((state) => state.refreshTokenExpires);
+
+  if (refreshTokenExpires) {
+    return <Navigate to='/' />;
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>

@@ -51,6 +51,7 @@ public class Handler(
         passwordService.CreatePasswordHash(command.Password, out var passwordHash, out var passwordSalt);
         user.PwdHash = passwordHash;
         user.PwdSalt = passwordSalt;
+        user.ConfirmationCode = null;
         await dbContext.SaveChangesAsync(ct);
 
         return Result<Output>.Success(new Output(user.Email.ToLower(), true));

@@ -7,25 +7,15 @@ import styles from './LoginForm.module.pcss';
 import Button from '../../../UI/Button/Button.tsx';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 import Notification from '../../../UI/Notification/Notification.tsx';
 
 export default function LoginForm() {
-  const navigate = useNavigate();
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
   const isLoading = useAuthStore((state) => state.isLoading);
   const error = useAuthStore((state) => state.error);
   const resetError = useAuthStore((state) => state.resetError);
   const login = useAuthStore((state) => state.login);
-  const refreshTokenExpires = useAuthStore((state) => state.refreshTokenExpires);
-
-  // check if the user is logged in
-  useEffect(() => {
-    if (refreshTokenExpires) {
-      navigate('/');
-    }
-  }, [refreshTokenExpires]);
 
   // local error for notifications
   useEffect(() => {

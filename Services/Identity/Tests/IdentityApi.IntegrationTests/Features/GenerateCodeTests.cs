@@ -22,7 +22,7 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
         var codeLifeTimeMinutes = int.Parse(_configuration["Authentication:Code.Lifetime.Minutes"]!);
 
         await TestExtensions.RegistrationAsync(_client, email, password, password);
-        var request = new GenerateCoreRequest(email);
+        var request = new GenerateCodeRequest(email);
 
         // Act
         var response = await _client.PostAsJsonAsync("generate-code", request);
@@ -43,7 +43,7 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
     public async Task GenerateCode_WithInvalidUser_ReturnsErrorMessage(string email)
     {
         // Arrange
-        var request = new GenerateCoreRequest(email);
+        var request = new GenerateCodeRequest(email);
 
         // Act
         var response = await _client.PostAsJsonAsync("generate-code", request);
@@ -65,7 +65,7 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
         var codeMaxAttempts = int.Parse(_configuration["Authentication:Code.MaxAttempts"]!);
 
         await TestExtensions.RegistrationAsync(_client, email, password, password);
-        var request = new GenerateCoreRequest(email);
+        var request = new GenerateCodeRequest(email);
 
         // Act
         var response = new HttpResponseMessage();

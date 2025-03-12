@@ -6,6 +6,8 @@ import LoginPage from './app/auth/pages/LoginPage/LoginPage.tsx';
 import './assets/styles/index.pcss';
 import RegistrationPage from './app/auth/pages/RegistrationPage/RegistrationPage.tsx';
 import AuthProvider from './app/AuthProvider.tsx';
+import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswordPage.tsx';
+import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
       {
         path: 'registration',
         element: <RegistrationPage />
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPasswordPage />
       }
     ]
   }

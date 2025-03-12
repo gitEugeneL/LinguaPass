@@ -12,9 +12,8 @@ export default function LoginPage() {
         <Title title='Sign In' description='Start your journey to education!' />
       </div>
       <LoginForm />
-
       <div className={styles.navContainer}>
-        <CustomLink label='Forgot Password?' linkName='Reset' linkUrl='#' />
+        <CustomLink label='Forgot Password?' linkName='Reset' linkUrl='/auth/forgot-password' />
         <NavLink className={styles.navlink} to='/auth/registration'>
           <Button name='Create account' size='large' appearance='secondary' />
         </NavLink>

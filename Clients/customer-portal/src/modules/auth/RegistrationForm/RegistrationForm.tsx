@@ -11,24 +11,14 @@ import styles from './RegistrationForm.module.pcss';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import Notification from '../../../UI/Notification/Notification.tsx';
-import { useNavigate } from 'react-router';
 
 export default function RegistrationForm() {
-  const navigate = useNavigate();
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
   const isLoading = useAuthStore((state) => state.isLoading);
   const error = useAuthStore((state) => state.error);
   const resetError = useAuthStore((state) => state.resetError);
   const registration = useAuthStore((state) => state.registration);
-  const refreshTokenExpires = useAuthStore((state) => state.refreshTokenExpires);
-
-  // check if the user is logged in
-  useEffect(() => {
-    if (refreshTokenExpires) {
-      navigate('/');
-    }
-  }, [refreshTokenExpires]);
 
   // local error for notifications
   useEffect(() => {

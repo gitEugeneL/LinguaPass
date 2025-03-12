@@ -1,11 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import {
+  GenerateCodeRequest,
+  GenerateCodeResponse,
   LoginOrRefreshResponse,
   LoginRequest,
   RefreshOrLogoutRequest,
   RegistrationRequest,
-  RegistrationResponse
+  RegistrationResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse
 } from './auth.models.ts';
 import axios, { AxiosError } from 'axios';
 import { authUrls } from './auth.urls.ts';
@@ -16,16 +20,22 @@ interface AuthState {
   accessTokenExpires: Date | null;
   refreshTokenExpires: Date | null;
   isEmailConfirmed: boolean;
+  codeExpires: Date | null;
+  email: string | null;
   error: string | null;
   isLoading: boolean;
   refreshAttempts: number;
+  isPasswordChanged: boolean | null;
 
   registration: (email: string, password: string, confirmPassword: string) => void;
   login: (email: string, password: string) => void;
+  generateCode: (email: string) => void;
+  resetPassword: (code: string, password: string, confirmPassword: string) => void;
   refresh: () => void;
   logout: () => void;
 
   resetError: () => void;
+  resetCodeData: () => void;
   resetState: () => void;
 }
 
@@ -36,7 +46,10 @@ export const useAuthStore = create(
       accessToken: null,
       accessTokenExpires: null,
       refreshTokenExpires: null,
+      codeExpires: null,
+      email: null,
       isEmailConfirmed: false,
+      isPasswordChanged: false,
       error: null,
       isLoading: false,
       refreshAttempts: 0,
@@ -77,6 +90,42 @@ export const useAuthStore = create(
           }
         } finally {
           set({ isLoading: false });
+        }
+      },
+
+      generateCode: async (email: string) => {
+        set({ isLoading: true, error: null, codeExpires: null, email: null });
+        const request: GenerateCodeRequest = { email };
+        try {
+          const { data } = await axios.post<GenerateCodeResponse>(authUrls.generateCode, request);
+          set({ codeExpires: data.codeExpires, email: email });
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data });
+          }
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      resetPassword: async (code: string, password: string, confirmPassword: string) => {
+        const email = get().email;
+        if (email) {
+          set({ isLoading: true, error: null, isPasswordChanged: false });
+          const request: ResetPasswordRequest = { email, code, password, confirmPassword };
+          try {
+            const { data } = await axios.post<ResetPasswordResponse>(
+              authUrls.resetPassword,
+              request
+            );
+            set({ userId: data.userId, isPasswordChanged: true, codeExpires: null });
+          } catch (error) {
+            if (error instanceof AxiosError) {
+              set({ error: error.response?.data });
+            }
+          } finally {
+            set({ isLoading: false });
+          }
         }
       },
 
@@ -123,18 +172,26 @@ export const useAuthStore = create(
           accessToken: null,
           refreshTokenExpires: null,
           isEmailConfirmed: false,
+          isPasswordChanged: false,
+          codeExpires: null,
+          email: null,
           error: null,
           isLoading: false,
           refreshAttempts: 0
         });
       },
 
-      resetError: () => set({ error: null })
+      resetError: () => set({ error: null }),
+
+      resetCodeData: () =>
+        set({ email: null, codeExpires: null, error: 'Code is invalid or expired :(' })
     }),
     {
       name: 'AuthStore',
       partialize: (state: AuthState) => ({
         userId: state.userId,
+        codeExpires: state.codeExpires,
+        email: state.email,
         refreshTokenExpires: state.refreshTokenExpires,
         isEmailConfirmed: state.isEmailConfirmed
       })

@@ -24,7 +24,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         //  registration
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         // generate confirm code
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
         // get valid fake code
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
@@ -52,7 +52,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         //  registration
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         // generate confirm code
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
         // get invalid fake code
         var invalidCode = new string(Enumerable.Repeat('0', codeLength).ToArray());
 
@@ -87,7 +87,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         var response = new HttpResponseMessage();
         for (var i = 0; i < 2; i++)
         {
-            await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+            await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
             response = await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
         }
 
@@ -162,7 +162,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         // generate confirm code
         for (var i = 0; i <= codeMaxAttempts; i++)
-            await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+            await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
 
         // get valid fake code
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());

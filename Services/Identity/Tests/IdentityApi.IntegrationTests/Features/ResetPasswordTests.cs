@@ -30,11 +30,11 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         // generate code for confirm email
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
         // confirm email
         await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
         // generate code for reset password
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 
@@ -65,7 +65,7 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         // get valid fake code
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
         // generate code for reset password
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 
@@ -97,11 +97,11 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         // generate code for confirm email
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
         // confirm email
         await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
         // generate code for reset password
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, invalidCode, newPassword, newPassword);
 
@@ -155,12 +155,12 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         // generate code for confirm email
-        await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
         // confirm email
         await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
         // generate code for reset password
         for (var i = 0; i <= codeMaxAttempts; i++)
-            await _client.PostAsJsonAsync("generate-code", new GenerateCoreRequest(email));
+            await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 

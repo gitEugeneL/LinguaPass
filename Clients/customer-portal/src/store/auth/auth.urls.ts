@@ -5,5 +5,9 @@ export const authUrls = {
 
   login: `${IDENTITY}/login`,
 
-  refresh: `${IDENTITY}/refresh`
+  refresh: `${IDENTITY}/refresh`,
+
+  generateCode: `${IDENTITY}/generate-code`,
+
+  resetPassword: `${IDENTITY}/reset-password`
 };

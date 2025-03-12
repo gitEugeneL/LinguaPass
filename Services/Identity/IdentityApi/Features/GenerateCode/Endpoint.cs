@@ -9,7 +9,7 @@ public class Endpoint : ICarterModule
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost("/generate-code",
-            async (GenerateCoreRequest request, ISender sender, CancellationToken ct) =>
+            async (GenerateCodeRequest request, ISender sender, CancellationToken ct) =>
             {
                 var command = new Command(request.Email);
 

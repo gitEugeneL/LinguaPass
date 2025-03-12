@@ -24,3 +24,23 @@ export interface LoginOrRefreshResponse {
 export interface RefreshOrLogoutRequest {
   userId: string;
 }
+
+export interface GenerateCodeRequest {
+  email: string;
+}
+
+export interface GenerateCodeResponse {
+  email: string;
+  codeExpires: Date;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  code: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface ResetPasswordResponse {
+  userId: string;
+}

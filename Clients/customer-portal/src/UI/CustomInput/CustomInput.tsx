@@ -6,7 +6,7 @@ import { Controller } from 'react-hook-form';
 export default function CustomInput({ label, name, control, errors, ...props }: CustomInputProps) {
   return (
     <div>
-      <div className={styles.label}>{label}</div>
+      {label && <div className={styles.label}>{label}</div>}
 
       <Controller
         name={name}
