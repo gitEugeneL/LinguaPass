@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <IsPackable>false</IsPackable>
+        <RootNamespace>IdentityApi.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\IdentityApi\IdentityApi.csproj"/>
+        <ProjectReference Include="..\..\Identity\Identity.csproj" />
     </ItemGroup>
 
 </Project>

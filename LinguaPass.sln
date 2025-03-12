@@ -18,13 +18,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{0B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{25D0C42C-5878-4CCC-8913-80A3721167DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityApi", "Services\Identity\IdentityApi\IdentityApi.csproj", "{6DE16E2A-0FB0-4E38-A5D5-C051A4AB6692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Services\Identity\Identity\Identity.csproj", "{6DE16E2A-0FB0-4E38-A5D5-C051A4AB6692}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityApi.IntegrationTests", "Services\Identity\Tests\IdentityApi.IntegrationTests\IdentityApi.IntegrationTests.csproj", "{8D09408A-8BA2-4530-B6FB-4BF4A9B3165F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.IntegrationTests", "Services\Identity\Tests\Identity.IntegrationTests\Identity.IntegrationTests.csproj", "{8D09408A-8BA2-4530-B6FB-4BF4A9B3165F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityApi.Tests", "Services\Identity\Tests\IdentityApi.Tests\IdentityApi.Tests.csproj", "{26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Tests", "Services\Identity\Tests\Identity.Tests\Identity.Tests.csproj", "{26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayApi", "Gateway\GatewayApi\GatewayApi.csproj", "{EB4A33CA-F6DF-4EB1-97AA-EECCD7901A65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway\Gateway.csproj", "{EB4A33CA-F6DF-4EB1-97AA-EECCD7901A65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Course", "Course", "{7B2384C9-9977-4568-B31B-05F29244B59E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Course", "Services\Course\Course\Course.csproj", "{14DE2563-8F2B-40F4-83FC-284B2135CF90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,8 @@ Global
 		{8D09408A-8BA2-4530-B6FB-4BF4A9B3165F} = {25D0C42C-5878-4CCC-8913-80A3721167DD}
 		{26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF} = {25D0C42C-5878-4CCC-8913-80A3721167DD}
 		{EB4A33CA-F6DF-4EB1-97AA-EECCD7901A65} = {518DBCFA-CABE-4B06-A38B-62E662F4F610}
+		{7B2384C9-9977-4568-B31B-05F29244B59E} = {9CA7FC62-ADCC-4C38-BC93-33D9F905E07F}
+		{14DE2563-8F2B-40F4-83FC-284B2135CF90} = {7B2384C9-9977-4568-B31B-05F29244B59E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6DE16E2A-0FB0-4E38-A5D5-C051A4AB6692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -59,5 +65,9 @@ Global
 		{EB4A33CA-F6DF-4EB1-97AA-EECCD7901A65}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB4A33CA-F6DF-4EB1-97AA-EECCD7901A65}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB4A33CA-F6DF-4EB1-97AA-EECCD7901A65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14DE2563-8F2B-40F4-83FC-284B2135CF90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14DE2563-8F2B-40F4-83FC-284B2135CF90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14DE2563-8F2B-40F4-83FC-284B2135CF90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14DE2563-8F2B-40F4-83FC-284B2135CF90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -22,7 +22,7 @@ namespace IdentityApi.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.ConfirmationCode", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.ConfirmationCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace IdentityApi.Data.Migrations
                     b.ToTable("ConfirmationCodes");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace IdentityApi.Data.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.Role", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -96,7 +96,7 @@ namespace IdentityApi.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.User", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,20 +161,20 @@ namespace IdentityApi.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.ConfirmationCode", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.ConfirmationCode", b =>
                 {
-                    b.HasOne("IdentityApi.Domain.Entities.User", "User")
+                    b.HasOne("Identity.Domain.Entities.User", "User")
                         .WithOne("ConfirmationCode")
-                        .HasForeignKey("IdentityApi.Domain.Entities.ConfirmationCode", "UserId")
+                        .HasForeignKey("Identity.Domain.Entities.ConfirmationCode", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("IdentityApi.Domain.Entities.User", "User")
+                    b.HasOne("Identity.Domain.Entities.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,9 +183,9 @@ namespace IdentityApi.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.User", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
                 {
-                    b.HasOne("IdentityApi.Domain.Entities.Role", "Role")
+                    b.HasOne("Identity.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -194,12 +194,12 @@ namespace IdentityApi.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.Role", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("IdentityApi.Domain.Entities.User", b =>
+            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
                 {
                     b.Navigation("ConfirmationCode");
 
