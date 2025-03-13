@@ -8,11 +8,16 @@ import RegistrationPage from './app/auth/pages/RegistrationPage/RegistrationPage
 import AuthProvider from './app/AuthProvider.tsx';
 import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
+import BaseLayout from './app/base/layout/BaseLayout.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AuthProvider>hello world</AuthProvider>
+    element: (
+      <AuthProvider>
+        <BaseLayout />
+      </AuthProvider>
+    )
   },
 
   {

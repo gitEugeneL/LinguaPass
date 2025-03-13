@@ -1,0 +1,16 @@
+import { Outlet } from 'react-router';
+import MainFooter from '../../../components/MainFooter/MainFooter.tsx';
+import styles from './BaseLayout.module.pcss';
+
+export default function BaseLayout() {
+  return (
+    <div className={styles.container}>
+      <div className={styles.body}>
+        <Outlet />
+      </div>
+      <div className={styles.footer}>
+        <MainFooter />
+      </div>
+    </div>
+  );
+}
