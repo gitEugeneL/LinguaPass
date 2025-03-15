@@ -21,6 +21,11 @@ export default function ForgotPasswordForm() {
   const isLoading = useAuthStore((state) => state.isLoading);
   const error = useAuthStore((state) => state.error);
   const resetError = useAuthStore((state) => state.resetError);
+  const resetCodeData = useAuthStore((state) => state.resetCodeData);
+
+  useEffect(() => {
+    resetCodeData();
+  }, []);
 
   useEffect(() => {
     if (error) {

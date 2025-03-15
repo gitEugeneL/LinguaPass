@@ -27,8 +27,8 @@ public class Handler(
         var user = await dbContext
             .Users
             .Include(u => u.ConfirmationCode)
-            .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper()
-                                      && u.EmailConfirmed == true, ct);
+            .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
+        // && u.EmailConfirmed == true, ct); // TODO only for DEV!!!!!!
 
         if (user is null || lockoutService.IsConfirmLocked(user))
             return Result<Output>.Failure(new Error(InvalidUser));

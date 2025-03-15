@@ -124,7 +124,7 @@ export const useAuthStore = create(
             set({ userId: data.userId, isPasswordChanged: true, codeExpires: null });
           } catch (error) {
             if (error instanceof AxiosError) {
-              set({ error: error.response?.data });
+              set({ error: 'Code is invalid or expired :(' });
             }
           } finally {
             set({ isLoading: false });
@@ -190,8 +190,7 @@ export const useAuthStore = create(
 
       resetError: () => set({ error: null }),
 
-      resetCodeData: () =>
-        set({ email: null, codeExpires: null, error: 'Code is invalid or expired :(' })
+      resetCodeData: () => set({ email: null, codeExpires: null })
     }),
     {
       name: 'AuthStore',
