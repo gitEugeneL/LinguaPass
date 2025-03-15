@@ -3,15 +3,15 @@ import { Navigate, useNavigate } from 'react-router';
 import * as React from 'react';
 import { useEffect } from 'react';
 import Button from '../../../UI/Button/Button.tsx';
-import Countdown from '../../../components/Countdown/Countdown.tsx';
-import CodeInput from '../../../components/CodeInput/CodeInput.tsx';
+import Countdown from '../../../components/auth/Countdown/Countdown.tsx';
+import CodeInput from '../../../components/auth/CodeInput/CodeInput.tsx';
 import { useForm } from 'react-hook-form';
 import styles from './ResetPasswordForm.module.pcss';
 import {
   ResetPasswordFormSchema,
   ResetPasswordFormValidationSchema
 } from './ResetPassword.schemes.ts';
-import PasswordInput from '../../../components/PasswordInput/PasswordInput.tsx';
+import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 export default function ResetPasswordForm() {
