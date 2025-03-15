@@ -4,9 +4,10 @@ import styles from './AuthLayout.module.pcss';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 
 export default function AuthLayout() {
+  const isRefreshTokenProblem = useAuthStore((state) => state.isRefreshTokenProblem);
   const refreshTokenExpires = useAuthStore((state) => state.refreshTokenExpires);
 
-  if (refreshTokenExpires) {
+  if (refreshTokenExpires && !isRefreshTokenProblem) {
     return <Navigate to='/' />;
   }
 

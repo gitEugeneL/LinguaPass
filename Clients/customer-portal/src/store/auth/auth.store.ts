@@ -26,6 +26,7 @@ interface AuthState {
   isLoading: boolean;
   refreshAttempts: number;
   isPasswordChanged: boolean | null;
+  isRefreshTokenProblem: boolean | null;
 
   registration: (email: string, password: string, confirmPassword: string) => void;
   login: (email: string, password: string) => void;
@@ -50,6 +51,7 @@ export const useAuthStore = create(
       email: null,
       isEmailConfirmed: false,
       isPasswordChanged: false,
+      isRefreshTokenProblem: false,
       error: null,
       isLoading: false,
       refreshAttempts: 0,
@@ -82,6 +84,7 @@ export const useAuthStore = create(
             accessTokenExpires: data.accessTokenExpires,
             refreshTokenExpires: data.refreshTokenExpires,
             isEmailConfirmed: data.isEmailConfirmed,
+            isRefreshTokenProblem: false,
             refreshAttempts: 0
           });
         } catch (error) {
@@ -129,16 +132,19 @@ export const useAuthStore = create(
         }
       },
 
-      refresh: () => {
+      refresh: async () => {
         const MAX_REFRESH_ATTEMPTS = 5;
         const userId = get().userId;
         if (userId) {
           const attemptRefresh = async (attempts: number) => {
-            if (attempts >= MAX_REFRESH_ATTEMPTS) {
-              get().resetState();
+            if (attempts === MAX_REFRESH_ATTEMPTS) {
+              set({
+                isRefreshTokenProblem: true,
+                refreshAttempts: 0
+              });
               return;
             }
-            set({ error: null });
+            set({ error: null, isRefreshTokenProblem: false });
             const request: RefreshOrLogoutRequest = { userId: userId };
             try {
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
@@ -160,7 +166,7 @@ export const useAuthStore = create(
               }
             }
           };
-          attemptRefresh(get().refreshAttempts);
+          await attemptRefresh(get().refreshAttempts);
         }
       },
 
@@ -174,6 +180,7 @@ export const useAuthStore = create(
           isEmailConfirmed: false,
           isPasswordChanged: false,
           codeExpires: null,
+          isRefreshTokenProblem: false,
           email: null,
           error: null,
           isLoading: false,
@@ -193,7 +200,8 @@ export const useAuthStore = create(
         codeExpires: state.codeExpires,
         email: state.email,
         refreshTokenExpires: state.refreshTokenExpires,
-        isEmailConfirmed: state.isEmailConfirmed
+        isEmailConfirmed: state.isEmailConfirmed,
+        isRefreshTokenProblem: state.isRefreshTokenProblem
       })
     }
   )
