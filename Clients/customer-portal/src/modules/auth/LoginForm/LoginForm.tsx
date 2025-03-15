@@ -2,7 +2,7 @@ import CustomInput from '../../../UI/CustomInput/CustomInput.tsx';
 import { useForm } from 'react-hook-form';
 import { LoginFormSchema, LoginFormValidationSchema } from './LoginForm.schemes.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
-import PasswordInput from '../../../components/PasswordInput/PasswordInput.tsx';
+import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
 import styles from './LoginForm.module.pcss';
 import Button from '../../../UI/Button/Button.tsx';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';

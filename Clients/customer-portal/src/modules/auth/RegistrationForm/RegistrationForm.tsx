@@ -5,7 +5,7 @@ import {
 } from './RegistrationForm.schemes.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CustomInput from '../../../UI/CustomInput/CustomInput.tsx';
-import PasswordInput from '../../../components/PasswordInput/PasswordInput.tsx';
+import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
 import Button from '../../../UI/Button/Button.tsx';
 import styles from './RegistrationForm.module.pcss';
 import { useEffect, useState } from 'react';
