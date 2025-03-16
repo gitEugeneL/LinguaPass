@@ -1,7 +1,7 @@
 using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
-using IdentityApi.Helpers;
+using IdentityApi.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

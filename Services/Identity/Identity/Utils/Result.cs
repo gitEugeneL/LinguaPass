@@ -1,4 +1,4 @@
-namespace IdentityApi.Helpers;
+namespace IdentityApi.Utils;
 
 public record Result<T>
 {

@@ -1,6 +1,6 @@
 using IdentityApi.Domain.Entities;
 
-namespace IdentityApi.Helpers;
+namespace IdentityApi.Utils;
 
 public abstract class AppConstants
 {

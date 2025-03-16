@@ -1,4 +1,4 @@
-using IdentityApi.Helpers;
+using IdentityApi.Utils;
 using MediatR;
 
 namespace IdentityApi.Features.Refresh;

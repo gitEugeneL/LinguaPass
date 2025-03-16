@@ -1,5 +1,5 @@
 using IdentityApi.Domain.Entities;
-using IdentityApi.Helpers;
+using IdentityApi.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Data;
@@ -22,7 +22,6 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasMaxLength(250);
 
         /*** Relations ***/
-
         builder.Entity<User>()
             .HasMany(u => u.RefreshTokens)
             .WithOne(rt => rt.User)
@@ -38,10 +37,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .WithOne(u => u.ConfirmationCode);
 
         /*** Seed default data ***/
-
-        builder.Entity<Role>().HasData(
-            AppConstants.Admin,
-            AppConstants.Customer
-        );
+        builder.Entity<Role>()
+            .HasData(
+                AppConstants.Customer,
+                AppConstants.Admin
+            );
     }
 }
