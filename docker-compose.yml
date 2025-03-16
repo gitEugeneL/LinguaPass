@@ -1,6 +1,6 @@
 services:
   
-  identity.api.database:
+  identity.database:
     image: postgres:latest
     environment:
       POSTGRES_DB: app
@@ -9,12 +9,30 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - identity.api.database:/var/lib/postgresql/data:rw
+      - identity.database:/var/lib/postgresql/data:rw
+    networks:
+      - linguaPass.backend
+  
+  #----------------------------------------------
+  
+  course.database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - course.database:/var/lib/postgresql/data:rw
     networks:
       - linguaPass.backend
 
+#----------------------------------------------
+
 volumes:
-  identity.api.database:
+  identity.database:
+  course.database:
 
 networks:
   linguaPass.backend:
