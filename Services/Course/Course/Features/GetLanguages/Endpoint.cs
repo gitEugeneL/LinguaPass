@@ -1,29 +1,25 @@
-using Carter;
-using Course.Contracts;
-using Course.Contracts.Languages;
-using Course.Helpers;
-using MediatR;
+using Course.Data;
+using Course.Tools;
+using FastEndpoints;
 
 namespace Course.Features.GetLanguages;
 
-public class Endpoint : ICarterModule
+public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Response>
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public override void Configure()
     {
-        app.MapGet("/languages",
-                async ([AsParameters] LanguageQueryParams parameters, ISender sender, CancellationToken ct) =>
-                {
-                    var filter = Enum.TryParse<QueryFilter>(parameters.Filter, true, out var parsedFilter)
-                        ? parsedFilter
-                        : QueryFilter.Active;
+        Get("/languages");
+        Policies(Constants.BasePolicy);
+        ResponseCache(60);
+    }
 
-                    var query = new Query(filter);
-                    var result = await sender.Send(query, ct);
+    public override async Task HandleAsync(QueryParams req, CancellationToken ct)
+    {
+        var filter = Enum.TryParse<QueryFilter>(req.Filter, true, out var parsedFilter)
+            ? parsedFilter
+            : QueryFilter.Active;
 
-                    return result.Map<IResult>(
-                        r => Results.Ok(new PaginatedResponse<Output>(r)),
-                        e => Results.BadRequest(e.Message));
-                })
-            .RequireAuthorization(AppConstants.BasePolicy);
+        var result = await Repository.GetLanguages(filter, dbContext, ct);
+        await SendResultAsync(TypedResults.Ok(result));
     }
 }

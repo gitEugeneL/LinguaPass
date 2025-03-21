@@ -20,13 +20,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         /*** Relations ***/
 
         /*** Seed default dev data ***/
-        builder.Entity<Language>().HasData(
-            new Language
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Name = "English",
-                Description = "Some text about English courses",
-                IsActive = true
-            });
+        var languages = SeedData.GetLanguages();
+        if (languages is not null)
+            builder.Entity<Language>().HasData(languages);
     }
 }

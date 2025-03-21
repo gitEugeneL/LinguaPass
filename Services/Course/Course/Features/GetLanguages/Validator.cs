@@ -1,14 +1,14 @@
+using FastEndpoints;
 using FluentValidation;
 
 namespace Course.Features.GetLanguages;
 
-public sealed class Validator : AbstractValidator<Query>
+public class Validator : Validator<QueryParams>
 {
     public Validator()
     {
-        RuleFor(q => q.Filter)
-            .NotNull()
-            .IsInEnum()
+        RuleFor(x => x.Filter)
+            .Must(filter => string.IsNullOrEmpty(filter) || Enum.TryParse<QueryFilter>(filter, true, out _))
             .WithMessage($"Allowed values: {string.Join(", ", Enum.GetNames<QueryFilter>())}");
     }
 }

@@ -5,14 +5,18 @@ meta {
 }
 
 get {
-  url: http://localhost:5235/languages
+  url: http://localhost:5235/languages?filter=active
   body: none
-  auth: none
+  auth: bearer
 }
 
 params:query {
+  filter: active
   ~filter: all
-  ~filter: active
   ~filter: disabled
   ~: 
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk1OWVlMC02ZGUxLTdhM2YtODk4MS01ZDU5MzQ1MjZiZjUiLCJlbWFpbCI6IkRFVjFAREVWLkNPTSIsInJvbGUiOiJDVVNUT01FUiIsImlzRW1haWxDb25maXJtZWQiOiJGYWxzZSIsIm5iZiI6MTc0MjE1NzIxNCwiZXhwIjoxNzQyMTU3ODE0LCJpYXQiOjE3NDIxNTcyMTQsImlzcyI6Imxpbmd1YVBhc3MtZGV2LWlkZW50aXR5LWFwaSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTI5NyJ9.vHLxrmCxmHYNtQAoWWD3V_E5VWCNrDGs7f1kOKfDkoXceTNhhcC1L0a7H5ToeBC42bnlLKgd3r7_Xr6E62d6Cw
 }
