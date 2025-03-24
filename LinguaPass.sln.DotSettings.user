@@ -8,12 +8,6 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AWebApplicationBuilder_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003Fhome_003Flihon_003F_002Econfig_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fb7d2b04ecf2c45c38beff880e0aa30cb16e00_003Fce_003F00d94601_003FWebApplicationBuilder_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=43444003_002Dc6e9_002D495f_002D9919_002D363095e42d11/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Logout_WithValidUserAndInvalidRefreshToken_ReturnsErrorMessage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Or&gt;
-    &lt;Project Location="/data/University/LinguaPass/Services/Identity/Tests/IdentityApi.IntegrationTests" Presentation="&amp;lt;Services&amp;gt;\&amp;lt;Identity&amp;gt;\&amp;lt;Tests&amp;gt;\&amp;lt;IdentityApi.IntegrationTests&amp;gt;" /&gt;
-    &lt;TestAncestor&gt;
-      &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Utils.CookieSetterTests.SetCookie_ShouldAppendCookieWithCorrectOptions&lt;/TestId&gt;
-      &lt;TestId&gt;xUnit::26D6F9AD-AB9E-4A83-BD80-F7AE83ADD1DF::net9.0::IdentityApi.Tests.Utils.CookieSetterTests&lt;/TestId&gt;
-    &lt;/TestAncestor&gt;
-  &lt;/Or&gt;
+  &lt;Project Location="/data/University/LinguaPass" Presentation="&amp;lt;Services&amp;gt;\&amp;lt;Identity&amp;gt;\&amp;lt;Tests&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

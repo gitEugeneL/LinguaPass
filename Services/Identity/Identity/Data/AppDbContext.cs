@@ -39,8 +39,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         /*** Seed default data ***/
         builder.Entity<Role>()
             .HasData(
-                AppConstants.Customer,
-                AppConstants.Admin
+                Constants.Customer,
+                Constants.Admin
             );
     }
 }

@@ -28,7 +28,7 @@ public class Handler(
 
         passwordService.CreatePasswordHash(command.Password, out var passwordHash, out var passwordSalt);
 
-        var customerRole = await dbContext.Roles.FirstAsync(r => r.Id == AppConstants.Customer.Id, ct);
+        var customerRole = await dbContext.Roles.FirstAsync(r => r.Id == Constants.Customer.Id, ct);
         var user = new User
         {
             Email = command.Email.ToUpper(),

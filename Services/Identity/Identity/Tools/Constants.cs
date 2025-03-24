@@ -2,7 +2,7 @@ using IdentityApi.Domain.Entities;
 
 namespace IdentityApi.Utils;
 
-public abstract class AppConstants
+public abstract class Constants
 {
     private const string AdminRole = "ADMIN";
     private const string CustomerRole = "CUSTOMER";

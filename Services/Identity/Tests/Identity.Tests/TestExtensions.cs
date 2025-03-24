@@ -12,7 +12,7 @@ public static class TestExtensions
             Email = "user@user.com",
             PwdHash = [],
             PwdSalt = [],
-            Role = AppConstants.Customer,
+            Role = Constants.Customer,
             ConfirmationCode = new ConfirmationCode
             {
                 Code = code,
