@@ -43,5 +43,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(interval); // Clean up interval on unmount
   }, [accessToken, accessTokenExpires, refreshTokenExpires, refresh, resetState, navigate]);
 
-  return children;
+  if (accessToken) {
+    return children;
+  }
 }

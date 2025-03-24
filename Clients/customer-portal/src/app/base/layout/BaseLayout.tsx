@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router';
-import MainFooter from '../../../components/MainFooter/MainFooter.tsx';
+import MainFooter from '../../../components/base/MainFooter/MainFooter.tsx';
 import styles from './BaseLayout.module.pcss';
 
 export default function BaseLayout() {

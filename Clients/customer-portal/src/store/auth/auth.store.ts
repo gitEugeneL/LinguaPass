@@ -170,7 +170,7 @@ export const useAuthStore = create(
         }
       },
 
-      logout: () => {},
+      logout: async () => {},
 
       resetState: () => {
         set({

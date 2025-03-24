@@ -1,0 +1,49 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--normal-radius);
+  background-color: var(--white-color);
+  width: 300px;
+  height: 450px;
+  padding: 30px;
+  gap: 30px;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    transition: box-shadow 0.3s ease-in-out;
+    outline: none;
+    box-shadow: var(--shadow-1);
+  }
+
+  &:hover .icon,
+  &:focus-visible .icon {
+    filter: grayscale(0%);
+  }
+
+  &:hover .title,
+  &:focus-visible .title {
+    color: var(--green-2-color);
+  }
+}
+
+.icon {
+  transition: filter 0.3s ease;
+  filter: grayscale(100%);
+}
+
+.title {
+  color: var(--black-color);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size22);
+  transition: color 0.3s ease;
+}
+
+.description {
+  font-size: var(--font-size14);
+  color: var(--black-color);
+  text-align: center;
+  line-height: 24px;
+}

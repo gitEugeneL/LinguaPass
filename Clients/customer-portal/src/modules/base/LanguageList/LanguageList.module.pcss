@@ -1,0 +1,27 @@
+.container {
+  margin: 60px auto 110px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 20px;
+}
+
+@media (--breakpoint-tablet) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media (--breakpoint-laptop) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media (--breakpoint-desktop) {
+  .container {
+    max-width: 1300px;
+  }
+}

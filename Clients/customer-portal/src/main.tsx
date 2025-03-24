@@ -9,6 +9,7 @@ import AuthProvider from './app/AuthProvider.tsx';
 import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
 import BaseLayout from './app/base/layout/BaseLayout.tsx';
+import LanguagePage from './app/base/pages/LanguagePage/LanguagePage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,17 @@ const router = createBrowserRouter([
       <AuthProvider>
         <BaseLayout />
       </AuthProvider>
-    )
+    ),
+    children: [
+      {
+        path: '',
+        element: <Navigate to='languages' replace />
+      },
+      {
+        path: 'languages',
+        element: <LanguagePage />
+      }
+    ]
   },
 
   {

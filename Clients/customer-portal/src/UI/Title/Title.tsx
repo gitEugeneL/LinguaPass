@@ -1,11 +1,40 @@
 import { TitleProps } from './Title.props.ts';
 import styles from './Title.module.pcss';
+import cn from 'classnames';
 
-export default function Title({ title, description = undefined }: TitleProps) {
+export default function Title({
+  title,
+  subTitle = undefined,
+  description = undefined,
+  appearance = 'secondary'
+}: TitleProps) {
   return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.title}>{title}</h1>
-      {description && <p className={styles.description}>{description}</p>}
+    <div
+      className={cn(styles.wrapper, {
+        [styles.mainWrapper]: appearance === 'main'
+      })}
+    >
+      {subTitle && <span className={styles.subtitle}>{subTitle}</span>}
+
+      <h1
+        className={cn(styles.title, {
+          [styles.mainTitle]: appearance === 'main',
+          [styles.secondaryTitle]: appearance === 'secondary'
+        })}
+      >
+        {title}
+      </h1>
+
+      {description && (
+        <p
+          className={cn(styles.description, {
+            [styles.mainDescription]: appearance === 'main',
+            [styles.secondaryDescription]: appearance === 'secondary'
+          })}
+        >
+          {description}
+        </p>
+      )}
     </div>
   );
 }

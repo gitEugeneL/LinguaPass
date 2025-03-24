@@ -48,7 +48,9 @@ export default function MainFooter() {
             <h3 className={styles.title}>Follow Us On</h3>
             <div className={styles.icons}>
               <a href='#' target='_blank'>
-                <InstagramIcon />
+                <div className={styles.icon}>
+                  <InstagramIcon />
+                </div>
               </a>
               <a href='#' target='_blank'>
                 <TelegramIcon />

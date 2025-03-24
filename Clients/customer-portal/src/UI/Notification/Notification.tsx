@@ -17,7 +17,7 @@ export default function Notification({ message }: NotificationProps) {
         setIsShown(false);
         setIsFading(false);
       });
-    }, 3000);
+    }, 4000);
     return () => {
       clearTimeout(timerId);
     };

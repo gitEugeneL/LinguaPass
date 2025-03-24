@@ -1,13 +1,13 @@
+import styles from './LoginForm.module.pcss';
 import CustomInput from '../../../UI/CustomInput/CustomInput.tsx';
 import { useForm } from 'react-hook-form';
 import { LoginFormSchema, LoginFormValidationSchema } from './LoginForm.schemes.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
-import styles from './LoginForm.module.pcss';
 import Button from '../../../UI/Button/Button.tsx';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import { useEffect, useState } from 'react';
 import Notification from '../../../UI/Notification/Notification.tsx';
+import { useAuthStore } from '../../../store/auth/auth.store.ts';
 
 export default function LoginForm() {
   const [localError, setLocalError] = useState<string | undefined>(undefined);
@@ -16,6 +16,11 @@ export default function LoginForm() {
   const error = useAuthStore((state) => state.error);
   const resetError = useAuthStore((state) => state.resetError);
   const login = useAuthStore((state) => state.login);
+  const resetState = useAuthStore((state) => state.resetState);
+
+  useEffect(() => {
+    resetState();
+  }, []);
 
   // local error for notifications
   useEffect(() => {

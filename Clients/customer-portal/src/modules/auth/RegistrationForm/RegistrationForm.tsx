@@ -11,14 +11,25 @@ import styles from './RegistrationForm.module.pcss';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import Notification from '../../../UI/Notification/Notification.tsx';
+import { useNavigate } from 'react-router';
 
 export default function RegistrationForm() {
+  const navigate = useNavigate();
+
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
   const isLoading = useAuthStore((state) => state.isLoading);
   const error = useAuthStore((state) => state.error);
   const resetError = useAuthStore((state) => state.resetError);
   const registration = useAuthStore((state) => state.registration);
+  const userId = useAuthStore((state) => state.userId);
+
+  // success redirect to login page
+  useEffect(() => {
+    if (userId) {
+      navigate('/auth/login');
+    }
+  }, [userId]);
 
   // local error for notifications
   useEffect(() => {
@@ -31,12 +42,12 @@ export default function RegistrationForm() {
 
   // inputs error config
   useEffect(() => {
-    if (error && !isLoading) {
+    if (localError && !isLoading) {
       resetField('email');
-      setFocus('email');
       setError('email', { type: 'manual', message: localError });
+      setFocus('email');
     }
-  }, [error, isLoading]);
+  }, [localError, isLoading]);
 
   const formSubmit = async (schema: RegistrationFormSchema) => {
     setLocalError(undefined);
