@@ -1,0 +1,45 @@
+.card {
+  padding-left: 30px;
+  padding-right: 20px;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--white-color);
+  border-radius: var(--normal-radius);
+}
+
+.name {
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-medium);
+  color: var(--black-color);
+}
+
+.home {
+  padding: 20px;
+  margin-top: 4px;
+  transition: box-shadow 0.3s ease;
+  border-radius: var(--normal-radius);
+
+  &:hover,
+  &:focus {
+    box-shadow: var(--shadow-1);
+  }
+
+  &:hover svg path,
+  &:focus svg path {
+    fill: var(--green-2-color);
+    transition: fill 0.3s ease;
+  }
+}
+
+.arrow {
+  margin-top: 4px;
+  padding-right: 15px;
+}
+
+@media (--breakpoint-laptop) {
+  .card {
+    padding-left: 0;
+  }
+}

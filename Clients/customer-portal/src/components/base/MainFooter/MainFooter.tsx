@@ -47,15 +47,13 @@ export default function MainFooter() {
           <div className={styles.container}>
             <h3 className={styles.title}>Follow Us On</h3>
             <div className={styles.icons}>
-              <a href='#' target='_blank'>
-                <div className={styles.icon}>
-                  <InstagramIcon />
-                </div>
+              <a href='#' target='_blank' className={styles.icon}>
+                <InstagramIcon />
               </a>
-              <a href='#' target='_blank'>
+              <a href='#' target='_blank' className={styles.icon}>
                 <TelegramIcon />
               </a>
-              <a href='#' target='_blank'>
+              <a href='#' target='_blank' className={styles.icon}>
                 <WhatsAppIcon width={18} height={18} />
               </a>
             </div>

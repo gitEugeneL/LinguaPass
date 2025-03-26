@@ -55,6 +55,14 @@
   gap: 20px;
 }
 
+.icon {
+  &:hover svg path,
+  &:focus svg path {
+    fill: var(--green-2-color);
+    transition: fill 0.3s ease;
+  }
+}
+
 @media (--breakpoint-tablet) {
   .wrapper {
     flex-direction: row;

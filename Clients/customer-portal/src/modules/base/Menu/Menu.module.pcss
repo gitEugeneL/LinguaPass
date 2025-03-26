@@ -1,0 +1,33 @@
+.menuBox {
+  width: 100%;
+  height: 66px;
+  background-color: var(--white-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account {
+  display: none;
+}
+
+@media (--breakpoint-laptop) {
+  .account {
+    display: flex;
+  }
+
+  .menuBox {
+    max-width: 976px;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: transparent;
+  }
+}
+
+@media (--breakpoint-desktop) {
+  .menuBox {
+    padding: 0;
+    max-width: 1300px;
+  }
+}

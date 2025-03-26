@@ -1,0 +1,5 @@
+export const CloseIcon = () => (
+  <svg width={24} height={24} fill='none'>
+    <path stroke='#637381' strokeLinecap='round' strokeWidth={1.5} d='M19 5 5 19M5 5l14 14' />
+  </svg>
+);
