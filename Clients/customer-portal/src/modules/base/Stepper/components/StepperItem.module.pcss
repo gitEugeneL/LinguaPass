@@ -1,0 +1,61 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.item {
+  height: 10px;
+  background-color: var(--grey-3-color);
+  border-radius: var(--mini-radius);
+}
+
+.progress {
+  width: 0;
+  height: 10px;
+  background-color: var(--green-1-color);
+  border-radius: var(--mini-radius);
+}
+
+.progress50 {
+  width: 50%;
+}
+
+.progress100 {
+  width: 100%;
+}
+
+.name {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  position: absolute;
+  line-height: 24px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size14);
+  color: var(--black-color);
+
+  max-width: 15ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nameStart {
+  left: 0;
+  transform: none;
+}
+
+.nameEnd {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
+@media (--breakpoint-tablet) {
+  .name {
+    bottom: 30px;
+    font-size: var(--font-size18);
+    max-width: none;
+  }
+}
