@@ -24,14 +24,14 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         //  registration
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         // generate confirm code
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
         // get valid fake code
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         var request = new ConfirmEmailRequest(validCode, email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("confirm-email", request);
+        var response = await _client.PostAsJsonAsync("api/confirm-email", request);
         var result = await TestExtensions.DeserializeResponse<ConfirmEmailResponse>(response);
 
         // Assert
@@ -52,14 +52,14 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         //  registration
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         // generate confirm code
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
         // get invalid fake code
         var invalidCode = new string(Enumerable.Repeat('0', codeLength).ToArray());
 
         var request = new ConfirmEmailRequest(invalidCode, email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("confirm-email", request);
+        var response = await _client.PostAsJsonAsync("api/confirm-email", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -87,8 +87,8 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         var response = new HttpResponseMessage();
         for (var i = 0; i < 2; i++)
         {
-            await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
-            response = await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
+            await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
+            response = await _client.PostAsJsonAsync("api/confirm-email", new ConfirmEmailRequest(validCode, email));
         }
 
         var result = await TestExtensions.DeserializeResponse<string>(response);
@@ -117,7 +117,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         var request = new ConfirmEmailRequest(validCode, email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("confirm-email", request);
+        var response = await _client.PostAsJsonAsync("api/confirm-email", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -140,7 +140,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         var request = new ConfirmEmailRequest(validCode, email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("confirm-email", request);
+        var response = await _client.PostAsJsonAsync("api/confirm-email", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -162,7 +162,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         // generate confirm code
         for (var i = 0; i <= codeMaxAttempts; i++)
-            await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+            await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
 
         // get valid fake code
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
@@ -170,7 +170,7 @@ public class ConfirmEmailTests(CustomWebAppApplicationFactory factory) : IClassF
         var request = new ConfirmEmailRequest(validCode, email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("confirm-email", request);
+        var response = await _client.PostAsJsonAsync("api/confirm-email", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert

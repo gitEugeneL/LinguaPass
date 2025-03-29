@@ -1,5 +1,5 @@
 using IdentityApi.Domain.Entities;
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 
 namespace IdentityApi.Tests;
 

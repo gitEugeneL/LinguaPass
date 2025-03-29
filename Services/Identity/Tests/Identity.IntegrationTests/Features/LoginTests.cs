@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using IdentityApi.Contracts;
 using IdentityApi.Features.Login;
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +27,7 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         var request = new LoginRequest(email, password);
 
         // Act
-        var response = await _client.PostAsJsonAsync("login", request);
+        var response = await _client.PostAsJsonAsync("api/login", request);
         var result = await TestExtensions.DeserializeResponse<LoginOrRefreshResponse>(response);
         var cookies = response.Headers.GetValues("Set-Cookie").ToList();
         var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
@@ -64,7 +64,7 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         var request = new LoginRequest(email, password);
 
         // Act 
-        var response = await _client.PostAsJsonAsync("login", request);
+        var response = await _client.PostAsJsonAsync("api/login", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -84,7 +84,7 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         var request = new LoginRequest(email, "invalid-password123");
 
         // Act
-        var response = await _client.PostAsJsonAsync("login", request);
+        var response = await _client.PostAsJsonAsync("api/login", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -105,11 +105,11 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
 
         await TestExtensions.RegistrationAsync(_client, email, password, password);
         for (var i = 0; i <= loginMaxAttempts; i++)
-            await _client.PostAsJsonAsync("login", new LoginRequest(email, "invalid-password"));
+            await _client.PostAsJsonAsync("api/login", new LoginRequest(email, "invalid-password"));
 
         // Act
         // login with valid password
-        var response = await _client.PostAsJsonAsync("login", new LoginRequest(email, password));
+        var response = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert

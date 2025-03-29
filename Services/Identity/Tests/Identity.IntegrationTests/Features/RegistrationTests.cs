@@ -11,16 +11,16 @@ public class RegistrationTests(CustomWebAppApplicationFactory factory) : IClassF
     private readonly HttpClient _client = factory.CreateClient();
 
     [Theory]
-    [InlineData("mailt@mail.test", "strongPwd!1", "strongPwd!1", 60)]
-    [InlineData("mail1@mail.test", "myPassword12@", "myPassword12@", 18)]
+    [InlineData("mailt@mail.test", "strongPwd!1", "strongPwd!1")]
+    [InlineData("mail1@mail.test", "myPassword12@", "myPassword12@")]
     public async Task Registration_WithValidBody_ReturnsUserUd
-        (string email, string password, string confirmPassword, int age)
+        (string email, string password, string confirmPassword)
     {
         // Arrange
         var request = new RegistrationRequest(email, password, confirmPassword);
 
         // Act
-        var response = await _client.PostAsJsonAsync("registration", request);
+        var response = await _client.PostAsJsonAsync("api/registration", request);
         var result = await TestExtensions.DeserializeResponse<RegistrationResponse>(response);
 
         // Assert
@@ -38,7 +38,7 @@ public class RegistrationTests(CustomWebAppApplicationFactory factory) : IClassF
         // Act
         var response = new HttpResponseMessage();
         for (var i = 0; i < 2; i++)
-            response = await _client.PostAsJsonAsync("registration", request);
+            response = await _client.PostAsJsonAsync("api/registration", request);
 
         var result = await TestExtensions.DeserializeResponse<string>(response);
 

@@ -17,18 +17,17 @@ public static class TestExtensions
         HttpClient client,
         string email,
         string password,
-        string confirmPassword,
-        int age = 18)
+        string confirmPassword)
     {
         var request = new RegistrationRequest(email, password, confirmPassword);
-        var response = await client.PostAsJsonAsync("registration", request);
+        var response = await client.PostAsJsonAsync("api/registration", request);
         return await DeserializeResponse<RegistrationResponse>(response);
     }
 
     public static async Task<LoginOrRefreshResponse> LoginAsync(HttpClient client, string email, string password)
     {
         var request = new LoginRequest(email, password);
-        var response = await client.PostAsJsonAsync("login", request);
+        var response = await client.PostAsJsonAsync("api/login", request);
         return await DeserializeResponse<LoginOrRefreshResponse>(response);
     }
 }

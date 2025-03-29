@@ -30,16 +30,16 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         // generate code for confirm email
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
         // confirm email
-        await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
+        await _client.PostAsJsonAsync("api/confirm-email", new ConfirmEmailRequest(validCode, email));
         // generate code for reset password
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 
         // Act
-        var response = await _client.PostAsJsonAsync("reset-password", request);
+        var response = await _client.PostAsJsonAsync("api/reset-password", request);
         var result = await TestExtensions.DeserializeResponse<ResetPasswordResponse>(response);
 
         // Assert
@@ -65,12 +65,12 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         // get valid fake code
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
         // generate code for reset password
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 
         // Act
-        var response = await _client.PostAsJsonAsync("reset-password", request);
+        var response = await _client.PostAsJsonAsync("api/reset-password", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert 
@@ -97,16 +97,16 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         // generate code for confirm email
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
         // confirm email
-        await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
+        await _client.PostAsJsonAsync("api/confirm-email", new ConfirmEmailRequest(validCode, email));
         // generate code for reset password
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, invalidCode, newPassword, newPassword);
 
         // Act
-        var response = await _client.PostAsJsonAsync("reset-password", request);
+        var response = await _client.PostAsJsonAsync("api/reset-password", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -128,7 +128,7 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 
         // Act
-        var response = await _client.PostAsJsonAsync("reset-password", request);
+        var response = await _client.PostAsJsonAsync("api/reset-password", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -155,17 +155,17 @@ public class ResetPasswordTests(CustomWebAppApplicationFactory factory) : IClass
         var validCode = new string(Enumerable.Repeat(FakeConfirmationService.ValidCodeChar, codeLength).ToArray());
 
         // generate code for confirm email
-        await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+        await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
         // confirm email
-        await _client.PostAsJsonAsync("confirm-email", new ConfirmEmailRequest(validCode, email));
+        await _client.PostAsJsonAsync("api/confirm-email", new ConfirmEmailRequest(validCode, email));
         // generate code for reset password
         for (var i = 0; i <= codeMaxAttempts; i++)
-            await _client.PostAsJsonAsync("generate-code", new GenerateCodeRequest(email));
+            await _client.PostAsJsonAsync("api/generate-code", new GenerateCodeRequest(email));
 
         var request = new ResetPasswordRequest(email, validCode, newPassword, newPassword);
 
         // Act
-        var response = await _client.PostAsJsonAsync("reset-password", request);
+        var response = await _client.PostAsJsonAsync("api/reset-password", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert

@@ -1,5 +1,5 @@
 using FluentAssertions;
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 using Microsoft.AspNetCore.Http;
 using Moq;
 

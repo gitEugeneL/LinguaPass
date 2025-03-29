@@ -17,8 +17,10 @@ public class CustomWebAppApplicationFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureAppConfiguration((context, config) =>
         {
-            // Add configuration file
-            config.AddJsonFile("appsettings.json", true, true);
+            // Add configuration files (main and shared)
+            config
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
         });
 
         builder.ConfigureTestServices(services =>
