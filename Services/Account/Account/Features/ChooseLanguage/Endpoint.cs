@@ -1,22 +1,48 @@
+using Account.Data;
 using Account.Grpc.Clients;
 using AuthConfig.Tools;
 using FastEndpoints;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Account.Features.ChooseLanguage;
 
-public class Endpoint(LanguageClient languageClient) : Endpoint<Request, Response>
+public class Endpoint(
+    AppDbContext dbContext,
+    LanguageClient languageClient
+) : Endpoint<Request, Results<Ok<Response>, NotFound<string>>>
 {
+    public const string InvalidLanguage = "language not fount or invalid";
+    public const string InvalidUser = "user not fount or invalid";
+    public const string InvalidAccount = "account not fount or invalid";
+
     public override void Configure()
     {
         Post("/api/choose-language");
         Policies(Constants.CustomerPolicy);
     }
 
-    public override async Task HandleAsync(Request req, CancellationToken ct)
+    public override async Task<Results<Ok<Response>, NotFound<string>>> ExecuteAsync(
+        Request req,
+        CancellationToken ct)
     {
-        var r = await languageClient.CheckLanguage(req.LanguageId);
+        if (await languageClient.CheckLanguage(req.LanguageId) is false or null)
+            return TypedResults.NotFound(InvalidLanguage);
 
-        Console.WriteLine(r);
-        await SendResultAsync(TypedResults.Ok());
+        var userId = TokenReader.ReadUserId(HttpContext);
+        if (userId is null)
+            return TypedResults.NotFound(InvalidUser);
+
+        var account = await dbContext
+            .CustomerAccounts
+            .FirstOrDefaultAsync(a => a.UserId == userId, ct);
+
+        if (account is null || account.LanguageId == req.LanguageId)
+            return TypedResults.NotFound(InvalidAccount);
+
+        account.LanguageId = req.LanguageId;
+        await dbContext.SaveChangesAsync(ct);
+
+        return TypedResults.Ok(new Response(account.UserId, account.LanguageId));
     }
 }

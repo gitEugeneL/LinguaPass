@@ -34,8 +34,4 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Domain\"/>
-    </ItemGroup>
-
 </Project>
