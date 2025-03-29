@@ -1,5 +1,22 @@
 services:
   
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    hostname: invoice-manager-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - linguaPass.backend
+    volumes:
+      - data.rabbitmq:/var/lib/rabbitmq:rw
+
+  #----------------------------------------------
+  
   identity.database:
     image: postgres:latest
     environment:
@@ -44,6 +61,7 @@ services:
       - linguaPass.backend
 
 volumes:
+  data.rabbitmq:
   identity.database:
   course.database:
   account.database:
