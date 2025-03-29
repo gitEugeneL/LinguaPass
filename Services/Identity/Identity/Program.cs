@@ -14,6 +14,9 @@ builder.Services
     .AddScoped<IConfirmationService, ConfirmationService>()
     .AddScoped<ILockoutService, LockoutService>();
 
+/*** Add common auth settings ***/
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
+
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PSQL")));
@@ -32,9 +35,6 @@ builder.Services.AddCarter();
 var app = builder.Build();
 
 app.MapCarter();
-
-app.UseHttpsRedirection();
-
 app.Run();
 
 public abstract partial class Program;

@@ -1,0 +1,7 @@
+{
+  "Authentication": {
+    "Issuer": "linguaPass-dev-identity-api",
+    "Audience": "https://localhost:7084",
+    "AccessToken.SecurityKey": "OnlyDevSecurityKey123456789_DONT_USE_DONT_USE_DONT_USE_DONT_USE_!!!"
+  }
+}

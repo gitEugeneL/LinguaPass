@@ -2,7 +2,7 @@ using Account.Grpc.Clients;
 using Common.GrpcProtos;
 using Grpc.Net.Client;
 
-namespace Account.Configs;
+namespace Account.Grpc;
 
 public static class GrpcClientsConfig
 {

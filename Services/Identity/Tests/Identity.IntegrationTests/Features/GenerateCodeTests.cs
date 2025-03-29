@@ -25,7 +25,7 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
         var request = new GenerateCodeRequest(email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("generate-code", request);
+        var response = await _client.PostAsJsonAsync("api/generate-code", request);
         var result = await TestExtensions.DeserializeResponse<GenerateCodeResponse>(response);
 
         // Assert
@@ -46,7 +46,7 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
         var request = new GenerateCodeRequest(email);
 
         // Act
-        var response = await _client.PostAsJsonAsync("generate-code", request);
+        var response = await _client.PostAsJsonAsync("api/generate-code", request);
         var result = await TestExtensions.DeserializeResponse<string>(response);
 
         // Assert
@@ -70,7 +70,7 @@ public class GenerateCodeTests(CustomWebAppApplicationFactory factory) : IClassF
         // Act
         var response = new HttpResponseMessage();
         for (var i = 0; i <= codeMaxAttempts; i++)
-            response = await _client.PostAsJsonAsync("generate-code", request);
+            response = await _client.PostAsJsonAsync("api/generate-code", request);
 
         var result = await TestExtensions.DeserializeResponse<string>(response);
 

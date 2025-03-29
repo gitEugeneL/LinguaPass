@@ -1,10 +1,13 @@
 using System.Security.Claims;
 using System.Text;
+using AuthConfig.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Course.Tools;
+namespace AuthConfig.Configs;
 
 public static class AuthConfig
 {

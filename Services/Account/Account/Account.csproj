@@ -6,16 +6,22 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <!-- Include shared projects -->
     <ItemGroup>
+        <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
         <ProjectReference Include="..\..\Common\GrpcProtos\GrpcProtos.csproj"/>
+    </ItemGroup>
+
+    <!-- Include shared settings -->
+    <ItemGroup>
+        <Content Include="..\..\Common\AuthConfig\authsettings.json"
+                 Link="authsettings.json"
+                 CopyToOutputDirectory="Always"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="FastEndpoints" Version="5.35.0"/>
-        <PackageReference Include="Google.Protobuf" Version="3.30.2"/>
         <PackageReference Include="Grpc.AspNetCore" Version="2.70.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3"/>
-        <PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="9.0.3"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
             <PrivateAssets>all</PrivateAssets>

@@ -1,4 +1,4 @@
-namespace Course.Tools;
+namespace AuthConfig.Tools;
 
 public abstract class Constants
 {

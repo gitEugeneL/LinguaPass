@@ -2,7 +2,7 @@ using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Services.Interfaces;
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,8 +27,8 @@ public class Handler(
         var user = await dbContext
             .Users
             .Include(u => u.ConfirmationCode)
-            .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
-        // && u.EmailConfirmed == true, ct); // TODO only for DEV!!!!!!
+            .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper()
+                                      && u.EmailConfirmed == true, ct);
 
         if (user is null || lockoutService.IsConfirmLocked(user))
             return Result<Output>.Failure(new Error(InvalidUser));

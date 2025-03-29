@@ -1,4 +1,4 @@
-namespace IdentityApi.Utils;
+namespace IdentityApi.Tools;
 
 public record Result<T>
 {

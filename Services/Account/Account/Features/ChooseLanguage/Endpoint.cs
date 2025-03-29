@@ -1,5 +1,5 @@
 using Account.Grpc.Clients;
-using Account.Tools;
+using AuthConfig.Tools;
 using FastEndpoints;
 
 namespace Account.Features.ChooseLanguage;

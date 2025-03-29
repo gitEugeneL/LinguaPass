@@ -1,6 +1,6 @@
+using AuthConfig.Tools;
 using Course.Data;
 using Course.Features.Shared;
-using Course.Tools;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 

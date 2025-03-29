@@ -1,6 +1,6 @@
 using Carter;
 using IdentityApi.Contracts;
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 using MediatR;
 
 namespace IdentityApi.Features.Login;

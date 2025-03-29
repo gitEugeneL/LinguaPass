@@ -1,4 +1,4 @@
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 using MediatR;
 
 namespace IdentityApi.Features.Login;

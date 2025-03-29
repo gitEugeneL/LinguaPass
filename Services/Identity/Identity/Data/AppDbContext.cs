@@ -1,5 +1,5 @@
 using IdentityApi.Domain.Entities;
-using IdentityApi.Utils;
+using IdentityApi.Tools;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Data;

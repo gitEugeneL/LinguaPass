@@ -1,6 +1,7 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
-namespace Account.Tools;
+namespace AuthConfig.Tools;
 
 public static class TokenReader
 {
