@@ -1,6 +1,5 @@
-using Course.Data;
-using Course.Grpc.Servers;
-using Course.Tools;
+using Account.Configs;
+using Account.Data;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,21 +15,18 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 /*** Auth Policy ***/
 builder.Services.ConfigureAuthPolicy();
 
-builder.Services.AddGrpc();
-
+/*** Fast Endpoints ***/
 builder.Services.AddFastEndpoints();
+
+/*** gRPC Clients ***/
+builder.Services.AddGrpcClients(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.UseResponseCaching();
-
 app.UseFastEndpoints();
-
-app.MapGrpcService<LanguageServer>();
 
 app.Run();
 

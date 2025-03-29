@@ -3,7 +3,7 @@ services:
   identity.database:
     image: postgres:latest
     environment:
-      POSTGRES_DB: app
+      POSTGRES_DB: identity
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
@@ -18,7 +18,7 @@ services:
   course.database:
     image: postgres:latest
     environment:
-      POSTGRES_DB: app
+      POSTGRES_DB: course
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
@@ -27,12 +27,26 @@ services:
       - course.database:/var/lib/postgresql/data:rw
     networks:
       - linguaPass.backend
+  
+  #----------------------------------------------
 
-#----------------------------------------------
+  account.database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: account
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    volumes:
+      - account.database:/var/lib/postgresql/data:rw
+    networks:
+      - linguaPass.backend
 
 volumes:
   identity.database:
   course.database:
+  account.database:
 
 networks:
   linguaPass.backend:

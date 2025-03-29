@@ -1,6 +1,8 @@
 using Course.Data;
+using Course.Features.Shared;
 using Course.Tools;
 using FastEndpoints;
+using Microsoft.EntityFrameworkCore;
 
 namespace Course.Features.GetLanguages;
 
@@ -8,7 +10,7 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Response>
 {
     public override void Configure()
     {
-        Get("/languages");
+        Get("/api/languages");
         Policies(Constants.BasePolicy);
         ResponseCache(60);
     }
@@ -19,7 +21,14 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Response>
             ? parsedFilter
             : QueryFilter.Active;
 
-        var result = await Repository.GetLanguages(filter, dbContext, ct);
+        var result = new CollectionResponse<Response>(
+            await dbContext
+                .Languages
+                .AsNoTracking()
+                .Where(l => filter == QueryFilter.All || l.IsActive == (filter == QueryFilter.Active))
+                .Select(l => new Response(l.Id, l.Name, l.Description, l.IsActive))
+                .ToListAsync(ct));
+
         await SendResultAsync(TypedResults.Ok(result));
     }
 }

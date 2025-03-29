@@ -9,7 +9,7 @@ public class Endpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/login",
+        app.MapPost("/api/login",
             async (LoginRequest request, ISender sender, HttpContext httpContext, CancellationToken ct) =>
             {
                 var command = new Command(request.Email, request.Password);

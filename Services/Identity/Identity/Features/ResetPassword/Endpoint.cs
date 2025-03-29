@@ -8,7 +8,7 @@ public class Endpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/reset-password",
+        app.MapPost("/api/reset-password",
             async (ResetPasswordRequest request, ISender sender, CancellationToken ct) =>
             {
                 var command = new Command(request.Email, request.Code, request.Password, request.ConfirmPassword);

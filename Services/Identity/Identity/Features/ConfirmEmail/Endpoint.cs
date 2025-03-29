@@ -8,7 +8,7 @@ public class Endpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/confirm-email", async (ConfirmEmailRequest request, ISender sender, CancellationToken ct) =>
+        app.MapPost("/api/confirm-email", async (ConfirmEmailRequest request, ISender sender, CancellationToken ct) =>
         {
             var command = new Command(request.Code, request.Email);
             var result = await sender.Send(command, ct);

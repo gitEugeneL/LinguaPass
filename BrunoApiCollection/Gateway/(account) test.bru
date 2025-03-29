@@ -1,0 +1,21 @@
+meta {
+  name: (account) test
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:5224/account/choose-language
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk1ZGRlNy1lNTU3LTc0ZTgtYTA4Zi04YzNkM2U0ZmI3ZTUiLCJlbWFpbCI6IkRFVkBERVYuQ09NIiwicm9sZSI6IkNVU1RPTUVSIiwiaXNFbWFpbENvbmZpcm1lZCI6IkZhbHNlIiwibmJmIjoxNzQzMTk4MTYwLCJleHAiOjE3NDMxOTg3NjAsImlhdCI6MTc0MzE5ODE2MCwiaXNzIjoibGluZ3VhUGFzcy1kZXYtaWRlbnRpdHktYXBpIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1Mjk3In0.xlOgQSXnmEQva2xkxLOvaosCIC9jtZOn-nsKXY5lFfxYscMj-Mil8pKnbkSFGfn38bDgZNqPm0Asqy41Pg7KCA
+}
+
+body:json {
+  {
+    "languageId": "00000000-0000-0000-0000-000000000001"
+  }
+}

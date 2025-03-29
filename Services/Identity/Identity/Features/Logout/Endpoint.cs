@@ -9,7 +9,7 @@ public class Endpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost("/logout", async (RefreshOrLogoutRequest
+        app.MapPost("/api/logout", async (RefreshOrLogoutRequest
             request, HttpContext httpContext, ISender sender, CancellationToken ct) =>
         {
             // Read refresh token (secure cookie) 
