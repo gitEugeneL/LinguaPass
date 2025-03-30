@@ -1,13 +1,17 @@
 using Account.Data;
 using Account.Grpc;
+using Account.MessageBroker.Consumers;
 using AuthConfig.Configs;
 using FastEndpoints;
+using MessageBroker.Configs;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 /*** Add common auth settings ***/
 builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
+/*** Add common rabbitMQ settings ***/
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -24,6 +28,14 @@ builder.Services.AddFastEndpoints();
 
 /*** gRPC Clients ***/
 builder.Services.AddGrpcClients(builder.Configuration);
+
+/*** RabbitMQ configuration (Common config) ***/
+builder.Services.ConfigureMassTransit(builder.Configuration,
+    busConfigurator =>
+    {
+        busConfigurator.AddConsumer<CreateAccountConsumer>();
+        // add another consumers
+    });
 
 var app = builder.Build();
 

@@ -11,12 +11,17 @@
     <!-- Include shared projects -->
     <ItemGroup>
         <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
+        <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
     </ItemGroup>
 
     <!-- Include shared settings -->
     <ItemGroup>
         <Content Include="..\..\Common\AuthConfig\authsettings.json"
                  Link="authsettings.json"
+                 CopyToOutputDirectory="Always"/>
+
+        <Content Include="..\..\Common\MessageBroker\brokersettings.json"
+                 Link="brokersettings.json"
                  CopyToOutputDirectory="Always"/>
     </ItemGroup>
 
@@ -38,6 +43,12 @@
 
     <ItemGroup>
         <Folder Include="Data\Migrations\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="MassTransit.Abstractions">
+            <HintPath>..\..\..\..\..\..\home\lihon\.nuget\packages\masstransit.abstractions\8.4.0\lib\net9.0\MassTransit.Abstractions.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

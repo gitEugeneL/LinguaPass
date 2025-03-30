@@ -10,12 +10,17 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
         <ProjectReference Include="..\..\Common\GrpcProtos\GrpcProtos.csproj"/>
+        <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
     </ItemGroup>
 
     <!-- Include shared settings -->
     <ItemGroup>
         <Content Include="..\..\Common\AuthConfig\authsettings.json"
                  Link="authsettings.json"
+                 CopyToOutputDirectory="Always"/>
+
+        <Content Include="..\..\Common\MessageBroker\brokersettings.json"
+                 Link="brokersettings.json"
                  CopyToOutputDirectory="Always"/>
     </ItemGroup>
 
@@ -32,6 +37,11 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Data\Migrations\"/>
+        <Folder Include="MessageBroker\"/>
     </ItemGroup>
 
 </Project>

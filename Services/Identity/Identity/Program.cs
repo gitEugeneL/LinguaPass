@@ -2,8 +2,11 @@ using System.Reflection;
 using Carter;
 using FluentValidation;
 using IdentityApi.Data;
+using IdentityApi.MessageBroker.Services;
+using IdentityApi.MessageBroker.Services.Interfaces;
 using IdentityApi.Services;
 using IdentityApi.Services.Interfaces;
+using MessageBroker.Configs;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +16,15 @@ builder.Services
     .AddScoped<ITokenService, TokenService>()
     .AddScoped<IConfirmationService, ConfirmationService>()
     .AddScoped<ILockoutService, LockoutService>();
+
+/*** Add common rabbitMQ settings ***/
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
+
+/*** RabbitMQ configuration (Common config) ***/
+builder.Services.ConfigureMassTransit(builder.Configuration);
+
+/*** message broker services ***/
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 /*** Add common auth settings ***/
 builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);

@@ -1,0 +1,7 @@
+{
+  "MessageBroker": {
+    "Host": "amqp://localhost:5672",
+    "Username": "user",
+    "Password": "password"
+  }
+}

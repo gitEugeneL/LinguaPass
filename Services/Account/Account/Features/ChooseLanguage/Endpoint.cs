@@ -26,6 +26,7 @@ public class Endpoint(
         Request req,
         CancellationToken ct)
     {
+        // gRPC request (server: course microservice)
         if (await languageClient.CheckLanguage(req.LanguageId) is false or null)
             return TypedResults.NotFound(InvalidLanguage);
 

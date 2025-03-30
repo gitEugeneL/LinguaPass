@@ -2,6 +2,7 @@ using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Domain.Entities;
+using IdentityApi.MessageBroker.Services.Interfaces;
 using IdentityApi.Services.Interfaces;
 using IdentityApi.Tools;
 using MediatR;
@@ -12,7 +13,8 @@ namespace IdentityApi.Features.Registration;
 public class Handler(
     IValidator<Command> validator,
     AppDbContext dbContext,
-    IPasswordService passwordService
+    IPasswordService passwordService,
+    IAccountService accountService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public const string AlreadyRegistered = "User already exists";
@@ -39,6 +41,9 @@ public class Handler(
 
         await dbContext.Users.AddAsync(user, ct);
         await dbContext.SaveChangesAsync(ct);
+
+        // RabbitMQ request (consumer: account microservice)
+        await accountService.CreateAccount(user.Id);
 
         return Result<Output>.Success(new Output(user.Id));
     }
