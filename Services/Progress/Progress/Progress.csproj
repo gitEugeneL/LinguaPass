@@ -6,6 +6,23 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <!-- Include shared projects -->
+    <ItemGroup>
+        <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
+        <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
+    </ItemGroup>
+
+    <!-- Include shared settings -->
+    <ItemGroup>
+        <Content Include="..\..\Common\AuthConfig\authsettings.json"
+                 Link="authsettings.json"
+                 CopyToOutputDirectory="Always"/>
+
+        <Content Include="..\..\Common\MessageBroker\brokersettings.json"
+                 Link="brokersettings.json"
+                 CopyToOutputDirectory="Always"/>
+    </ItemGroup>
+
     <ItemGroup>
         <PackageReference Include="FastEndpoints" Version="5.35.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
@@ -21,8 +38,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Data\Migrations\"/>
         <Folder Include="Features\"/>
-        <Folder Include="MessageBroker\Consumers\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="Data\InitData\steps.json"/>
     </ItemGroup>
 
 </Project>

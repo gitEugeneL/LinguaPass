@@ -24,7 +24,9 @@ builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "broker
 builder.Services.ConfigureMassTransit(builder.Configuration);
 
 /*** message broker services ***/
-builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services
+    .AddScoped<IAccountService, AccountService>()
+    .AddScoped<IProgressService, ProgressService>();
 
 /*** Add common auth settings ***/
 builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);

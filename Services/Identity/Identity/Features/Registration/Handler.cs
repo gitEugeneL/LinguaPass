@@ -14,7 +14,8 @@ public class Handler(
     IValidator<Command> validator,
     AppDbContext dbContext,
     IPasswordService passwordService,
-    IAccountService accountService
+    IAccountService accountService,
+    IProgressService progressService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public const string AlreadyRegistered = "User already exists";
@@ -44,6 +45,8 @@ public class Handler(
 
         // RabbitMQ request (consumer: account microservice)
         await accountService.CreateAccount(user.Id);
+        // RabbitMQ request (consumer: progress microservice)
+        await progressService.CreateUserProgress(user.Id);
 
         return Result<Output>.Success(new Output(user.Id));
     }
