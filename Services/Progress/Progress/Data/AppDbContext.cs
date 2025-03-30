@@ -1,18 +1,37 @@
-using Account.Domain.Entities;
-using Account.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
+using Progress.Domain.Entities;
+using Progress.Domain.Entities.Common;
 
-namespace Account.Data;
+namespace Progress.Data;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
-    public required DbSet<CustomerAccount> CustomerAccounts { get; init; }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<CustomerAccount>()
-            .HasIndex(a => a.UserId)
+        var step = builder.Entity<Step>();
+        var progress = builder.Entity<CustomerProgress>();
+
+        step
+            .HasIndex(s => s.Name)
             .IsUnique();
+
+        step
+            .HasIndex(s => s.Order)
+            .IsUnique();
+
+        progress
+            .HasIndex(p => p.UserId)
+            .IsUnique();
+
+        /*** Relations ***/
+        step.HasMany(s => s.CustomerProgress)
+            .WithOne(p => p.Step)
+            .HasForeignKey(p => p.StepId);
+
+        /*** Seed default dev data ***/
+        var steps = SeedData.GetLanguages();
+        if (steps is not null)
+            builder.Entity<Step>().HasData(steps);
     }
 
     public override int SaveChanges()

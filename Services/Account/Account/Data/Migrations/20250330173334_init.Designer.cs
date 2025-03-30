@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Account.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250330151433_init")]
+    [Migration("20250330173334_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -44,9 +44,7 @@ namespace Account.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW() AT TIME ZONE 'UTC'");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");

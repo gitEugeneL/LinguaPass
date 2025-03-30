@@ -60,11 +60,29 @@ services:
     networks:
       - linguaPass.backend
 
+  #----------------------------------------------
+  
+  progress.database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: progress
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
+    volumes:
+      - progress.database:/var/lib/postgresql/data:rw
+    networks:
+      - linguaPass.backend
+
+  #----------------------------------------------
+
 volumes:
   data.rabbitmq:
   identity.database:
   course.database:
   account.database:
+  progress.database:
 
 networks:
   linguaPass.backend:
