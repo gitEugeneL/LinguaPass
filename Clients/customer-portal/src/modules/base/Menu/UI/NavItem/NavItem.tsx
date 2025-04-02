@@ -7,14 +7,16 @@ export default function NavItem({ name, to, disabled = false }: NavItemProps) {
   return (
     <li>
       {to && (
-        <NavLink to={to}>
-          <div
-            className={cn(styles.item, {
-              [styles.disabled]: disabled
-            })}
-          >
-            {name}
-          </div>
+        <NavLink
+          to={to}
+          className={({ isActive }) =>
+            cn(styles.item, {
+              [styles.disabled]: disabled,
+              [styles.active]: isActive
+            })
+          }
+        >
+          {name}
         </NavLink>
       )}
 

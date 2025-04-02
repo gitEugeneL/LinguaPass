@@ -1,5 +1,7 @@
-import { COURSE } from '../../helpers/api.tsx';
+import { ACCOUNT, COURSE } from '../../helpers/api.tsx';
 
 export const languageUrls = {
-  getLanguages: `${COURSE}/languages`
+  getLanguages: `${COURSE}/languages`,
+  chooseLanguage: `${ACCOUNT}/choose-language`,
+  getUserLanguageId: `${ACCOUNT}/my-languageId`
 };

@@ -1,28 +1,23 @@
 import styles from './Stepper.module.pcss';
+import { StepperProps } from './Stepper.props.ts';
+import Loader from '../../../components/base/Loader/Loader.tsx';
 import StepperItem from './components/StepperItem.tsx';
 
-export default function Stepper() {
-  const steps: { status: 'complete' | 'active' | 'not done'; name: string }[] = [
-    { status: 'complete', name: 'First' },
-    { status: 'active', name: 'Payment verification process' },
-    { status: 'not done', name: 'Payment verification' },
-    { status: 'not done', name: 'Payment verification' },
-    { status: 'not done', name: 'Payment verification' },
-    { status: 'not done', name: 'Payment verification' },
-    { status: 'not done', name: 'Last' }
-  ];
-
+export default function Stepper({ ...props }: StepperProps) {
   return (
     <div className={styles.container}>
-      {steps.map((step, index) => (
-        <StepperItem
-          status={step.status}
-          name={step.name}
-          isFirst={index === 0}
-          isLast={index === steps.length - 1}
-          key={index}
-        />
-      ))}
+      {props.isLoading && <Loader />}
+
+      {!props.isLoading &&
+        props.statuses.map((item, index) => (
+          <StepperItem
+            status={item.status}
+            name={item.name}
+            isFirst={index === 0}
+            isLast={index === props.statuses.length - 1}
+            key={index}
+          />
+        ))}
     </div>
   );
 }

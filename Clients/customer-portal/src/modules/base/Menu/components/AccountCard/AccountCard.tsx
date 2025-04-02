@@ -15,13 +15,14 @@ export default function AccountCard() {
       </div>
 
       <ul className={styles.navBlock}>
-        <NavItem name='Home' to='#' />
-        <NavItem name='My course' to='#' />
-        <NavItem name='My contact info' to='#' disabled={true} />
-        <NavItem name='My personal info' to='#' disabled={true} />
-        <NavItem name='My documents' to='#' disabled={true} />
+        <NavItem name='My language' to='/languages' />
+        <NavItem name='My school' to='/' disabled={true} />
+        <NavItem name='My course' to='/' disabled={true} />
+        <NavItem name='My contact info' to='/' disabled={true} />
+        <NavItem name='My personal info' to='/' disabled={true} />
+        <NavItem name='My documents' to='/' disabled={true} />
         <div className={styles.navBottom}>
-          <NavItem name='My account' to='#' />
+          <NavItem name='My account' to='/' />
           <NavItem name='Logout' />
         </div>
       </ul>

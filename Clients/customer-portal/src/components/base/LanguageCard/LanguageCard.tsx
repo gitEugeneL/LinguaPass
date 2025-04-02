@@ -1,5 +1,5 @@
-import Button from '../../../UI/Button/Button.tsx';
 import styles from './LanguageCard.module.pcss';
+import Button from '../../../UI/Button/Button.tsx';
 import UKIcon from './icons/UKIcon.tsx';
 import { useState } from 'react';
 import { LanguageCardProps } from './LanguageCard.props.ts';
@@ -13,10 +13,12 @@ import PortugalIcon from './icons/PortugalIcon.tsx';
 
 export default function LanguageCard({ ...props }: LanguageCardProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+
   const handleHover = (state: boolean) => setIsHovered(state);
 
   return (
     <div
+      onClick={props.handleClick}
       className={styles.card}
       onMouseEnter={() => handleHover(true)}
       onMouseLeave={() => handleHover(false)}

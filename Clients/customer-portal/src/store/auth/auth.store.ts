@@ -40,7 +40,7 @@ interface AuthState {
   resetState: () => void;
 }
 
-export const useAuthStore = create(
+export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       userId: null,
@@ -148,7 +148,7 @@ export const useAuthStore = create(
             const request: RefreshOrLogoutRequest = { userId: userId };
             try {
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
-                withCredentials: true
+                withCredentials: true // response with secure cookie (refresh token)
               });
               set({
                 accessToken: data.accessToken,
@@ -193,7 +193,7 @@ export const useAuthStore = create(
       resetCodeData: () => set({ email: null, codeExpires: null })
     }),
     {
-      name: 'AuthStore',
+      name: 'auth',
       partialize: (state: AuthState) => ({
         userId: state.userId,
         codeExpires: state.codeExpires,

@@ -12,7 +12,9 @@ export default function StepperItem({ ...props }: StepperItemProps) {
             [styles.nameEnd]: props.isLast
           })}
         >
-          {props.name}
+          {props.name === 'Language' && 'Choose a language'}
+          {props.name === 'School' && 'Choose a school'}
+          {props.name === 'Course' && 'Choose a course'}
         </h3>
       )}
 

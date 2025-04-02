@@ -7,3 +7,16 @@ export interface Language {
 export interface GetLanguagesResponse {
   items: Language[];
 }
+
+export interface ChooseLanguageRequest {
+  languageId: string;
+}
+
+export interface ChooseLanguageResponse {
+  userId: string;
+  languageId: string;
+}
+
+export interface GetMyLanguageIdResponse {
+  languageId: string;
+}
