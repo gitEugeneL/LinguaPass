@@ -1,19 +1,19 @@
-using Account.Data;
 using AuthConfig.Tools;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Progress.Data;
 
-namespace Account.Features.GetUserLanguageId;
+namespace Progress.Features.GetUSerStatus;
 
 public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<Ok<Response>, NotFound<string>>>
 {
     public const string InvalidUser = "user not fount or invalid";
-    public const string LanguageDoesntExist = "user language does not exist";
+    public const string InvalidStatus = "status not fount";
 
     public override void Configure()
     {
-        Get("/api/my-languageId");
+        Get("/api/status");
         Policies(Constants.CustomerPolicy);
     }
 
@@ -23,15 +23,17 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
         if (userId is null)
             return TypedResults.NotFound(InvalidUser);
 
-        var userLanguageId = await dbContext
-            .CustomerAccounts
-            .AsNoTracking()
-            .Where(a => a.UserId == userId)
-            .Select(a => a.LanguageId)
+        var result = await dbContext
+            .CustomerProgress
+            .Where(c => c.UserId == userId)
+            .Select(c => new Response(
+                (int)c.Step,
+                c.Step.ToString().Replace("Submission", "").Replace("Review", ""),
+                c.Step.ToString().StartsWith("Submission") ? "Submission" : "Review"))
             .FirstOrDefaultAsync(ct);
 
-        return userLanguageId is not null
-            ? TypedResults.Ok(new Response(userLanguageId))
-            : TypedResults.NotFound(LanguageDoesntExist);
+        return result is not null
+            ? TypedResults.Ok(result)
+            : TypedResults.NotFound(InvalidStatus);
     }
 }

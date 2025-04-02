@@ -1,4 +1,5 @@
 using AuthConfig.Configs;
+using FastEndpoints;
 using MessageBroker.Configs;
 using Microsoft.EntityFrameworkCore;
 using Progress.Data;
@@ -21,6 +22,9 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 /*** Auth Policy (Common config) ***/
 builder.Services.ConfigureAuthPolicy();
 
+/*** Fast Endpoints ***/
+builder.Services.AddFastEndpoints();
+
 /*** RabbitMQ configuration (Common config) ***/
 builder.Services.ConfigureMassTransit(builder.Configuration,
     busConfigurator =>
@@ -30,5 +34,10 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
     });
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseResponseCaching();
+app.UseFastEndpoints();
 
 app.Run();
