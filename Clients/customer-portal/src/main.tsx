@@ -21,12 +21,12 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '',
-        element: <Navigate to='languages' replace />
-      },
-      {
         path: 'languages',
         element: <LanguagePage />
+      },
+      {
+        path: 'schools',
+        element: <>school page</>
       }
     ]
   },

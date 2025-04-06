@@ -10,16 +10,29 @@ import ItalyIcon from './icons/ItalyIcon.tsx';
 import JapanIcon from './icons/JapanIcon.tsx';
 import ChinaIcon from './icons/ChinaIcon.tsx';
 import PortugalIcon from './icons/PortugalIcon.tsx';
+import cn from 'classnames';
 
-export default function LanguageCard({ ...props }: LanguageCardProps) {
+export default function LanguageCard({ chosen = undefined, ...props }: LanguageCardProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(false);
 
-  const handleHover = (state: boolean) => setIsHovered(state);
+  const handleHover = (state: boolean) => {
+    setIsHovered(state);
+  };
+
+  const handleCLick = () => {
+    props.handleClick();
+    setIsActive(true);
+  };
 
   return (
     <div
-      onClick={props.handleClick}
-      className={styles.card}
+      className={cn(styles.card, {
+        [styles.active]: isActive,
+        [styles.chosenCard]: (chosen !== undefined && chosen) || isActive,
+        [styles.notChosenCard]: chosen !== undefined && !chosen && !isActive
+      })}
+      onClick={handleCLick}
       onMouseEnter={() => handleHover(true)}
       onMouseLeave={() => handleHover(false)}
       onFocus={() => handleHover(true)}
@@ -40,7 +53,22 @@ export default function LanguageCard({ ...props }: LanguageCardProps) {
       <p className={styles.description}>
         {props.description.length > 80 ? props.description.slice(0, 80) + '...' : props.description}
       </p>
-      <Button name="Let's begin" size='large' appearance={isHovered ? 'primary' : 'disabled'} />
+      {chosen === undefined && (
+        <Button
+          size='large'
+          name="Let's begin"
+          appearance={isHovered || isActive ? 'primary' : 'disabled'}
+          isLoading={props.isLoading}
+        />
+      )}
+      {chosen !== undefined && (
+        <Button
+          size='large'
+          name={chosen ? 'Next steep' : 'Change language'}
+          appearance={chosen || isHovered || isActive ? 'primary' : 'disabled'}
+          isLoading={props.isLoading}
+        />
+      )}
     </div>
   );
 }

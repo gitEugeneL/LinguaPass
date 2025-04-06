@@ -14,8 +14,9 @@ interface ProgressState {
   myStatusGroup: 'submission' | 'review';
   myStatus: EnhancedStatus | null;
 
-  getAllStatuses: () => void;
-  getMyStatus: () => void;
+  getAllStatuses: () => Promise<void>;
+  getMyStatus: () => Promise<void>;
+  changeStep: (order: number) => void;
 }
 
 export const useProgressStore = create<ProgressState>()(
@@ -67,8 +68,8 @@ export const useProgressStore = create<ProgressState>()(
           });
 
           set({
-            statuses: updatedStatuses,
-            myStatus: updatedStatuses.find((status) => status.status === 'active') || null
+            myStatus: updatedStatuses.find((status) => status.status === 'active') || null,
+            statuses: updatedStatuses
           });
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -77,6 +78,23 @@ export const useProgressStore = create<ProgressState>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+
+      changeStep: (order: number) => {
+        const updatedStatuses: EnhancedStatus[] = get().statuses.map((status) => {
+          if (status.order === order) {
+            return { ...status, status: 'active' };
+          }
+          if (status.order < order) {
+            return { ...status, status: 'complete' };
+          }
+          return { ...status, status: 'not done' };
+        });
+
+        set({
+          statuses: updatedStatuses,
+          myStatus: updatedStatuses.find((status) => status.order === order) || null
+        });
       }
     }),
     {

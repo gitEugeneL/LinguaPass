@@ -1,11 +1,12 @@
-import { Outlet } from 'react-router';
-import MainFooter from '../../../components/base/MainFooter/MainFooter.tsx';
 import styles from './BaseLayout.module.pcss';
+import MainFooter from '../../../components/base/MainFooter/MainFooter.tsx';
 import Menu from '../../../modules/base/Menu/Menu.tsx';
 import Stepper from '../../../modules/base/Stepper/Stepepr.tsx';
 import { useProgressStore } from '../../../store/progress/progress.store.ts';
 import { useShallow } from 'zustand/react/shallow';
+import { Outlet, useNavigate } from 'react-router';
 import { useEffect } from 'react';
+import { routesArray } from '../../../helpers/routeHelpers.ts';
 
 export default function BaseLayout() {
   const { statuses, isLoading, myStatus, getAllStatuses, getMyStatus } = useProgressStore(
@@ -18,21 +19,32 @@ export default function BaseLayout() {
     }))
   );
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (myStatus === null) {
-      getMyStatus();
-    }
+    const fetchData = async () => {
+      if (statuses.length === 0) {
+        await getAllStatuses();
+      }
+      if (myStatus === null) {
+        await getMyStatus();
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
-    if (statuses.length === 0) {
-      getAllStatuses();
+    if (myStatus !== null) {
+      const lastRoute = routesArray.find((route) => route.order === myStatus.order);
+      if (lastRoute) {
+        navigate(lastRoute.to);
+      }
     }
-  }, []);
+  }, [myStatus]);
 
   return (
     <div className={styles.container}>
-      <Menu />
+      <Menu routes={routesArray} />
       <div className={styles.body}>
         <Stepper isLoading={isLoading} statuses={statuses} />
         <Outlet />

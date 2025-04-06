@@ -19,9 +19,9 @@ interface LanguagesState {
 
   myLanguage: Language | null;
 
-  getActiveLanguages: () => void;
-  chooseLanguage: (languageId: string) => void;
-  getMyLanguages: () => void;
+  getActiveLanguages: () => Promise<void>;
+  chooseLanguage: (languageId: string) => Promise<void>;
+  getMyLanguage: () => Promise<void>;
 }
 
 export const useLanguagesStore = create<LanguagesState>()(
@@ -62,7 +62,9 @@ export const useLanguagesStore = create<LanguagesState>()(
             request,
             { headers: createAuthHeader(useAuthStore.getState().accessToken) }
           );
-          set({ myLanguage: get().languages.find((l) => l.languageId === data.languageId) });
+          set({
+            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null
+          });
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });
@@ -72,8 +74,9 @@ export const useLanguagesStore = create<LanguagesState>()(
         }
       },
 
-      getMyLanguages: async () => {
+      getMyLanguage: async () => {
         set({ isLoading: true });
+
         try {
           const { data } = await axios.get<GetMyLanguageIdResponse>(
             languageUrls.getUserLanguageId,
@@ -81,7 +84,14 @@ export const useLanguagesStore = create<LanguagesState>()(
               headers: createAuthHeader(useAuthStore.getState().accessToken)
             }
           );
-          set({ myLanguage: get().languages.find((l) => l.languageId === data.languageId) });
+
+          console.log('have');
+          const result = get().languages.find((l) => l.languageId === data.languageId) || null;
+          console.log(result);
+
+          set({
+            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null
+          });
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });

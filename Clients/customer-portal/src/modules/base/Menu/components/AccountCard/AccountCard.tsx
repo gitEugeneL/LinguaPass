@@ -1,8 +1,12 @@
 import styles from './AccountCard.module.pcss';
 import ArrowIcon from '../../../../../assets/icons/ArrowIcon.tsx';
 import NavItem from '../../UI/NavItem/NavItem.tsx';
+import { AccountCardProps } from './AccountCard.props.ts';
+import { useProgressStore } from '../../../../../store/progress/progress.store.ts';
 
-export default function AccountCard() {
+export default function AccountCard({ ...props }: AccountCardProps) {
+  const status = useProgressStore((state) => state.myStatus);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
@@ -14,13 +18,16 @@ export default function AccountCard() {
         <div className={styles.fullName}>Firstname Lastname</div>
       </div>
 
-      <ul className={styles.navBlock}>
-        <NavItem name='My language' to='/languages' />
-        <NavItem name='My school' to='/' disabled={true} />
-        <NavItem name='My course' to='/' disabled={true} />
-        <NavItem name='My contact info' to='/' disabled={true} />
-        <NavItem name='My personal info' to='/' disabled={true} />
-        <NavItem name='My documents' to='/' disabled={true} />
+      <ul className={styles.navBlock} onClick={props.toggleDrawer}>
+        {props.routes.map((route, index) => (
+          <NavItem
+            key={index}
+            name={route.name}
+            to={route.to}
+            disabled={status !== null && status.order < route.order}
+          />
+        ))}
+
         <div className={styles.navBottom}>
           <NavItem name='My account' to='/' />
           <NavItem name='Logout' />

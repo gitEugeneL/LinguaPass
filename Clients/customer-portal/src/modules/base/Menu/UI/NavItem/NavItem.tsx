@@ -15,6 +15,7 @@ export default function NavItem({ name, to, disabled = false }: NavItemProps) {
               [styles.active]: isActive
             })
           }
+          onClick={(e) => disabled && e.preventDefault()}
         >
           {name}
         </NavLink>
