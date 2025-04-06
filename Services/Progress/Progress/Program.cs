@@ -30,6 +30,7 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
     busConfigurator =>
     {
         busConfigurator.AddConsumer<CreateProgressConsumer>();
+        busConfigurator.AddConsumer<ChangeSteepConsumer>();
         // add another consumers
     });
 

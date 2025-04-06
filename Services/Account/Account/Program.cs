@@ -1,6 +1,8 @@
 using Account.Data;
 using Account.Grpc;
 using Account.MessageBroker.Consumers;
+using Account.MessageBroker.Services;
+using Account.MessageBroker.Services.Interfaces;
 using AuthConfig.Configs;
 using FastEndpoints;
 using MessageBroker.Configs;
@@ -36,6 +38,9 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
         busConfigurator.AddConsumer<CreateAccountConsumer>();
         // add another consumers
     });
+
+/*** Message broker services ***/
+builder.Services.AddScoped<IProgressService, ProgressService>();
 
 var app = builder.Build();
 

@@ -23,7 +23,7 @@ builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "broker
 /*** RabbitMQ configuration (Common config) ***/
 builder.Services.ConfigureMassTransit(builder.Configuration);
 
-/*** message broker services ***/
+/*** Message broker services ***/
 builder.Services
     .AddScoped<IAccountService, AccountService>()
     .AddScoped<IProgressService, ProgressService>();

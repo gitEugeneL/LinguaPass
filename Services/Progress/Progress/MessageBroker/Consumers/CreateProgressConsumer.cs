@@ -2,7 +2,7 @@ using MassTransit;
 using MessageBroker.Contracts;
 using Progress.Data;
 using Progress.Domain.Entities;
-using Progress.Domain.Entities.Enums;
+using Shared.Domain.Enums;
 
 namespace Progress.MessageBroker.Consumers;
 

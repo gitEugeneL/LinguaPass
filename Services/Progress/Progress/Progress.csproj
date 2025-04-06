@@ -10,6 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
         <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
+        <ProjectReference Include="..\..\Shared\Shared.csproj"/>
     </ItemGroup>
 
     <!-- Include shared settings -->

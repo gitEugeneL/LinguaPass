@@ -1,15 +1,18 @@
 using Account.Data;
 using Account.Grpc.Clients;
+using Account.MessageBroker.Services.Interfaces;
 using AuthConfig.Tools;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Shared.Domain.Enums;
 
 namespace Account.Features.ChooseLanguage;
 
 public class Endpoint(
     AppDbContext dbContext,
-    LanguageClient languageClient
+    LanguageClient languageClient,
+    IProgressService progressService
 ) : Endpoint<Request, Results<Ok<Response>, NotFound<string>>>
 {
     public const string InvalidLanguage = "language not fount or invalid";
@@ -40,6 +43,9 @@ public class Endpoint(
 
         if (account is null || account.LanguageId == req.LanguageId)
             return TypedResults.NotFound(InvalidAccount);
+
+        // RabbitMQ request (consumer: progress microservice)
+        await progressService.ChangeUserSteep(account.UserId, Steps.SubmissionSchool);
 
         account.LanguageId = req.LanguageId;
         await dbContext.SaveChangesAsync(ct);

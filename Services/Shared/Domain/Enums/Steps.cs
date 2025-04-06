@@ -1,4 +1,4 @@
-namespace Progress.Domain.Entities.Enums;
+namespace Shared.Domain.Enums;
 
 public enum Steps
 {
@@ -8,7 +8,7 @@ public enum Steps
     SubmissionCourse = 3,
     SubmissionContact = 4,
     SubmissionPersonal = 5,
-    SubmissionDocumets = 6
+    SubmissionDocuments = 6
 
     /*** Review steps ***/
     // ReviewExample = 7

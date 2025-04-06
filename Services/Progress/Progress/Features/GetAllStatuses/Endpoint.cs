@@ -1,6 +1,6 @@
 using AuthConfig.Tools;
 using FastEndpoints;
-using Progress.Domain.Entities.Enums;
+using Shared.Domain.Enums;
 
 namespace Progress.Features.GetAllStatuses;
 

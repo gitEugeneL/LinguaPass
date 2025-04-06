@@ -1,5 +1,5 @@
 using Progress.Domain.Entities.Common;
-using Progress.Domain.Entities.Enums;
+using Shared.Domain.Enums;
 
 namespace Progress.Domain.Entities;
 
