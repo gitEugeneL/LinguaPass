@@ -1,5 +1,5 @@
 using AuthConfig.Tools;
-using Course.Data;
+using Course.Data.Persistence;
 using Course.Features.Shared;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;

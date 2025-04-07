@@ -1,5 +1,5 @@
 using AuthConfig.Configs;
-using Course.Data;
+using Course.Data.Persistence;
 using Course.Grpc.Servers;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;

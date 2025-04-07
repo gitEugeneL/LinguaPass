@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Course.Domain.Entities;
 
-namespace Course.Data;
+namespace Course.Data.Persistence;
 
 public static class SeedData
 {

@@ -1,5 +1,5 @@
 using Common.GrpcProtos;
-using Course.Data;
+using Course.Data.Persistence;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 
