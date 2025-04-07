@@ -1,0 +1,19 @@
+meta {
+  name: (course) GetCountriesByLanguageId
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:5224/course/countries?languageId=8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b
+  body: none
+  auth: bearer
+}
+
+params:query {
+  languageId: 8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIwMTk1ZTg5Ni1hYmY1LTdhNTEtYWVmMy1hOTQwYTNiZDY4ZWIiLCJlbWFpbCI6IkRFVkBERVYuQ09NIiwicm9sZSI6IkNVU1RPTUVSIiwiaXNFbWFpbENvbmZpcm1lZCI6IkZhbHNlIiwibmJmIjoxNzQ0MDU0NzUyLCJleHAiOjE3NDQwNTUzNTIsImlhdCI6MTc0NDA1NDc1MiwiaXNzIjoibGluZ3VhUGFzcy1kZXYtaWRlbnRpdHktYXBpIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzA4NCJ9.x9L6Ua4T2kOksjhdNFOy_Wgpw2MRL0BCS1wbIfQoAQku0FFvgkvusWi6pAHGh9Qm4bOlrivVtYGz9kT_5m5vHQ
+}
