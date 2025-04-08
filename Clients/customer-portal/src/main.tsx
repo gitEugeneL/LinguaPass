@@ -10,6 +10,7 @@ import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswo
 import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
 import BaseLayout from './app/base/layout/BaseLayout.tsx';
 import LanguagePage from './app/base/pages/LanguagePage/LanguagePage.tsx';
+import SchoolPage from './app/base/pages/SchoolPage/SchoolPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'schools',
-        element: <>school page</>
+        element: <SchoolPage />
       }
     ]
   },

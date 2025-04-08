@@ -8,7 +8,7 @@ import {
 } from './language.models.ts';
 import { persist } from 'zustand/middleware';
 import axios, { AxiosError } from 'axios';
-import { languageUrls } from './languages.urls.ts';
+import { languageUrls } from './language.urls.ts';
 import { createAuthHeader } from '../../helpers/authHelpers.ts';
 import { useAuthStore } from '../auth/auth.store.ts';
 
@@ -18,6 +18,7 @@ interface LanguagesState {
   error: string | null;
 
   myLanguage: Language | null;
+  myLanguageId: string | null;
 
   getActiveLanguages: () => Promise<void>;
   chooseLanguage: (languageId: string) => Promise<void>;
@@ -32,6 +33,7 @@ export const useLanguagesStore = create<LanguagesState>()(
       error: null,
 
       myLanguage: null,
+      myLanguageId: null,
 
       getActiveLanguages: async () => {
         set({ isLoading: true });
@@ -63,7 +65,8 @@ export const useLanguagesStore = create<LanguagesState>()(
             { headers: createAuthHeader(useAuthStore.getState().accessToken) }
           );
           set({
-            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null
+            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
+            myLanguageId: data.languageId
           });
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -85,12 +88,9 @@ export const useLanguagesStore = create<LanguagesState>()(
             }
           );
 
-          console.log('have');
-          const result = get().languages.find((l) => l.languageId === data.languageId) || null;
-          console.log(result);
-
           set({
-            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null
+            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
+            myLanguageId: data.languageId
           });
         } catch (error) {
           if (error instanceof AxiosError) {

@@ -1,5 +1,5 @@
 import styles from './LanguageCard.module.pcss';
-import Button from '../../../UI/Button/Button.tsx';
+import Button from '../../../../../UI/Button/Button.tsx';
 import UKIcon from './icons/UKIcon.tsx';
 import { useState } from 'react';
 import { LanguageCardProps } from './LanguageCard.props.ts';

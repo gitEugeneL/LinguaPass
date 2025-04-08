@@ -1,0 +1,98 @@
+.container {
+  padding: 30px;
+  border-radius: var(--normal-radius);
+  background-color: var(--white-color);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:focus,
+  &:hover {
+    cursor: pointer;
+    box-shadow: var(--shadow-1);
+  }
+}
+
+.disabled {
+  opacity: 0.7;
+
+  &:focus,
+  &:hover {
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.textWrapper {
+  max-width: clamp(100px, 50%, 500px);
+  overflow: hidden;
+}
+
+.country {
+  font-size: var(--font-size26);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--black-color);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.title,
+.schoolCount {
+  font-size: var(--font-size14);
+  font-weight: var(--font-weight-regular);
+  color: var(--grey-1-color);
+}
+
+.schoolCount {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.arrow {
+  width: fit-content;
+  display: block;
+  transition: transform 0.3s ease;
+  transform: rotate(90deg);
+}
+
+.count {
+  color: var(--black-color);
+}
+
+.arrowWrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.line {
+  border: none;
+  height: 1px;
+  background-color: var(--black-color);
+}
+
+@media (--breakpoint-tablet) {
+  .country {
+    font-size: var(--font-size32);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .title,
+  .schoolCount {
+    font-size: var(--font-size16);
+  }
+
+  .textWrapper {
+    max-width: 100%;
+  }
+}

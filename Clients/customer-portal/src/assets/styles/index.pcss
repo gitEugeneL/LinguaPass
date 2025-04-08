@@ -1,12 +1,20 @@
 @import "variables.pcss";
 
 :root {
+  --scrollbar-width: 0px;
+
   font-family: 'Inter', sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  width: calc(100vw - var(--scrollbar-width));
+  overflow-x: hidden;
 }
 
 body,

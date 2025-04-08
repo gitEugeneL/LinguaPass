@@ -1,7 +1,7 @@
 import styles from './LanguageList.module.pcss';
 import { useShallow } from 'zustand/react/shallow';
-import LanguageCard from '../../../components/base/LanguageCard/LanguageCard.tsx';
-import { useLanguagesStore } from '../../../store/languages/languages.store.ts';
+import LanguageCard from './components/LanguageCard/LanguageCard.tsx';
+import { useLanguagesStore } from '../../../store/language/language.store.ts';
 import { useProgressStore } from '../../../store/progress/progress.store.ts';
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
@@ -35,12 +35,18 @@ export default function LanguageList() {
       if (languages.length === 0) {
         await getActiveLanguages();
       }
-      if (myStatus !== null && myStatus.order > routes.language.order && myLanguage === null) {
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (myStatus !== null && myLanguage === null && myStatus.order > routes.language.order) {
         await getMyLanguage();
       }
     };
     fetchData();
-  }, []);
+  }, [myLanguage]);
 
   const handleClick = async (languageId: string) => {
     if ((myStatus === null || languageId !== myLanguage?.languageId) && !isLoading) {
