@@ -1,0 +1,15 @@
+meta {
+  name: (course) GetSchoolsByCountryId
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:5224/course/schools?countryId=8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b
+  body: none
+  auth: inherit
+}
+
+params:query {
+  countryId: 8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b
+}
