@@ -5,6 +5,17 @@ export interface Country {
   schoolsCount: number;
 }
 
+export interface School {
+  schoolId: string;
+  name: string;
+  city: string;
+  isActive: boolean;
+}
+
 export interface GetCountriesResponse {
   items: Country[];
+}
+
+export interface GetSchoolsResponse {
+  items: School[];
 }

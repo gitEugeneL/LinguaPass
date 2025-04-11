@@ -3,32 +3,26 @@ import SchoolWidget from './widgets/SchoolWidget/SchoolWidget.tsx';
 import { useProgressStore } from '../../../store/progress/progress.store.ts';
 import { useShallow } from 'zustand/react/shallow';
 import { useLanguagesStore } from '../../../store/language/language.store.ts';
-import { useSchoolsStore } from '../../../store/school/school.store.ts';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { routes } from '../../../helpers/routeHelpers.ts';
-import Loader from '../../../components/base/Loader/Loader.tsx';
+import { useSchoolsStore } from '../../../store/school/school.store.ts';
 
 export default function SchoolList() {
-  const { myStatus, changeStep } = useProgressStore(
-    useShallow((state) => ({
-      myStatus: state.myStatus,
-      changeStep: state.changeStep
-    }))
-  );
+  const [openedCountryId, setOpenedCountryId] = useState<string | null>(null);
 
-  const { myLanguageId, getMyLanguage, isLoadingLanguages } = useLanguagesStore(
+  const myStatus = useProgressStore((state) => state.myStatus);
+
+  const { myLanguageId, getMyLanguage } = useLanguagesStore(
     useShallow((state) => ({
-      isLoadingLanguages: state.isLoading,
       myLanguageId: state.myLanguageId,
       getMyLanguage: state.getMyLanguage
     }))
   );
 
-  const { countries, countriesLanguageId, getCountries, isLoadingSchools } = useSchoolsStore(
+  const { countries, currentLanguageId, getCountries } = useSchoolsStore(
     useShallow((state) => ({
-      isLoadingSchools: state.isLoading,
       countries: state.countries,
-      countriesLanguageId: state.countriesLanguageId,
+      currentLanguageId: state.currentLanguageId,
       getCountries: state.getCountries
     }))
   );
@@ -48,7 +42,7 @@ export default function SchoolList() {
     const fetchData = async () => {
       const hasLanguageId = !!myLanguageId;
       const hasNoCountries = countries.length === 0;
-      const languageMismatch = countriesLanguageId !== myLanguageId;
+      const languageMismatch = currentLanguageId !== myLanguageId;
 
       if (hasLanguageId && (hasNoCountries || languageMismatch)) {
         await getCountries(myLanguageId);
@@ -57,16 +51,21 @@ export default function SchoolList() {
     fetchData();
   }, [myLanguageId]);
 
+  const handleWidgetClick = (countryId: string) => {
+    setOpenedCountryId((prev) => (prev === countryId ? null : countryId));
+  };
+
   return (
     <ul className={styles.container}>
-      {(isLoadingSchools || isLoadingLanguages) && <Loader />}
-      {!isLoadingLanguages &&
-        !isLoadingSchools &&
+      {countries.length !== 0 &&
         countries.map((country) => (
           <SchoolWidget
             key={country.countryId}
+            countryId={country.countryId}
             name={country.name}
             schoolsCount={country.schoolsCount}
+            isOpened={openedCountryId === country.countryId}
+            onClick={handleWidgetClick}
           />
         ))}
     </ul>

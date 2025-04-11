@@ -1,13 +1,20 @@
 export default function LoaderIndicator({
   width = 55,
-  height = 55
+  height = 55,
+  color = 'primary'
 }: {
   width?: number;
   height?: number;
+  color?: 'secondary' | 'primary';
 }) {
+  let fill = '#FFFFFF';
+
+  if (color === 'secondary') {
+    fill = '#F1F5F9';
+  }
   return (
     <svg width={width} height={height} xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
-      <circle fill='#FFFFFF' stroke='#FFFFFF' strokeWidth='15' r='15' cx='35' cy='100'>
+      <circle fill={fill} stroke={fill} strokeWidth='15' r='15' cx='35' cy='100'>
         <animate
           attributeName='cx'
           calcMode='spline'
@@ -18,7 +25,7 @@ export default function LoaderIndicator({
           begin='0'
         ></animate>
       </circle>
-      <circle fill='#FFFFFF' stroke='#FFFFFF' strokeWidth='15' opacity='.8' r='15' cx='35' cy='100'>
+      <circle fill={fill} stroke={fill} strokeWidth='15' opacity='.8' r='15' cx='35' cy='100'>
         <animate
           attributeName='cx'
           calcMode='spline'
@@ -29,7 +36,7 @@ export default function LoaderIndicator({
           begin='0.05'
         ></animate>
       </circle>
-      <circle fill='#FFFFFF' stroke='#FFFFFF' strokeWidth='15' opacity='.6' r='15' cx='35' cy='100'>
+      <circle fill={fill} stroke={fill} strokeWidth='15' opacity='.6' r='15' cx='35' cy='100'>
         <animate
           attributeName='cx'
           calcMode='spline'
@@ -40,7 +47,7 @@ export default function LoaderIndicator({
           begin='.1'
         ></animate>
       </circle>
-      <circle fill='#FFFFFF' stroke='#FFFFFF' strokeWidth='15' opacity='.4' r='15' cx='35' cy='100'>
+      <circle fill={fill} stroke={fill} strokeWidth='15' opacity='.4' r='15' cx='35' cy='100'>
         <animate
           attributeName='cx'
           calcMode='spline'
@@ -51,7 +58,7 @@ export default function LoaderIndicator({
           begin='.15'
         ></animate>
       </circle>
-      <circle fill='#FFFFFF' stroke='#FFFFFF' strokeWidth='15' opacity='.2' r='15' cx='35' cy='100'>
+      <circle fill={fill} stroke={fill} strokeWidth='15' opacity='.2' r='15' cx='35' cy='100'>
         <animate
           attributeName='cx'
           calcMode='spline'

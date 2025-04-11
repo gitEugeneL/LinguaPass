@@ -35,18 +35,12 @@ export default function LanguageList() {
       if (languages.length === 0) {
         await getActiveLanguages();
       }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
       if (myStatus !== null && myLanguage === null && myStatus.order > routes.language.order) {
         await getMyLanguage();
       }
     };
     fetchData();
-  }, [myLanguage]);
+  }, []);
 
   const handleClick = async (languageId: string) => {
     if ((myStatus === null || languageId !== myLanguage?.languageId) && !isLoading) {

@@ -11,6 +11,7 @@ public class Endpoint(AppDbContext dbContext)
     : Endpoint<QueryParams, Results<NotFound<string>, Ok<CollectionResponse<Response>>>>
 {
     public const string InvalidCountryId = "countryId is invalid";
+    public const string InvalidLanguageId = "languageId is invalid";
 
     public override void Configure()
     {
@@ -25,10 +26,14 @@ public class Endpoint(AppDbContext dbContext)
         if (!Guid.TryParse(req.CountryId, out var countryId))
             return TypedResults.NotFound(InvalidCountryId);
 
+        if (!Guid.TryParse(req.LanguageId, out var languageId))
+            return TypedResults.NotFound(InvalidLanguageId);
+
         var result = new CollectionResponse<Response>(
             await dbContext
                 .Schools
                 .Where(s => s.CountryId == countryId)
+                .Where(s => s.Languages.Any(l => l.Id == languageId))
                 .Select(s => new Response(
                     s.Id,
                     s.Name,

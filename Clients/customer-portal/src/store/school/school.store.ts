@@ -1,4 +1,4 @@
-import { Country, GetCountriesResponse } from './school.models.ts';
+import { Country, GetCountriesResponse, GetSchoolsResponse, School } from './school.models.ts';
 import { persist } from 'zustand/middleware';
 import { create } from 'zustand';
 import axios, { AxiosError } from 'axios';
@@ -8,24 +8,28 @@ import { useAuthStore } from '../auth/auth.store.ts';
 
 interface SchoolsState {
   countries: Country[];
-  countriesLanguageId: string | null;
+  schools: School[];
 
+  currentLanguageId: string | null;
+  currentCountryId: string | null;
   isLoading: boolean;
   error: string | null;
-
   getCountries: (languageId: string) => Promise<void>;
+  getSchools: (countryId: string) => Promise<void>;
 }
 
 export const useSchoolsStore = create<SchoolsState>()(
   persist(
     (set, get) => ({
       countries: [],
-      countriesLanguageId: null,
+      schools: [],
+      currentLanguageId: null,
+      currentCountryId: null,
       isLoading: false,
       error: null,
 
       getCountries: async (languageId: string) => {
-        set({ isLoading: true, countriesLanguageId: null });
+        set({ isLoading: true, currentLanguageId: null });
         try {
           const { data } = await axios.get<GetCountriesResponse>(schoolUrls.getCountries, {
             params: { languageId: languageId },
@@ -34,7 +38,28 @@ export const useSchoolsStore = create<SchoolsState>()(
           set({
             error: null,
             countries: data.items,
-            countriesLanguageId: languageId
+            currentLanguageId: languageId
+          });
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data });
+          }
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      getSchools: async (countryId: string) => {
+        set({ isLoading: true, currentCountryId: null, schools: [] });
+        try {
+          const { data } = await axios.get<GetSchoolsResponse>(schoolUrls.getSchools, {
+            params: { countryId: countryId, languageId: get().currentLanguageId },
+            headers: createAuthHeader(useAuthStore.getState().accessToken)
+          });
+          set({
+            error: null,
+            schools: data.items,
+            currentCountryId: countryId
           });
         } catch (error) {
           if (error instanceof AxiosError) {
