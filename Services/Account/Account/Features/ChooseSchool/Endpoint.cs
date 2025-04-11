@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Shared.Domain.Enums;
 
-namespace Account.Features.ChooseLanguage;
+namespace Account.Features.ChooseSchool;
 
 public class Endpoint(
     AppDbContext dbContext,
@@ -16,25 +16,31 @@ public class Endpoint(
 ) : Endpoint<Request, Results<Ok<Response>, NotFound<string>>>
 {
     public const string InvalidLanguage = "language not fount or invalid";
+    public const string InvalidSchool = "school not fount or invalid";
     public const string InvalidUser = "user not fount or invalid";
     public const string InvalidAccount = "account not fount or invalid";
 
     public override void Configure()
     {
-        Post("/api/choose-language");
+        Post("/api/choose-school");
         Policies(Constants.CustomerPolicy);
     }
 
-    public override async Task<Results<Ok<Response>, NotFound<string>>> ExecuteAsync(
-        Request req,
-        CancellationToken ct)
+    public override async Task<Results<Ok<Response>, NotFound<string>>> ExecuteAsync(Request req, CancellationToken ct)
     {
         if (!Guid.TryParse(req.LanguageId, out var languageId))
             return TypedResults.NotFound(InvalidLanguage);
 
+        if (!Guid.TryParse(req.SchoolId, out var schoolId))
+            return TypedResults.NotFound(InvalidSchool);
+
         // gRPC request (server: course microservice)
         if (await courseClient.CheckLanguage(languageId) is false or null)
             return TypedResults.NotFound(InvalidLanguage);
+
+        // gRPC request (server: course microservice)
+        if (await courseClient.CheckSchool(languageId, schoolId) is false or null)
+            return TypedResults.NotFound(InvalidSchool);
 
         var userId = TokenReader.ReadUserId(HttpContext);
         if (userId is null)
@@ -44,15 +50,15 @@ public class Endpoint(
             .CustomerAccounts
             .FirstOrDefaultAsync(a => a.UserId == userId, ct);
 
-        if (account is null || account.LanguageId == languageId)
+        if (account is null || (account.SchoolId == schoolId && account.LanguageId == languageId))
             return TypedResults.NotFound(InvalidAccount);
 
         // RabbitMQ request (consumer: progress microservice)
-        await progressService.ChangeUserSteep(account.UserId, Steps.SubmissionSchool);
+        await progressService.ChangeUserSteep(account.UserId, Steps.SubmissionCourse);
 
-        account.LanguageId = languageId;
+        account.SchoolId = schoolId;
         await dbContext.SaveChangesAsync(ct);
 
-        return TypedResults.Ok(new Response(account.UserId, account.LanguageId));
+        return TypedResults.Ok(new Response(account.UserId, account.SchoolId));
     }
 }

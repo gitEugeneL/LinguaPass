@@ -13,10 +13,10 @@ public static class GrpcClientsConfig
         services.AddSingleton(provider =>
             GrpcChannel.ForAddress(courseServer));
 
-        services.AddSingleton<Languages.LanguagesClient>(provider =>
+        services.AddSingleton<Courses.CoursesClient>(provider =>
         {
             var channel = provider.GetRequiredService<GrpcChannel>();
-            return new Languages.LanguagesClient(channel);
+            return new Courses.CoursesClient(channel);
         });
 
         /*** Example **/
@@ -27,7 +27,7 @@ public static class GrpcClientsConfig
         // });
         // services.AddSingleton<OtherClient>();
 
-        services.AddSingleton<LanguageClient>();
+        services.AddSingleton<CourseClient>();
 
         return services;
     }

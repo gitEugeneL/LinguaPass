@@ -28,7 +28,7 @@ builder.Services.AddFastEndpoints();
 var app = builder.Build();
 
 /*** Add gRPC servers ***/
-app.MapGrpcService<LanguageServer>();
+app.MapGrpcService<CourseServer>();
 
 app.UseAuthentication();
 app.UseAuthorization();

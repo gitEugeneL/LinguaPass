@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\languages.proto" GrpcServices="Both"/>
+        <Protobuf Include="Protos\courses.proto" GrpcServices="Both"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -25,27 +25,29 @@ public class Endpoint(AppDbContext dbContext)
         if (!Guid.TryParse(req.LanguageId, out var languageId))
             return TypedResults.BadRequest(InvalidLanguageId);
 
+        var result = new CollectionResponse<Response>(
+            await dbContext.Countries
+                .AsNoTracking()
+                .Where(c => c.IsActive && c.Schools
+                    .Any(s => s.IsActive && s.Languages
+                        .Any(l => l.Id == languageId && l.IsActive)))
+                .Select(c => new
+                {
+                    Country = c,
+                    SchoolCount = c.Schools
+                        .Count(s =>
+                            s.IsActive && s.Languages
+                                .Any(l => l.Id == languageId && l.IsActive))
+                })
+                .OrderByDescending(x => x.SchoolCount)
+                .Select(x => new Response(
+                    x.Country.Id,
+                    x.Country.Name,
+                    x.Country.IsActive,
+                    x.SchoolCount
+                ))
+                .ToListAsync(ct));
 
-        var result = await dbContext
-            .Countries
-            .AsNoTracking()
-            .Where(c => c.IsActive &&
-                        c.Schools
-                            .Any(s => s.IsActive &&
-                                      s.Languages
-                                          .Any(l => l.Id == languageId && l.IsActive)))
-            .Select(c => new Response(
-                c.Id,
-                c.Name,
-                c.IsActive,
-                c.Schools
-                    .Count(s => s.IsActive &&
-                                s.Languages
-                                    .Any(l => l.Id == languageId && l.IsActive)))
-            )
-            .OrderByDescending(r => r.SchoolsCount)
-            .ToListAsync(ct);
-
-        return TypedResults.Ok(new CollectionResponse<Response>(result));
+        return TypedResults.Ok(result);
     }
 }

@@ -9,7 +9,8 @@ public class ChangeSteepConsumer(AppDbContext dbContext) : IConsumer<ChangeSteep
 {
     public async Task Consume(ConsumeContext<ChangeSteepRequest> context)
     {
-        await dbContext.CustomerProgress
+        await dbContext
+            .CustomerProgress
             .Where(u => u.UserId == context.Message.UserId)
             .ExecuteUpdateAsync(setters => setters
                 .SetProperty(u => u.Step, context.Message.Step));

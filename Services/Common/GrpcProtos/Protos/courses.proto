@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "Common.GrpcProtos";
+
+package courses;
+
+service Courses {
+  rpc CheckLanguageExists (CheckLanguageRequest) returns (CheckLanguageResponse);
+  
+  rpc CheckSchoolExists (CheckSchoolRequest) returns (CheckSchoolResponse);
+}
+
+message CheckLanguageRequest {
+  string languageId = 1;
+}
+
+message CheckLanguageResponse {
+  bool languageExists = 1;
+}
+
+message CheckSchoolRequest {
+  string languageId = 1;
+  string schoolId = 2;
+}
+
+message CheckSchoolResponse {
+  bool schoolExists = 1;
+}

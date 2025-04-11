@@ -2,7 +2,7 @@ using Common.GrpcProtos;
 
 namespace Account.Grpc.Clients;
 
-public class LanguageClient(Languages.LanguagesClient client)
+public class CourseClient(Courses.CoursesClient client)
 {
     public async Task<bool?> CheckLanguage(Guid languageId)
     {
@@ -12,8 +12,26 @@ public class LanguageClient(Languages.LanguagesClient client)
             {
                 LanguageId = languageId.ToString()
             };
-            var response = await client.CheckExistsAsync(request);
+            var response = await client.CheckLanguageExistsAsync(request);
             return response.LanguageExists;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public async Task<bool?> CheckSchool(Guid languageId, Guid schoolId)
+    {
+        try
+        {
+            var request = new CheckSchoolRequest
+            {
+                LanguageId = languageId.ToString(),
+                SchoolId = schoolId.ToString()
+            };
+            var response = await client.CheckSchoolExistsAsync(request);
+            return response.SchoolExists;
         }
         catch (Exception ex)
         {
