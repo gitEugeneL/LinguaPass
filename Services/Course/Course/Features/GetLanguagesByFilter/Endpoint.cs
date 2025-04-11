@@ -4,7 +4,7 @@ using Course.Features.Shared;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
 
-namespace Course.Features.GetLanguages;
+namespace Course.Features.GetLanguagesByFilter;
 
 public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Response>
 {

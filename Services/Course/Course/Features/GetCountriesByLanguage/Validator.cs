@@ -1,7 +1,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace Course.Features.GetCountries;
+namespace Course.Features.GetCountriesByLanguage;
 
 public class Validator : Validator<QueryParams>
 {

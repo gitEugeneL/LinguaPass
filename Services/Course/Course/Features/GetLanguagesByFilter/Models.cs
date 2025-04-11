@@ -1,4 +1,4 @@
-namespace Course.Features.GetLanguages;
+namespace Course.Features.GetLanguagesByFilter;
 
 public sealed record QueryParams(string? Filter);
 

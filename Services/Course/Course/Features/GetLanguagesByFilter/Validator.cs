@@ -1,7 +1,7 @@
 using FastEndpoints;
 using FluentValidation;
 
-namespace Course.Features.GetLanguages;
+namespace Course.Features.GetLanguagesByFilter;
 
 public class Validator : Validator<QueryParams>
 {

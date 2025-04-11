@@ -1,4 +1,4 @@
-namespace Course.Features.GetSchools;
+namespace Course.Features.GetSchoolsByLanguageAndCountry;
 
 public sealed record QueryParams(string CountryId, string LanguageId);
 

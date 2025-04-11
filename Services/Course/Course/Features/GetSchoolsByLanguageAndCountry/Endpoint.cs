@@ -1,0 +1,49 @@
+using AuthConfig.Tools;
+using Course.Data.Persistence;
+using Course.Features.Shared;
+using FastEndpoints;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+
+namespace Course.Features.GetSchoolsByLanguageAndCountry;
+
+public class Endpoint(AppDbContext dbContext)
+    : Endpoint<QueryParams, Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
+{
+    public const string InvalidCountryId = "countryId is invalid";
+    public const string InvalidLanguageId = "languageId is invalid";
+
+    public override void Configure()
+    {
+        Get("/api/schools");
+        Policies(Constants.BasePolicy);
+        ResponseCache(60);
+    }
+
+    public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>> ExecuteAsync(
+        QueryParams req, CancellationToken ct)
+    {
+        if (!Guid.TryParse(req.CountryId, out var countryId))
+            return TypedResults.BadRequest(InvalidCountryId);
+
+        if (!Guid.TryParse(req.LanguageId, out var languageId))
+            return TypedResults.BadRequest(InvalidLanguageId);
+
+        var result = await dbContext
+            .Schools
+            .AsNoTracking()
+            .Where(s => s.IsActive &&
+                        s.CountryId == countryId &&
+                        s.Languages
+                            .Any(l => l.Id == languageId && l.IsActive))
+            .Select(s => new Response(
+                s.Id,
+                s.Name,
+                s.City,
+                s.IsActive
+            ))
+            .ToListAsync(ct);
+
+        return TypedResults.Ok(new CollectionResponse<Response>(result));
+    }
+}
