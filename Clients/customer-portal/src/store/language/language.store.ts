@@ -2,8 +2,8 @@ import { create } from 'zustand';
 import {
   ChooseLanguageRequest,
   ChooseLanguageResponse,
+  GetCurrentLanguageIdResponse,
   GetLanguagesResponse,
-  GetMyLanguageIdResponse,
   Language
 } from './language.models.ts';
 import { persist } from 'zustand/middleware';
@@ -17,12 +17,12 @@ interface LanguagesState {
   isLoading: boolean;
   error: string | null;
 
-  myLanguage: Language | null;
-  myLanguageId: string | null;
+  currentLanguage: Language | null;
+  currentLanguageId: string | null;
 
   getActiveLanguages: () => Promise<void>;
   chooseLanguage: (languageId: string) => Promise<void>;
-  getMyLanguage: () => Promise<void>;
+  getCurrentLanguage: () => Promise<void>;
 }
 
 export const useLanguagesStore = create<LanguagesState>()(
@@ -32,8 +32,8 @@ export const useLanguagesStore = create<LanguagesState>()(
       isLoading: false,
       error: null,
 
-      myLanguage: null,
-      myLanguageId: null,
+      currentLanguage: null,
+      currentLanguageId: null,
 
       getActiveLanguages: async () => {
         set({ isLoading: true });
@@ -65,8 +65,8 @@ export const useLanguagesStore = create<LanguagesState>()(
             { headers: createAuthHeader(useAuthStore.getState().accessToken) }
           );
           set({
-            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
-            myLanguageId: data.languageId
+            currentLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
+            currentLanguageId: data.languageId
           });
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -77,20 +77,17 @@ export const useLanguagesStore = create<LanguagesState>()(
         }
       },
 
-      getMyLanguage: async () => {
+      getCurrentLanguage: async () => {
         set({ isLoading: true });
 
         try {
-          const { data } = await axios.get<GetMyLanguageIdResponse>(
-            languageUrls.getUserLanguageId,
-            {
-              headers: createAuthHeader(useAuthStore.getState().accessToken)
-            }
+          const { data } = await axios.get<GetCurrentLanguageIdResponse>(
+            languageUrls.getCurrentLanguageId,
+            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
           );
-
           set({
-            myLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
-            myLanguageId: data.languageId
+            currentLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
+            currentLanguageId: data.languageId
           });
         } catch (error) {
           if (error instanceof AxiosError) {

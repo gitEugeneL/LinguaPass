@@ -1,7 +1,7 @@
 export interface LanguageCardProps {
   title: string;
   description: string;
-  handleClick: () => void;
+  handleChoose: () => void;
   isLoading: boolean;
   chosen?: boolean;
 }

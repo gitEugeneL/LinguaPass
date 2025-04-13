@@ -10,7 +10,10 @@ export interface School {
   name: string;
   city: string;
   isActive: boolean;
+  countryId: string;
 }
+
+export type GetSchoolById = School;
 
 export interface GetCountriesResponse {
   items: Country[];
@@ -18,4 +21,18 @@ export interface GetCountriesResponse {
 
 export interface GetSchoolsResponse {
   items: School[];
+}
+
+export interface ChooseSchoolRequest {
+  languageId: string;
+  schoolId: string;
+}
+
+export interface ChooseSchoolResponse {
+  userId: string;
+  schoolId: string;
+}
+
+export interface GetCurrentSchoolIdResponse {
+  schoolId: string;
 }

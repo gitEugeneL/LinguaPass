@@ -3,15 +3,19 @@
   padding: 30px;
   border-radius: var(--normal-radius);
   background-color: var(--white-color);
-
   max-height: 135px;
-  transition: box-shadow 0.3s ease, max-height 0.9s ease;
   cursor: pointer;
 
   &:focus,
   &:hover {
     box-shadow: var(--shadow-1);
   }
+}
+
+.openedContainer {
+  max-height: 100vh;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.3s ease, max-height 0.9s ease;
 }
 
 .loadingContainer {
@@ -28,6 +32,28 @@
   }
 }
 
+.currentContainer {
+  box-shadow: var(--shadow-1);
+}
+
+.unCurrentContainer {
+  opacity: 0.5;
+  filter: grayscale(100%);
+  transition: opacity 0.3s ease;
+
+  &:hover,
+  &:focus {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+}
+
+.currentMarker {
+  font-weight: var(--font-weight-medium);
+  color: var(--green-1-color);
+  font-size: var(--font-size16);
+}
+
 .blockedContainer {
   opacity: 0.7;
   cursor: not-allowed;
@@ -39,11 +65,6 @@
   }
 }
 
-.openedContainer {
-  max-height: 100vh;
-  box-shadow: var(--shadow-1);
-}
-
 .content {
   opacity: 0;
   display: flex;
@@ -51,11 +72,14 @@
   flex-wrap: wrap;
   flex-direction: column;
   margin-top: 30px;
-  transition: opacity 0.9s ease;
+  transform: translateY(-20px);
 }
 
 .openedContent {
   opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+
 }
 
 .line {

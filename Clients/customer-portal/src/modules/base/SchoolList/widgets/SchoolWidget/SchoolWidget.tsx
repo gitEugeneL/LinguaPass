@@ -10,11 +10,12 @@ import { useSchoolsStore } from '../../../../../store/school/school.store.ts';
 export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
   const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
 
-  const { isLoading, getSchools, schools, currentCountryId } = useSchoolsStore(
+  const { isLoading, getSchools, schools, currentCountryId, currentSchoolId } = useSchoolsStore(
     useShallow((state) => ({
       isLoading: state.isLoading,
       schools: state.schools,
       currentCountryId: state.currentCountryId,
+      currentSchoolId: state.currentSchoolId,
       getSchools: state.getSchools
     }))
   );
@@ -34,6 +35,9 @@ export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
   return (
     <li
       className={cn(styles.container, {
+        [styles.currentContainer]: currentCountryId === props.countryId && props.updateStatus,
+        [styles.unCurrentContainer]:
+          currentCountryId !== props.countryId && props.updateStatus && !props.isOpened,
         [styles.openedContainer]: props.isOpened && !isLoading,
         [styles.loadingContainer]: props.isOpened && isLoading,
         [styles.blockedContainer]: !props.isOpened && isLoading
@@ -65,18 +69,28 @@ export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
         })}
       />
 
-      {!isLoading && props.isOpened && schools.length !== 0 && (
-        <div
-          onClick={handleInnerClick}
-          className={cn(styles.content, {
-            [styles.openedContent]: props.isOpened && !isLoading
-          })}
-        >
-          {schools.map((school) => (
-            <SchoolCard key={school.schoolId} city={school.city} name={school.name} />
+      <div
+        onClick={handleInnerClick}
+        className={cn(styles.content, {
+          [styles.openedContent]: props.isOpened && !isLoading && schools.length !== 0
+        })}
+      >
+        {schools.length !== 0 &&
+          props.isOpened &&
+          !isLoading &&
+          schools.map((school) => (
+            <SchoolCard
+              key={school.schoolId}
+              schoolId={school.schoolId}
+              currentSchoolId={currentSchoolId}
+              updatedStatus={props.updateStatus}
+              city={school.city}
+              name={school.name}
+              countryId={school.countryId}
+              handleChoose={props.handleChoose}
+            />
           ))}
-        </div>
-      )}
+      </div>
     </li>
   );
 }

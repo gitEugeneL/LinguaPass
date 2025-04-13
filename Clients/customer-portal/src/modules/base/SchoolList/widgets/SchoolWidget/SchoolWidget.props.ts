@@ -4,4 +4,6 @@ export interface SchoolWidgetProps {
   schoolsCount: number;
   isOpened: boolean;
   onClick: (countryId: string) => void;
+  handleChoose: (schoolId: string, countryId: string) => void;
+  updateStatus: boolean;
 }

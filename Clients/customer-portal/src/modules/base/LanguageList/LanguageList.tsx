@@ -18,50 +18,57 @@ export default function LanguageList() {
       changeStep: state.changeStep
     }))
   );
-  const { languages, myLanguage, getActiveLanguages, getMyLanguage, isLoading, chooseLanguage } =
-    useLanguagesStore(
-      useShallow((state) => ({
-        isLoading: state.isLoading,
-        languages: state.languages,
-        myLanguage: state.myLanguage,
-        getMyLanguage: state.getMyLanguage,
-        getActiveLanguages: state.getActiveLanguages,
-        chooseLanguage: state.chooseLanguage
-      }))
-    );
+  const {
+    languages,
+    currentLanguage,
+    getActiveLanguages,
+    getCurrentLanguage,
+    isLoading,
+    chooseLanguage
+  } = useLanguagesStore(
+    useShallow((state) => ({
+      isLoading: state.isLoading,
+      languages: state.languages,
+      currentLanguage: state.currentLanguage,
+      getCurrentLanguage: state.getCurrentLanguage,
+      getActiveLanguages: state.getActiveLanguages,
+      chooseLanguage: state.chooseLanguage
+    }))
+  );
 
   useEffect(() => {
     const fetchData = async () => {
       if (languages.length === 0) {
         await getActiveLanguages();
       }
-      if (myStatus !== null && myLanguage === null && myStatus.order > routes.language.order) {
-        await getMyLanguage();
+      if (myStatus !== null && currentLanguage === null && myStatus.order > routes.language.order) {
+        await getCurrentLanguage();
       }
     };
     fetchData();
   }, []);
 
-  const handleClick = async (languageId: string) => {
-    if ((myStatus === null || languageId !== myLanguage?.languageId) && !isLoading) {
+  const handleChoose = async (languageId: string) => {
+    if ((myStatus === null || languageId !== currentLanguage?.languageId) && !isLoading) {
       setLoadingLanguageId(languageId);
-      await chooseLanguage(languageId);
-      changeStep(routes.school.order);
+      await chooseLanguage(languageId).then(() => {
+        changeStep(routes.school.order);
+      });
     }
     navigate(routes.school.to);
   };
 
   const sortedLanguages = [...languages].sort((a, b) => {
-    if (myLanguage) {
-      const aIsChosen = myLanguage.languageId === a.languageId;
-      const bIsChosen = myLanguage.languageId === b.languageId;
+    if (currentLanguage) {
+      const aIsChosen = currentLanguage.languageId === a.languageId;
+      const bIsChosen = currentLanguage.languageId === b.languageId;
       return aIsChosen ? -1 : bIsChosen ? 1 : 0;
     } else {
       return 0;
     }
   });
 
-  if ((languages.length === 0 && isLoading) || (myLanguage === null && isLoading)) {
+  if ((languages.length === 0 && isLoading) || (currentLanguage === null && isLoading)) {
     return <Loader />;
   }
 
@@ -74,9 +81,9 @@ export default function LanguageList() {
             title={item.name}
             description={item.description}
             isLoading={loadingLanguageId === item.languageId}
-            handleClick={() => handleClick(item.languageId)}
-            {...(myLanguage && {
-              chosen: myLanguage.languageId === item.languageId
+            handleChoose={() => handleChoose(item.languageId)}
+            {...(currentLanguage && {
+              chosen: currentLanguage.languageId === item.languageId
             })}
           />
         ))}

@@ -21,7 +21,7 @@ export default function LanguageCard({ chosen = undefined, ...props }: LanguageC
   };
 
   const handleCLick = () => {
-    props.handleClick();
+    props.handleChoose();
     setIsActive(true);
   };
 

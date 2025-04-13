@@ -17,6 +17,6 @@ export interface ChooseLanguageResponse {
   languageId: string;
 }
 
-export interface GetMyLanguageIdResponse {
+export interface GetCurrentLanguageIdResponse {
   languageId: string;
 }
