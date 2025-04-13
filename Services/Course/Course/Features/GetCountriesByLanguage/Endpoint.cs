@@ -8,21 +8,21 @@ using Microsoft.EntityFrameworkCore;
 namespace Course.Features.GetCountriesByLanguage;
 
 public class Endpoint(AppDbContext dbContext)
-    : Endpoint<QueryParams, Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
+    : EndpointWithoutRequest<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
 {
     public const string InvalidLanguageId = "languageId is invalid";
 
     public override void Configure()
     {
-        Get("/api/countries");
+        Get("/api/countries/language/{languageId}");
         Policies(Constants.BasePolicy);
         ResponseCache(60);
     }
 
     public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>> ExecuteAsync(
-        QueryParams req, CancellationToken ct)
+        CancellationToken ct)
     {
-        if (!Guid.TryParse(req.LanguageId, out var languageId))
+        if (!Guid.TryParse(Route<string>("languageId"), out var languageId))
             return TypedResults.BadRequest(InvalidLanguageId);
 
         var result = new CollectionResponse<Response>(

@@ -1,7 +1,5 @@
 namespace Course.Features.GetCountriesByLanguage;
 
-public sealed record QueryParams(string LanguageId);
-
 public sealed record Response(
     Guid CountryId,
     string Name,

@@ -50,7 +50,7 @@ public class Endpoint(
             .CustomerAccounts
             .FirstOrDefaultAsync(a => a.UserId == userId, ct);
 
-        if (account is null || (account.SchoolId == schoolId && account.LanguageId == languageId))
+        if (account is null)
             return TypedResults.NotFound(InvalidAccount);
 
         // RabbitMQ request (consumer: progress microservice)

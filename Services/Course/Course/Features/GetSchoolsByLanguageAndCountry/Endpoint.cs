@@ -8,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 namespace Course.Features.GetSchoolsByLanguageAndCountry;
 
 public class Endpoint(AppDbContext dbContext)
-    : Endpoint<QueryParams, Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
+    : EndpointWithoutRequest<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
 {
     public const string InvalidCountryId = "countryId is invalid";
     public const string InvalidLanguageId = "languageId is invalid";
 
     public override void Configure()
     {
-        Get("/api/schools");
+        Get("/api/schools/country/{countryId}/language/{languageId}");
         Policies(Constants.BasePolicy);
         ResponseCache(60);
     }
 
     public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>> ExecuteAsync(
-        QueryParams req, CancellationToken ct)
+        CancellationToken ct)
     {
-        if (!Guid.TryParse(req.CountryId, out var countryId))
+        if (!Guid.TryParse(Route<string>("countryId"), out var countryId))
             return TypedResults.BadRequest(InvalidCountryId);
 
-        if (!Guid.TryParse(req.LanguageId, out var languageId))
+        if (!Guid.TryParse(Route<string>("languageId"), out var languageId))
             return TypedResults.BadRequest(InvalidLanguageId);
 
         var result = await dbContext
@@ -40,7 +40,8 @@ public class Endpoint(AppDbContext dbContext)
                 s.Id,
                 s.Name,
                 s.City,
-                s.IsActive
+                s.IsActive,
+                s.CountryId
             ))
             .ToListAsync(ct);
 

@@ -1,4 +1,4 @@
-namespace Course.Features.GetSchoolsByLanguageAndCountry;
+namespace Course.Features.GetSchoolById;
 
 public sealed record Response(
     Guid SchoolId,
