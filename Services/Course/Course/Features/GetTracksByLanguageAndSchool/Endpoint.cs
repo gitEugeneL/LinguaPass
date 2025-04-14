@@ -15,7 +15,7 @@ public class Endpoint(AppDbContext dbContext)
 
     public override void Configure()
     {
-        Get("/api/courses");
+        Get("/api/courses/school/{schoolId}/language/{languageId}");
         Policies(Constants.BasePolicy);
         ResponseCache(60);
     }
@@ -23,10 +23,10 @@ public class Endpoint(AppDbContext dbContext)
     public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>> ExecuteAsync(
         QueryParams req, CancellationToken ct)
     {
-        if (!Guid.TryParse(req.SchoolId, out var schoolId))
+        if (!Guid.TryParse(Route<string>("schoolId"), out var schoolId))
             return TypedResults.BadRequest(InvalidSchoolId);
 
-        if (!Guid.TryParse(req.LanguageId, out var languageId))
+        if (!Guid.TryParse(Route<string>("languageId"), out var languageId))
             return TypedResults.BadRequest(InvalidLanguageId);
 
         var result = await dbContext
@@ -45,9 +45,15 @@ public class Endpoint(AppDbContext dbContext)
                 t.Duration,
                 t.Price,
                 t.AdmissionFee,
-                t.IsActive
+                t.IsActive,
+                t.Language.Name, // todo check result
+                t.SchoolId,
+                t.LanguageId
             ))
             .ToListAsync(ct);
+
+        // todo add With accommodation (bool)
+        // todo add language name !!!!
 
         return TypedResults.Ok(new CollectionResponse<Response>(result));
     }
