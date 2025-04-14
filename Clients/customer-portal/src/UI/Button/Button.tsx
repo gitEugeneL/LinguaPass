@@ -1,5 +1,5 @@
-import { ButtonProps } from './Button.props.tsx';
 import styles from './Button.module.pcss';
+import { ButtonProps } from './Button.props.tsx';
 import cn from 'classnames';
 import LoaderIndicator from '../../assets/elements/LoaderIndicator.tsx';
 
@@ -16,6 +16,7 @@ export default function Button({
         [styles.large]: size === 'large',
         [styles.primary]: appearance === 'primary',
         [styles.secondary]: appearance === 'secondary',
+        [styles.special]: appearance === 'special',
         [styles.disabled]: appearance === 'disabled',
         [styles.danger]: appearance === 'danger'
       })}
