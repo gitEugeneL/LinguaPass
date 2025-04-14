@@ -11,6 +11,8 @@ public sealed class Track
     public required decimal AdmissionFee { get; set; }
     public required bool IsActive { get; set; }
 
+    public required bool WithAccommodation { get; set; }
+
     /*** Relations ***/
     public Guid LanguageId { get; init; }
     public required Language Language { get; init; }

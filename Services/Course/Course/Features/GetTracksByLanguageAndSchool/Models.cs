@@ -1,7 +1,5 @@
 namespace Course.Features.GetTracksByLanguageAndSchool;
 
-public sealed record QueryParams(string SchoolId, string LanguageId);
-
 public sealed record Response(
     Guid CourseId,
     string Name,
@@ -11,6 +9,7 @@ public sealed record Response(
     decimal Price,
     decimal AdmissionFee,
     bool IsActive,
+    bool WithAccommodation,
     string LanguageName,
     Guid SchoolId,
     Guid LanguageId

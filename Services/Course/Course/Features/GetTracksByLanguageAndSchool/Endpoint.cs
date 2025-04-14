@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Course.Features.GetTracksByLanguageAndSchool;
 
 public class Endpoint(AppDbContext dbContext)
-    : Endpoint<QueryParams, Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
+    : EndpointWithoutRequest<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
 {
     public const string InvalidSchoolId = "schoolId is invalid";
     public const string InvalidLanguageId = "languageId is invalid";
@@ -21,7 +21,7 @@ public class Endpoint(AppDbContext dbContext)
     }
 
     public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>> ExecuteAsync(
-        QueryParams req, CancellationToken ct)
+        CancellationToken ct)
     {
         if (!Guid.TryParse(Route<string>("schoolId"), out var schoolId))
             return TypedResults.BadRequest(InvalidSchoolId);
@@ -46,14 +46,12 @@ public class Endpoint(AppDbContext dbContext)
                 t.Price,
                 t.AdmissionFee,
                 t.IsActive,
-                t.Language.Name, // todo check result
+                t.WithAccommodation,
+                t.Language.Name, // todo check result (if it's null I should fix)
                 t.SchoolId,
                 t.LanguageId
             ))
             .ToListAsync(ct);
-
-        // todo add With accommodation (bool)
-        // todo add language name !!!!
 
         return TypedResults.Ok(new CollectionResponse<Response>(result));
     }
