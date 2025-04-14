@@ -4,18 +4,15 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
-namespace Account.Features.GetUserLanguageId;
+namespace Account.Features.GetUserAccount;
 
 public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<Ok<Response>, NotFound<string>>>
 {
-    // todo reorganization logic !!!!!!
-
-    public const string InvalidUser = "user not fount or invalid";
-    public const string LanguageDoesntExist = "user language does not exist";
+    public const string InvalidAccount = "user not fount or account is invalid";
 
     public override void Configure()
     {
-        Get("/api/my-languageId");
+        Get("/api/my-account");
         Policies(Constants.CustomerPolicy);
     }
 
@@ -23,17 +20,17 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
     {
         var userId = TokenReader.ReadUserId(HttpContext);
         if (userId is null)
-            return TypedResults.NotFound(InvalidUser);
+            return TypedResults.NotFound(InvalidAccount);
 
-        var userLanguageId = await dbContext
+        var userAccount = await dbContext
             .CustomerAccounts
             .AsNoTracking()
             .Where(a => a.UserId == userId)
-            .Select(a => a.LanguageId)
+            .Select(a => new Response(a.UserId, a.LanguageId, a.SchoolId, a.CourseId))
             .FirstOrDefaultAsync(ct);
 
-        return userLanguageId is not null
-            ? TypedResults.Ok(new Response(userLanguageId))
-            : TypedResults.NotFound(LanguageDoesntExist);
+        return userAccount is not null
+            ? TypedResults.Ok(userAccount)
+            : TypedResults.NotFound(InvalidAccount);
     }
 }

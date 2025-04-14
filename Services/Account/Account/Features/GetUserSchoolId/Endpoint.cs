@@ -8,6 +8,8 @@ namespace Account.Features.GetUserSchoolId;
 
 public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<Ok<Response>, NotFound<string>>>
 {
+    // todo reorganization logic !!!!!!
+
     public const string InvalidUser = "user not fount or invalid";
     public const string SchoolDoesntExist = "user school does not exist";
 
