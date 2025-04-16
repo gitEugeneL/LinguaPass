@@ -159,9 +159,6 @@ namespace Course.Data.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.HasIndex("SchoolId");
 
                     b.ToTable("Tracks");

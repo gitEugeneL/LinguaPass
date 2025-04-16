@@ -15,7 +15,7 @@ public class Endpoint(AppDbContext dbContext)
 
     public override void Configure()
     {
-        Get("/api/courses/school/{schoolId}/language/{languageId}");
+        Get("/api/school/{schoolId}/language/{languageId}");
         Policies(Constants.BasePolicy);
         ResponseCache(60);
     }
@@ -45,9 +45,11 @@ public class Endpoint(AppDbContext dbContext)
                 t.Duration,
                 t.Price,
                 t.AdmissionFee,
+                t.School.City,
                 t.IsActive,
                 t.WithAccommodation,
-                t.Language.Name, // todo check result (if it's null I should fix)
+                t.Language.Name,
+                t.School.Name,
                 t.SchoolId,
                 t.LanguageId
             ))

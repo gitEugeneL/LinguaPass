@@ -96,6 +96,7 @@ namespace Course.Data.Migrations
                     Price = table.Column<decimal>(type: "numeric(7,2)", nullable: false),
                     AdmissionFee = table.Column<decimal>(type: "numeric(7,2)", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    WithAccommodation = table.Column<bool>(type: "boolean", nullable: false),
                     LanguageId = table.Column<Guid>(type: "uuid", nullable: false),
                     SchoolId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -154,12 +155,6 @@ namespace Course.Data.Migrations
                 name: "IX_Tracks_LanguageId",
                 table: "Tracks",
                 column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tracks_Name",
-                table: "Tracks",
-                column: "Name",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tracks_SchoolId",

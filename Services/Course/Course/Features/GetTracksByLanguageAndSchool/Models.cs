@@ -8,9 +8,11 @@ public sealed record Response(
     string Duration,
     decimal Price,
     decimal AdmissionFee,
+    string Location,
     bool IsActive,
     bool WithAccommodation,
     string LanguageName,
+    string SchoolName,
     Guid SchoolId,
     Guid LanguageId
 );

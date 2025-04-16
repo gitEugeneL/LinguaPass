@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Course.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250414204129_init2")]
-    partial class init2
+    [Migration("20250416184552_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,9 +161,6 @@ namespace Course.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LanguageId");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.HasIndex("SchoolId");
 

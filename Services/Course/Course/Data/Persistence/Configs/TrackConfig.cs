@@ -8,9 +8,6 @@ internal sealed class TrackConfig : IEntityTypeConfiguration<Track>
 {
     public void Configure(EntityTypeBuilder<Track> builder)
     {
-        builder.HasIndex(t => t.Name)
-            .IsUnique();
-
         builder.Property(t => t.Name)
             .HasMaxLength(50);
 
