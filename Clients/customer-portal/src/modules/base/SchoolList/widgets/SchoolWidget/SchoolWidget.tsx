@@ -11,11 +11,7 @@ import { useAccountStore } from '../../../../../store/account/account.store.ts';
 export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
   const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
 
-  const { account } = useAccountStore(
-    useShallow((state) => ({
-      account: state.account
-    }))
-  );
+  const account = useAccountStore((state) => state.account);
 
   const { isLoading, getSchools, schools, currentCountryId } = useSchoolsStore(
     useShallow((state) => ({

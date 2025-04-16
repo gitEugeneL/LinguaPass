@@ -14,16 +14,12 @@ export default function SchoolList() {
   const [openedCountryId, setOpenedCountryId] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  const account = useAccountStore((state) => state.account);
+
   const { myStatus, changeStep } = useProgressStore(
     useShallow((state) => ({
       myStatus: state.myStatus,
       changeStep: state.changeStep
-    }))
-  );
-
-  const { account } = useAccountStore(
-    useShallow((state) => ({
-      account: state.account
     }))
   );
 

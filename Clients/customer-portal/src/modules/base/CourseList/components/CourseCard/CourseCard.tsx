@@ -1,28 +1,30 @@
 import style from './CourseCard.module.pcss';
 import Button from '../../../../../UI/Button/Button.tsx';
+import { CourseCardProps } from './CourseCard.props.ts';
 
-export default function CourseCard() {
+export default function CourseCard({ ...props }: CourseCardProps) {
   return (
     <li className={style.card}>
       <div className={style.info}>
         <div className={style.infoWrapper}>
           <div>
             <div className={style.infoText}>
-              Location:<span className={style.infoContent}>Warsaw</span>
+              Location:<span className={style.infoContent}>{props.location}</span>
             </div>
             <div className={style.infoText}>
-              Duration:<span className={style.infoContent}>3 years</span>
+              Duration:<span className={style.infoContent}>{props.duration}</span>
             </div>
             <div className={style.infoText}>
-              Accommodation:<span className={style.infoContent}>Yes</span>
+              Accommodation:
+              <span className={style.infoContent}>{props.withAccommodation ? 'yes' : 'no'}</span>
             </div>
           </div>
           <div>
             <div className={style.infoText}>
-              Admission fee:<span className={style.infoContent}>200€</span>
+              Admission fee:<span className={style.infoContent}>{props.admissionFee}€</span>
             </div>
             <div className={style.infoText}>
-              Price from:<span className={style.infoContent}>3800€</span>
+              Price from:<span className={style.infoContent}>{props.price}€</span>
             </div>
           </div>
         </div>
@@ -32,22 +34,16 @@ export default function CourseCard() {
       </div>
       <div className={style.main}>
         <div className={style.mainWrapper}>
-          <h2 className={style.name}>Super english courses</h2>
-          <span className={style.school}>Warsaw school of languages</span>
-          <span className={style.type}>English language</span>
+          <h2 className={style.name}>{props.name}</h2>
+          <span className={style.school}>{props.schoolName}</span>
+          <span className={style.type}>{props.languageName}</span>
         </div>
 
-        <p className={style.description}>
-          There are many variations of passages of Lorem Ipsum available. Hgsfsg jahsvba hdhckh dgjc
-          js but the majority have suffered alteration in some form. There are many variations of
-          passages of Lorem Ipsum available but the majority have suffered alteration in some form.
-          but the majority have suffered alteration in some form. ty have suffered alteration in
-          some form. but the majority have suffered alteration in some form.
-        </p>
+        <p className={style.description}>{props.description}</p>
 
         <p className={style.activities}>
           <span className={style.activitiesTitle}>Activities: </span>Economy of Millionaires, Global
-          Economy, Green Economy, Transport Economics and Logistic, E-Commerce Business
+          {props.activities}
         </p>
       </div>
     </li>
