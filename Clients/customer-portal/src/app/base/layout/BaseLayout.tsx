@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { Outlet, useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { routesArray } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore } from '../../../store/account/account.store.ts';
 
 export default function BaseLayout() {
   const { statuses, isLoading, myStatus, getAllStatuses, getMyStatus } = useProgressStore(
@@ -16,6 +17,13 @@ export default function BaseLayout() {
       myStatus: state.myStatus,
       getAllStatuses: state.getAllStatuses,
       getMyStatus: state.getMyStatus
+    }))
+  );
+
+  const { account, getCurrentAccount } = useAccountStore(
+    useShallow((state) => ({
+      account: state.account,
+      getCurrentAccount: state.getCurrentAccount
     }))
   );
 
@@ -40,6 +48,15 @@ export default function BaseLayout() {
         navigate(lastRoute.to);
       }
     }
+  }, [myStatus]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (myStatus !== null && account === null) {
+        await getCurrentAccount();
+      }
+    };
+    fetchData();
   }, [myStatus]);
 
   return (

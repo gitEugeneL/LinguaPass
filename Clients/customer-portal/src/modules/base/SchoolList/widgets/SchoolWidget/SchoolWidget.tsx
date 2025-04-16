@@ -6,23 +6,29 @@ import { useShallow } from 'zustand/react/shallow';
 import * as React from 'react';
 import SchoolCard from '../../components/SchoolCard/SchoolCard.tsx';
 import { useSchoolsStore } from '../../../../../store/school/school.store.ts';
+import { useAccountStore } from '../../../../../store/account/account.store.ts';
 
 export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
   const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
 
-  const { isLoading, getSchools, schools, currentCountryId, currentSchoolId } = useSchoolsStore(
+  const { account } = useAccountStore(
+    useShallow((state) => ({
+      account: state.account
+    }))
+  );
+
+  const { isLoading, getSchools, schools, currentCountryId } = useSchoolsStore(
     useShallow((state) => ({
       isLoading: state.isLoading,
       schools: state.schools,
       currentCountryId: state.currentCountryId,
-      currentSchoolId: state.currentSchoolId,
       getSchools: state.getSchools
     }))
   );
 
   const handleClick = async (countryId: string) => {
     props.onClick(countryId);
-    if ((!props.isOpened && currentCountryId !== countryId) || isFirstLoad) {
+    if ((!props.isOpened || isFirstLoad) && account) {
       await getSchools(countryId);
       setIsFirstLoad(false);
     }
@@ -78,11 +84,12 @@ export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
         {schools.length !== 0 &&
           props.isOpened &&
           !isLoading &&
+          account &&
           schools.map((school) => (
             <SchoolCard
               key={school.schoolId}
               schoolId={school.schoolId}
-              currentSchoolId={currentSchoolId}
+              currentSchoolId={account.schoolId}
               updatedStatus={props.updateStatus}
               city={school.city}
               name={school.name}

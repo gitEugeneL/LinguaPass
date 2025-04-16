@@ -10,7 +10,5 @@ export const schoolUrls = {
 
   chooseSchool: `${ACCOUNT}/choose-school`,
 
-  getCurrentSchoolId: `${ACCOUNT}/my-schoolId`,
-
   getSchoolById: (schoolId: string) => `${COURSE}/schools/${schoolId}`
 };

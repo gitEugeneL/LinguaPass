@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import {
   ChooseLanguageRequest,
   ChooseLanguageResponse,
-  GetCurrentLanguageIdResponse,
   GetLanguagesResponse,
   Language
 } from './language.models.ts';
@@ -11,6 +10,7 @@ import axios, { AxiosError } from 'axios';
 import { languageUrls } from './language.urls.ts';
 import { createAuthHeader } from '../../helpers/authHelpers.ts';
 import { useAuthStore } from '../auth/auth.store.ts';
+import { useAccountStore } from '../account/account.store.ts';
 
 interface LanguagesState {
   languages: Language[];
@@ -18,7 +18,6 @@ interface LanguagesState {
   error: string | null;
 
   currentLanguage: Language | null;
-  currentLanguageId: string | null;
 
   getActiveLanguages: () => Promise<void>;
   chooseLanguage: (languageId: string) => Promise<void>;
@@ -33,7 +32,6 @@ export const useLanguagesStore = create<LanguagesState>()(
       error: null,
 
       currentLanguage: null,
-      currentLanguageId: null,
 
       getActiveLanguages: async () => {
         set({ isLoading: true });
@@ -65,9 +63,9 @@ export const useLanguagesStore = create<LanguagesState>()(
             { headers: createAuthHeader(useAuthStore.getState().accessToken) }
           );
           set({
-            currentLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
-            currentLanguageId: data.languageId
+            currentLanguage: get().languages.find((l) => l.languageId === data.languageId) || null
           });
+          useAccountStore.getState().updateLanguageId(data.languageId);
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });
@@ -78,23 +76,11 @@ export const useLanguagesStore = create<LanguagesState>()(
       },
 
       getCurrentLanguage: async () => {
-        set({ isLoading: true });
-
-        try {
-          const { data } = await axios.get<GetCurrentLanguageIdResponse>(
-            languageUrls.getCurrentLanguageId,
-            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
-          );
+        const currentLanguageId = useAccountStore.getState().account?.languageId;
+        if (currentLanguageId) {
           set({
-            currentLanguage: get().languages.find((l) => l.languageId === data.languageId) || null,
-            currentLanguageId: data.languageId
+            currentLanguage: get().languages.find((l) => l.languageId === currentLanguageId) || null
           });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set({ error: error.response?.data });
-          }
-        } finally {
-          set({ isLoading: false });
         }
       }
     }),

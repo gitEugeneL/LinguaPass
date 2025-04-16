@@ -2,12 +2,12 @@ import styles from './SchoolList.module.pcss';
 import SchoolWidget from './widgets/SchoolWidget/SchoolWidget.tsx';
 import { useProgressStore } from '../../../store/progress/progress.store.ts';
 import { useShallow } from 'zustand/react/shallow';
-import { useLanguagesStore } from '../../../store/language/language.store.ts';
 import { useEffect, useMemo, useState } from 'react';
 import { routes } from '../../../helpers/routeHelpers.ts';
 import { useSchoolsStore } from '../../../store/school/school.store.ts';
 import { useNavigate } from 'react-router';
 import Loader from '../../../components/base/Loader/Loader.tsx';
+import { useAccountStore } from '../../../store/account/account.store.ts';
 
 export default function SchoolList() {
   const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
@@ -21,33 +21,26 @@ export default function SchoolList() {
     }))
   );
 
-  const { currentLanguageId, getCurrentLanguage } = useLanguagesStore(
+  const { account } = useAccountStore(
     useShallow((state) => ({
-      currentLanguageId: state.currentLanguageId,
-      getCurrentLanguage: state.getCurrentLanguage
+      account: state.account
     }))
   );
 
   const {
     isLoading,
     countries,
-    schoolCurrentLanguageId,
     currentCountryId,
-    currentSchoolId,
     currentSchool,
     getCountries,
     getCurrentSchool,
-    getCurrentSchoolId,
     chooseSchool
   } = useSchoolsStore(
     useShallow((state) => ({
       isLoading: state.isLoading,
       countries: state.countries,
       currentCountryId: state.currentCountryId,
-      schoolCurrentLanguageId: state.currentLanguageId,
       currentSchool: state.currentSchool,
-      currentSchoolId: state.currentSchoolId,
-      getCurrentSchoolId: state.getCurrentSchoolId,
       getCurrentSchool: state.getCurrentSchool,
       getCountries: state.getCountries,
       chooseSchool: state.chooseSchool
@@ -64,39 +57,21 @@ export default function SchoolList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (myStatus && myStatus.order > routes.language.order) {
-        if (!currentLanguageId) {
-          setIsInitLoading(true);
-          await getCurrentLanguage();
-        }
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const hasLanguageId = !!currentLanguageId;
-      const hasNoCountries = countries.length === 0;
-      const languageMismatch = schoolCurrentLanguageId !== currentLanguageId;
-
-      if (hasLanguageId && (hasNoCountries || languageMismatch)) {
+      if (account?.languageId) {
         setIsInitLoading(true);
-        await getCountries(currentLanguageId).then(() => {
+
+        await getCountries(account.languageId).then(() => {
           setIsInitLoading(false);
         });
       }
     };
     fetchData();
-  }, [currentLanguageId]);
+  }, [account?.languageId]);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (currentSchoolId === null && myStatus !== null && myStatus.order >= routes.course.order) {
-        await getCurrentSchoolId();
-      }
       if (
-        currentSchoolId !== null &&
+        account?.schoolId !== null &&
         currentSchool === null &&
         myStatus !== null &&
         myStatus.order > routes.school.order
@@ -105,7 +80,7 @@ export default function SchoolList() {
       }
     };
     fetchData();
-  }, [currentSchoolId]);
+  }, [account?.schoolId]);
 
   const handleWidgetClick = (countryId: string) => {
     setOpenedCountryId((prev) => (prev === countryId ? null : countryId));
@@ -115,9 +90,9 @@ export default function SchoolList() {
     if (myStatus && myStatus.order >= routes.school.order && !isLoading) {
       await chooseSchool(schoolId, countryId).then(() => {
         changeStep(routes.course.order);
-        navigate(routes.course.to);
       });
     }
+    navigate(routes.course.to);
   };
 
   return (

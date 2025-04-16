@@ -3,7 +3,6 @@ import {
   ChooseSchoolResponse,
   Country,
   GetCountriesResponse,
-  GetCurrentSchoolIdResponse,
   GetSchoolById,
   GetSchoolsResponse,
   School
@@ -14,6 +13,7 @@ import axios, { AxiosError } from 'axios';
 import { createAuthHeader } from '../../helpers/authHelpers.ts';
 import { useAuthStore } from '../auth/auth.store.ts';
 import { schoolUrls } from './school.urls.ts';
+import { useAccountStore } from '../account/account.store.ts';
 
 interface SchoolsState {
   countries: Country[];
@@ -21,14 +21,13 @@ interface SchoolsState {
 
   currentSchool: School | null;
 
-  currentLanguageId: string | null;
+  chosenCountryId: string | null;
+  chosenLanguageId: string | null;
   currentCountryId: string | null;
-  currentSchoolId: string | null;
 
   isLoading: boolean;
   error: string | null;
 
-  getCurrentSchoolId: () => Promise<void>;
   getCurrentSchool: () => Promise<void>;
   getCountries: (languageId: string) => Promise<void>;
   getSchools: (countryId: string) => Promise<void>;
@@ -41,61 +40,68 @@ export const useSchoolsStore = create<SchoolsState>()(
       countries: [],
       schools: [],
       currentSchool: null,
-      currentLanguageId: null,
+      chosenLanguageId: null,
+      chosenCountryId: null,
       currentCountryId: null,
-      currentSchoolId: null,
       isLoading: false,
       error: null,
 
       getCountries: async (languageId: string) => {
-        set({ isLoading: true, currentLanguageId: null });
-        try {
-          const { data } = await axios.get<GetCountriesResponse>(
-            schoolUrls.getCountries(languageId),
-            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
-          );
-          set({
-            error: null,
-            countries: data.items,
-            currentLanguageId: languageId
-          });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set({ error: error.response?.data });
+        if (get().chosenLanguageId !== languageId) {
+          set({ isLoading: true });
+          try {
+            const { data } = await axios.get<GetCountriesResponse>(
+              schoolUrls.getCountries(languageId),
+              { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+            );
+            set({
+              error: null,
+              countries: data.items,
+              chosenLanguageId: languageId,
+              schools: [],
+              chosenCountryId: null
+            });
+            useAccountStore.getState().updateLanguageId(languageId);
+          } catch (error) {
+            if (error instanceof AxiosError) {
+              set({ error: error.response?.data });
+            }
+          } finally {
+            set({ isLoading: false });
           }
-        } finally {
-          set({ isLoading: false });
         }
       },
 
       getSchools: async (countryId: string) => {
-        set({ isLoading: true, schools: [] });
-
-        try {
-          const { data } = await axios.get<GetSchoolsResponse>(
-            schoolUrls.getSchools(countryId, get().currentLanguageId!),
-            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
-          );
-          set({
-            error: null,
-            schools: data.items
-          });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set({ error: error.response?.data });
+        const currentLanguageId = useAccountStore.getState().account?.languageId;
+        if (get().chosenCountryId !== countryId || get().chosenLanguageId !== currentLanguageId) {
+          set({ isLoading: true, schools: [] });
+          try {
+            const { data } = await axios.get<GetSchoolsResponse>(
+              schoolUrls.getSchools(countryId, currentLanguageId!),
+              { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+            );
+            set({
+              error: null,
+              schools: data.items,
+              chosenCountryId: countryId
+            });
+          } catch (error) {
+            if (error instanceof AxiosError) {
+              set({ error: error.response?.data });
+            }
+          } finally {
+            set({ isLoading: false });
           }
-        } finally {
-          set({ isLoading: false });
         }
       },
 
       chooseSchool: async (schoolId: string, countryId: string) => {
         set({ isLoading: true });
         try {
-          const languageId = get().currentLanguageId;
+          const languageId = useAccountStore.getState().account?.languageId;
           if (languageId) {
             const request: ChooseSchoolRequest = { schoolId: schoolId, languageId: languageId };
-
             const { data } = await axios.post<ChooseSchoolResponse>(
               schoolUrls.chooseSchool,
               request,
@@ -103,29 +109,10 @@ export const useSchoolsStore = create<SchoolsState>()(
             );
             set({
               currentSchool: get().schools.find((s) => s.schoolId === data.schoolId) || null,
-              currentSchoolId: data.schoolId,
               currentCountryId: countryId
             });
+            useAccountStore.getState().updateSchoolId(data.schoolId);
           }
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set({ error: error.response?.data });
-          }
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
-      getCurrentSchoolId: async () => {
-        set({ isLoading: true, currentSchoolId: null });
-        try {
-          const { data } = await axios.get<GetCurrentSchoolIdResponse>(
-            schoolUrls.getCurrentSchoolId,
-            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
-          );
-          set({
-            currentSchoolId: data.schoolId
-          });
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });
@@ -138,7 +125,7 @@ export const useSchoolsStore = create<SchoolsState>()(
       getCurrentSchool: async () => {
         set({ isLoading: true, currentSchool: null });
         try {
-          const schoolId = get().currentSchoolId;
+          const schoolId = useAccountStore.getState().account?.schoolId;
           if (schoolId) {
             const { data } = await axios.get<GetSchoolById>(schoolUrls.getSchoolById(schoolId), {
               headers: createAuthHeader(useAuthStore.getState().accessToken)

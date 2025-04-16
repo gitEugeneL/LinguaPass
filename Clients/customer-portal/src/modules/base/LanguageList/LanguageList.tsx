@@ -21,7 +21,7 @@ export default function LanguageList() {
   const {
     languages,
     currentLanguage,
-    getActiveLanguages,
+    getLanguages,
     getCurrentLanguage,
     isLoading,
     chooseLanguage
@@ -31,7 +31,7 @@ export default function LanguageList() {
       languages: state.languages,
       currentLanguage: state.currentLanguage,
       getCurrentLanguage: state.getCurrentLanguage,
-      getActiveLanguages: state.getActiveLanguages,
+      getLanguages: state.getActiveLanguages,
       chooseLanguage: state.chooseLanguage
     }))
   );
@@ -39,7 +39,7 @@ export default function LanguageList() {
   useEffect(() => {
     const fetchData = async () => {
       if (languages.length === 0) {
-        await getActiveLanguages();
+        await getLanguages();
       }
       if (myStatus !== null && currentLanguage === null && myStatus.order > routes.language.order) {
         await getCurrentLanguage();
