@@ -56,8 +56,11 @@ public class Endpoint(
         // RabbitMQ request (consumer: progress microservice)
         await progressService.ChangeUserSteep(account.UserId, Steps.SubmissionCourse);
 
-        account.SchoolId = schoolId;
-        await dbContext.SaveChangesAsync(ct);
+        if (account.SchoolId != schoolId)
+        {
+            account.SchoolId = schoolId;
+            await dbContext.SaveChangesAsync(ct);
+        }
 
         return TypedResults.Ok(new Response(account.UserId, account.SchoolId));
     }
