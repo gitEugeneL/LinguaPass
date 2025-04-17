@@ -28,10 +28,10 @@ interface SchoolsState {
   isLoading: boolean;
   error: string | null;
 
-  getCurrentSchool: () => Promise<void>;
+  getCurrentSchool: (schoolId: string) => Promise<void>;
   getCountries: (languageId: string) => Promise<void>;
-  getSchools: (countryId: string) => Promise<void>;
-  chooseSchool: (schoolId: string, countryId: string) => Promise<void>;
+  getSchools: (languageId: string, countryId: string) => Promise<void>;
+  chooseSchool: (languageId: string, schoolId: string, countryId: string) => Promise<void>;
 }
 
 export const useSchoolsStore = create<SchoolsState>()(
@@ -72,13 +72,12 @@ export const useSchoolsStore = create<SchoolsState>()(
         }
       },
 
-      getSchools: async (countryId: string) => {
-        const currentLanguageId = useAccountStore.getState().account?.languageId;
-        if (get().chosenCountryId !== countryId || get().chosenLanguageId !== currentLanguageId) {
+      getSchools: async (languageId: string, countryId: string) => {
+        if (get().chosenCountryId !== countryId || get().chosenLanguageId !== languageId) {
           set({ isLoading: true, schools: [] });
           try {
             const { data } = await axios.get<GetSchoolsResponse>(
-              schoolUrls.getSchools(countryId, currentLanguageId!),
+              schoolUrls.getSchools(countryId, languageId),
               { headers: createAuthHeader(useAuthStore.getState().accessToken) }
             );
             set({
@@ -96,23 +95,20 @@ export const useSchoolsStore = create<SchoolsState>()(
         }
       },
 
-      chooseSchool: async (schoolId: string, countryId: string) => {
+      chooseSchool: async (languageId: string, schoolId: string, countryId: string) => {
         set({ isLoading: true });
         try {
-          const languageId = useAccountStore.getState().account?.languageId;
-          if (languageId) {
-            const request: ChooseSchoolRequest = { schoolId: schoolId, languageId: languageId };
-            const { data } = await axios.post<ChooseSchoolResponse>(
-              schoolUrls.chooseSchool,
-              request,
-              { headers: createAuthHeader(useAuthStore.getState().accessToken) }
-            );
-            set({
-              currentSchool: get().schools.find((s) => s.schoolId === data.schoolId) || null,
-              currentCountryId: countryId
-            });
-            useAccountStore.getState().updateSchoolId(data.schoolId);
-          }
+          const request: ChooseSchoolRequest = { schoolId: schoolId, languageId: languageId };
+          const { data } = await axios.post<ChooseSchoolResponse>(
+            schoolUrls.chooseSchool,
+            request,
+            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+          );
+          set({
+            currentSchool: get().schools.find((s) => s.schoolId === data.schoolId) || null,
+            currentCountryId: countryId
+          });
+          useAccountStore.getState().updateSchoolId(data.schoolId);
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });
@@ -122,25 +118,22 @@ export const useSchoolsStore = create<SchoolsState>()(
         }
       },
 
-      getCurrentSchool: async () => {
+      getCurrentSchool: async (schoolId: string) => {
         set({ isLoading: true, currentSchool: null });
         try {
-          const schoolId = useAccountStore.getState().account?.schoolId;
-          if (schoolId) {
-            const { data } = await axios.get<GetSchoolById>(schoolUrls.getSchoolById(schoolId), {
-              headers: createAuthHeader(useAuthStore.getState().accessToken)
-            });
-            set({
-              currentCountryId: data.countryId,
-              currentSchool: {
-                schoolId: data.schoolId,
-                name: data.name,
-                city: data.city,
-                isActive: data.isActive,
-                countryId: data.countryId
-              }
-            });
-          }
+          const { data } = await axios.get<GetSchoolById>(schoolUrls.getSchoolById(schoolId), {
+            headers: createAuthHeader(useAuthStore.getState().accessToken)
+          });
+          set({
+            currentCountryId: data.countryId,
+            currentSchool: {
+              schoolId: data.schoolId,
+              name: data.name,
+              city: data.city,
+              isActive: data.isActive,
+              countryId: data.countryId
+            }
+          });
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });

@@ -7,10 +7,13 @@ import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { routes } from '../../../helpers/routeHelpers.ts';
 import Loader from '../../../components/base/Loader/Loader.tsx';
+import { useAccountStore } from '../../../store/account/account.store.ts';
 
 export default function LanguageList() {
   const [loadingLanguageId, setLoadingLanguageId] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const account = useAccountStore((state) => state.account);
 
   const { myStatus, changeStep } = useProgressStore(
     useShallow((state) => ({
@@ -41,8 +44,10 @@ export default function LanguageList() {
       if (languages.length === 0) {
         await getLanguages();
       }
-      if (myStatus !== null && currentLanguage === null && myStatus.order > routes.language.order) {
-        await getCurrentLanguage();
+      const isStatusCorrect = myStatus && myStatus.order > routes.language.order;
+      const languageId = account?.languageId;
+      if (isStatusCorrect && languageId && currentLanguage === null) {
+        await getCurrentLanguage(languageId);
       }
     };
     fetchData();

@@ -24,8 +24,9 @@ export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
 
   const handleClick = async (countryId: string) => {
     props.onClick(countryId);
-    if ((!props.isOpened || isFirstLoad) && account) {
-      await getSchools(countryId);
+    const languageId = account?.languageId;
+    if ((!props.isOpened || isFirstLoad) && languageId) {
+      await getSchools(languageId, countryId);
       setIsFirstLoad(false);
     }
   };

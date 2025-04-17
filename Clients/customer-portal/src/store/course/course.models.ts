@@ -18,3 +18,14 @@ export interface Course {
 export interface GetCoursesResponse {
   items: Course[];
 }
+
+export interface ChooseCourseRequest {
+  languageId: string;
+  schoolId: string;
+  courseId: string;
+}
+
+export interface ChooseCourseResponse {
+  userId: string;
+  courseId: string;
+}

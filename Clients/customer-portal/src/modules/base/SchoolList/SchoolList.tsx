@@ -55,7 +55,6 @@ export default function SchoolList() {
     const fetchData = async () => {
       if (account?.languageId) {
         setIsInitLoading(true);
-
         await getCountries(account.languageId).then(() => {
           setIsInitLoading(false);
         });
@@ -66,13 +65,10 @@ export default function SchoolList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (
-        account?.schoolId !== null &&
-        currentSchool === null &&
-        myStatus !== null &&
-        myStatus.order > routes.school.order
-      ) {
-        await getCurrentSchool();
+      const isOrderCorrect = myStatus && myStatus.order > routes.school.order;
+      const schoolId = account?.schoolId;
+      if (isOrderCorrect && schoolId && currentSchool === null) {
+        await getCurrentSchool(schoolId);
       }
     };
     fetchData();
@@ -83,8 +79,10 @@ export default function SchoolList() {
   };
 
   const handleChoose = async (schoolId: string, countryId: string) => {
-    if (myStatus && myStatus.order >= routes.school.order && !isLoading) {
-      await chooseSchool(schoolId, countryId).then(() => {
+    const isOrderCorrect = myStatus && myStatus.order >= routes.school.order;
+    const languageId = account?.languageId;
+    if (isOrderCorrect && languageId && !isLoading) {
+      await chooseSchool(languageId, schoolId, countryId).then(() => {
         changeStep(routes.course.order);
       });
     }

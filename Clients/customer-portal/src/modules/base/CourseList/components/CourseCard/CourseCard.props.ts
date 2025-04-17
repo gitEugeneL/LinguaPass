@@ -9,4 +9,6 @@ export interface CourseCardProps {
   admissionFee: number;
   withAccommodation: boolean;
   duration: string;
+  courseId: string;
+  handleChoose: (courseId: string) => void;
 }

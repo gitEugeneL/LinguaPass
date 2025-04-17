@@ -17,6 +17,7 @@ interface AccountState {
   updateAccount: <K extends keyof Account>(key: K, value: Account[K]) => void;
   updateLanguageId: (languageId: string) => void;
   updateSchoolId: (schoolId: string) => void;
+  updateCourseId: (courseId: string) => void;
 }
 
 export const useAccountStore = create<AccountState>()(
@@ -56,7 +57,8 @@ export const useAccountStore = create<AccountState>()(
       },
 
       updateLanguageId: (languageId: string) => get().updateAccount('languageId', languageId),
-      updateSchoolId: (schoolId: string) => get().updateAccount('schoolId', schoolId)
+      updateSchoolId: (schoolId: string) => get().updateAccount('schoolId', schoolId),
+      updateCourseId: (courseId: string) => get().updateAccount('courseId', courseId)
     }),
     {
       name: 'account'

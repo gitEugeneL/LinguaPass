@@ -3,6 +3,10 @@ import Button from '../../../../../UI/Button/Button.tsx';
 import { CourseCardProps } from './CourseCard.props.ts';
 
 export default function CourseCard({ ...props }: CourseCardProps) {
+  const handleCLick = () => {
+    props.handleChoose(props.courseId);
+  };
+
   return (
     <li className={style.card}>
       <div className={style.info}>
@@ -29,7 +33,7 @@ export default function CourseCard({ ...props }: CourseCardProps) {
           </div>
         </div>
         <div className={style.btn}>
-          <Button name='Apply online' appearance='special' size='large' />
+          <Button name='Apply online' appearance='special' size='large' onClick={handleCLick} />
         </div>
       </div>
       <div className={style.main}>

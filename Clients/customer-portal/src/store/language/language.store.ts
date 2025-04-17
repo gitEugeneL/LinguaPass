@@ -21,7 +21,7 @@ interface LanguagesState {
 
   getActiveLanguages: () => Promise<void>;
   chooseLanguage: (languageId: string) => Promise<void>;
-  getCurrentLanguage: () => Promise<void>;
+  getCurrentLanguage: (languageId: string) => Promise<void>;
 }
 
 export const useLanguagesStore = create<LanguagesState>()(
@@ -75,13 +75,10 @@ export const useLanguagesStore = create<LanguagesState>()(
         }
       },
 
-      getCurrentLanguage: async () => {
-        const currentLanguageId = useAccountStore.getState().account?.languageId;
-        if (currentLanguageId) {
-          set({
-            currentLanguage: get().languages.find((l) => l.languageId === currentLanguageId) || null
-          });
-        }
+      getCurrentLanguage: async (languageId: string) => {
+        set({
+          currentLanguage: get().languages.find((l) => l.languageId === languageId) || null
+        });
       }
     }),
     {

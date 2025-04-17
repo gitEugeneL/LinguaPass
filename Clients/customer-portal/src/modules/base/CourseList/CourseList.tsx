@@ -5,29 +5,51 @@ import { useAccountStore } from '../../../store/account/account.store.ts';
 import { useCoursesStore } from '../../../store/course/course.store.ts';
 import { useShallow } from 'zustand/react/shallow';
 import Loader from '../../../components/base/Loader/Loader.tsx';
+import { useProgressStore } from '../../../store/progress/progress.store.ts';
+import { useNavigate } from 'react-router';
+import { routes } from '../../../helpers/routeHelpers.ts';
 
 export default function CourseList() {
+  const navigate = useNavigate();
+
   const account = useAccountStore((state) => state.account);
 
-  const { courses, isLoading, getCourses } = useCoursesStore(
+  const { myStatus, changeStep } = useProgressStore(
+    useShallow((state) => ({
+      myStatus: state.myStatus,
+      changeStep: state.changeStep
+    }))
+  );
+
+  const { courses, isLoading, getCourses, chooseCourse } = useCoursesStore(
     useShallow((state) => ({
       courses: state.courses,
       isLoading: state.isLoading,
-      getCourses: state.getCourses
+      getCourses: state.getCourses,
+      chooseCourse: state.chooseCourse
     }))
   );
 
   useEffect(() => {
     const fetchData = async () => {
-      if (account?.languageId && account.schoolId) {
+      if (account && account.languageId && account.schoolId) {
         await getCourses(account.schoolId, account.languageId);
       }
     };
     fetchData();
-  }, []);
+  }, [account?.languageId, account?.schoolId]);
 
-  const handleChoose = async () => {
-    console.log('choose the course');
+  const handleChoose = async (courseId: string) => {
+    const isOrderCorrect = myStatus && myStatus.order >= routes.course.order;
+    const languageId = account?.languageId;
+    const schoolId = account?.schoolId;
+
+    if (isOrderCorrect && languageId && schoolId) {
+      await chooseCourse(languageId, schoolId, courseId).then(() => {
+        changeStep(routes.contact.order);
+      });
+      navigate(routes.contact.to);
+    }
   };
 
   return (
@@ -49,6 +71,8 @@ export default function CourseList() {
               withAccommodation={course.withAccommodation}
               duration={course.duration}
               location={course.location}
+              courseId={course.courseId}
+              handleChoose={handleChoose}
             />
           ))}
       </ul>

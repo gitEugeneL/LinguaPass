@@ -9,9 +9,10 @@ import AuthProvider from './app/AuthProvider.tsx';
 import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
 import BaseLayout from './app/base/layout/BaseLayout.tsx';
-import LanguagePage from './app/base/pages/LanguagePage/LanguagePage.tsx';
-import SchoolPage from './app/base/pages/SchoolPage/SchoolPage.tsx';
-import CoursePage from './app/base/pages/CoursePage/CoursePage.tsx';
+import LanguagePage from './app/base/pages/LanguagePage.tsx';
+import SchoolPage from './app/base/pages/SchoolPage.tsx';
+import CoursePage from './app/base/pages/CoursePage.tsx';
+import ContactInfoPage from './app/base/pages/ContactInfoPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: 'courses',
         element: <CoursePage />
+      },
+      {
+        path: 'contact-info',
+        element: <ContactInfoPage />
       }
     ]
   },

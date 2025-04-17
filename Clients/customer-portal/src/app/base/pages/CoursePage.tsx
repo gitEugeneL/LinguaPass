@@ -1,5 +1,5 @@
-import Title from '../../../../UI/Title/Title.tsx';
-import CourseList from '../../../../modules/base/CourseList/CourseList.tsx';
+import Title from '../../../UI/Title/Title.tsx';
+import CourseList from '../../../modules/base/CourseList/CourseList.tsx';
 
 export default function CoursePage() {
   return (
