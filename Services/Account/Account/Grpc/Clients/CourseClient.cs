@@ -38,4 +38,23 @@ public class CourseClient(Courses.CoursesClient client)
             return null;
         }
     }
+
+    public async Task<bool?> CheckCourse(Guid languageId, Guid schoolId, Guid courseId)
+    {
+        try
+        {
+            var request = new CheckCourseRequest
+            {
+                LanguageId = languageId.ToString(),
+                SchoolId = schoolId.ToString(),
+                CourseId = courseId.ToString()
+            };
+            var response = await client.CheckCourseExistsAsync(request);
+            return response.CourseExists;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
 }

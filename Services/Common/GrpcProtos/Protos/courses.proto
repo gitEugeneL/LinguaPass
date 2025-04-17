@@ -8,6 +8,8 @@ service Courses {
   rpc CheckLanguageExists (CheckLanguageRequest) returns (CheckLanguageResponse);
   
   rpc CheckSchoolExists (CheckSchoolRequest) returns (CheckSchoolResponse);
+
+  rpc CheckCourseExists (CheckCourseRequest) returns (CheckCourseResponse);
 }
 
 message CheckLanguageRequest {
@@ -25,4 +27,14 @@ message CheckSchoolRequest {
 
 message CheckSchoolResponse {
   bool schoolExists = 1;
+}
+
+message CheckCourseRequest {
+  string languageId = 1;
+  string schoolId = 2;
+  string courseId = 3;
+}
+
+message CheckCourseResponse {
+  bool courseExists = 1;
 }
