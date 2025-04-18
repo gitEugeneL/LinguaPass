@@ -37,7 +37,6 @@ export default function LanguageCard({ chosen = undefined, ...props }: LanguageC
       onMouseLeave={() => handleHover(false)}
       onFocus={() => handleHover(true)}
       onBlur={() => handleHover(false)}
-      tabIndex={0}
     >
       <h2 className={styles.title}>{props.title}</h2>
       <div className={styles.icon}>

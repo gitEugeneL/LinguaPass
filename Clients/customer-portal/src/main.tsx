@@ -13,6 +13,7 @@ import LanguagePage from './app/base/pages/LanguagePage.tsx';
 import SchoolPage from './app/base/pages/SchoolPage.tsx';
 import CoursePage from './app/base/pages/CoursePage.tsx';
 import ContactInfoPage from './app/base/pages/ContactInfoPage.tsx';
+import { routes } from './helpers/routeHelpers.ts';
 
 const router = createBrowserRouter([
   {
@@ -24,19 +25,19 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: 'languages',
+        path: routes.language.to,
         element: <LanguagePage />
       },
       {
-        path: 'schools',
+        path: routes.school.to,
         element: <SchoolPage />
       },
       {
-        path: 'courses',
+        path: routes.course.to,
         element: <CoursePage />
       },
       {
-        path: 'contact-info',
+        path: routes.contact.to,
         element: <ContactInfoPage />
       }
     ]

@@ -4,12 +4,13 @@ import { SchoolWidgetProps } from './SchoolWidget.props.ts';
 import cn from 'classnames';
 import { useShallow } from 'zustand/react/shallow';
 import * as React from 'react';
+import { useState } from 'react';
 import SchoolCard from '../../components/SchoolCard/SchoolCard.tsx';
 import { useSchoolsStore } from '../../../../../store/school/school.store.ts';
 import { useAccountStore } from '../../../../../store/account/account.store.ts';
 
 export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
-  const [isFirstLoad, setIsFirstLoad] = React.useState<boolean>(true);
+  const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const account = useAccountStore((state) => state.account);
 

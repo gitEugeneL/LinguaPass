@@ -44,7 +44,9 @@ export default function SchoolList() {
   );
 
   const sortedCountries = useMemo(() => {
-    if (!currentCountryId) return countries;
+    if (!currentCountryId) {
+      return countries;
+    }
     return [
       ...countries.filter((country) => country.countryId === currentCountryId),
       ...countries.filter((country) => country.countryId !== currentCountryId)
@@ -81,7 +83,7 @@ export default function SchoolList() {
   const handleChoose = async (schoolId: string, countryId: string) => {
     const isOrderCorrect = myStatus && myStatus.order >= routes.school.order;
     const languageId = account?.languageId;
-    if (isOrderCorrect && languageId && !isLoading) {
+    if (isOrderCorrect && languageId && !isLoading && schoolId !== currentSchool?.schoolId) {
       await chooseSchool(languageId, schoolId, countryId).then(() => {
         changeStep(routes.course.order);
       });

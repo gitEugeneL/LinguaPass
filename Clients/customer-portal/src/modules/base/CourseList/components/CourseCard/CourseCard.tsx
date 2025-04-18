@@ -1,52 +1,72 @@
-import style from './CourseCard.module.pcss';
+import styles from './CourseCard.module.pcss';
 import Button from '../../../../../UI/Button/Button.tsx';
 import { CourseCardProps } from './CourseCard.props.ts';
+import cn from 'classnames';
 
-export default function CourseCard({ ...props }: CourseCardProps) {
+export default function CourseCard({ chosen = undefined, ...props }: CourseCardProps) {
   const handleCLick = () => {
-    props.handleChoose(props.courseId);
+    if (!props.isBlocked) {
+      props.handleChoose(props.courseId);
+    }
   };
 
   return (
-    <li className={style.card}>
-      <div className={style.info}>
-        <div className={style.infoWrapper}>
+    <li
+      onClick={handleCLick}
+      className={cn(styles.card, {
+        [styles.chosenCard]: chosen !== undefined && chosen,
+        [styles.notChosenCard]: chosen !== undefined && !chosen,
+        [styles.activeCard]: props.isLoading
+      })}
+    >
+      <div className={styles.info}>
+        <div className={styles.infoWrapper}>
           <div>
-            <div className={style.infoText}>
-              Location:<span className={style.infoContent}>{props.location}</span>
+            <div className={styles.infoText}>
+              Location:<span className={styles.infoContent}>{props.location}</span>
             </div>
-            <div className={style.infoText}>
-              Duration:<span className={style.infoContent}>{props.duration}</span>
+            <div className={styles.infoText}>
+              Duration:<span className={styles.infoContent}>{props.duration}</span>
             </div>
-            <div className={style.infoText}>
+            <div className={styles.infoText}>
               Accommodation:
-              <span className={style.infoContent}>{props.withAccommodation ? 'yes' : 'no'}</span>
+              <span className={styles.infoContent}>{props.withAccommodation ? 'yes' : 'no'}</span>
             </div>
           </div>
           <div>
-            <div className={style.infoText}>
-              Admission fee:<span className={style.infoContent}>{props.admissionFee}€</span>
+            <div className={styles.infoText}>
+              Admission fee:<span className={styles.infoContent}>{props.admissionFee}€</span>
             </div>
-            <div className={style.infoText}>
-              Price from:<span className={style.infoContent}>{props.price}€</span>
+            <div className={styles.infoText}>
+              Price from:<span className={styles.infoContent}>{props.price}€</span>
             </div>
           </div>
         </div>
-        <div className={style.btn}>
-          <Button name='Apply online' appearance='special' size='large' onClick={handleCLick} />
+
+        <div className={styles.btn}>
+          <Button
+            name={chosen === undefined ? 'Apply online' : chosen ? 'Next step' : 'Change course'}
+            appearance={chosen === false || chosen === undefined ? 'special' : 'primary'}
+            size='large'
+          />
         </div>
       </div>
-      <div className={style.main}>
-        <div className={style.mainWrapper}>
-          <h2 className={style.name}>{props.name}</h2>
-          <span className={style.school}>{props.schoolName}</span>
-          <span className={style.type}>{props.languageName}</span>
+      <div
+        className={cn(styles.main, {
+          [styles.loading]: props.isLoading
+        })}
+      >
+        <div className={styles.mainWrapper}>
+          <h2 className={styles.name}>{props.name}</h2>
+          <span className={styles.school}>{props.schoolName}</span>
+          <span className={styles.type}>{props.languageName}</span>
         </div>
 
-        <p className={style.description}>{props.description}</p>
+        <p className={styles.description}>{props.description}</p>
 
-        <p className={style.activities}>
-          <span className={style.activitiesTitle}>Activities: </span>Economy of Millionaires, Global
+        <p className={styles.activities}>
+          <span className={styles.activitiesTitle}>Activities: </span>Economy of Millionaires,
+          Global
           {props.activities}
         </p>
       </div>

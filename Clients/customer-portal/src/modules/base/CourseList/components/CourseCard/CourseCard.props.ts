@@ -10,5 +10,8 @@ export interface CourseCardProps {
   withAccommodation: boolean;
   duration: string;
   courseId: string;
+  isLoading: boolean;
+  isBlocked: boolean;
   handleChoose: (courseId: string) => void;
+  chosen?: boolean;
 }

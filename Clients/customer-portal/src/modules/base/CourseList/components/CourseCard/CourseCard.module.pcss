@@ -3,6 +3,8 @@
   flex-direction: column;
   border-radius: var(--normal-radius);
   width: fit-content;
+  cursor: pointer;
+
 
   &:nth-child(8n + 1) > div:first-child {
     background-color: #F7F2C2;
@@ -34,6 +36,11 @@
 
   &:nth-child(8n + 8) > div:first-child {
     background-color: #E7DFF7;
+  }
+
+  &:focus,
+  &:hover {
+    box-shadow: var(--shadow-1);
   }
 }
 
@@ -70,7 +77,7 @@
     gap: 15px;
   }
 
-  @media (min-width: 438px) {
+  @media (min-width: 412px) {
     > div:nth-child(1),
     > div:nth-child(2) {
       align-items: flex-start;
@@ -168,7 +175,62 @@
   font-weight: var(--font-weight-bold);
 }
 
+.notChosenCard {
+  opacity: 0.5;
+  filter: grayscale(100%);
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    filter: grayscale(0%);
+  }
+}
+
+.chosenCard {
+  box-shadow: var(--shadow-1);
+
+  .info {
+    background-color: var(--white-color) !important;
+    border-top: 1px solid var(--grey-3-color);
+    transition: border-color 0.3s ease;
+  }
+
+  &:focus,
+  &:hover {
+    .info {
+      border-color: transparent;
+    }
+  }
+}
+
+.activeCard {
+  opacity: 1;
+  filter: grayscale(0%);
+  box-shadow: var(--shadow-1);
+}
+
+.loading {
+  background: linear-gradient(to right, var(--loading-color) 50%, var(--white-color) 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  animation: fillFromLeft 1.5s ease forwards;
+}
+
+@keyframes fillFromLeft {
+  to {
+    background-position: 0 0;
+  }
+}
+
 @media (--breakpoint-tablet) {
+  .chosenCard {
+    .info {
+      border-top: none;
+      border-right: 1px solid var(--grey-3-color);
+    }
+  }
+
   .card {
     flex-direction: row;
     min-height: 300px;
@@ -184,7 +246,6 @@
   }
 
   .infoWrapper {
-
     > div:nth-child(1),
     > div:nth-child(2) {
       width: 100%;

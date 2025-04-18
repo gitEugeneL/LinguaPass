@@ -15,6 +15,8 @@ export interface Course {
   isActive: boolean;
 }
 
+export type GetCourseById = Course;
+
 export interface GetCoursesResponse {
   items: Course[];
 }

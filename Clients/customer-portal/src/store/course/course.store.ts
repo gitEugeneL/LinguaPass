@@ -8,6 +8,7 @@ import {
   ChooseCourseRequest,
   ChooseCourseResponse,
   Course,
+  GetCourseById,
   GetCoursesResponse
 } from './course.models.ts';
 import { useAccountStore } from '../account/account.store.ts';
@@ -21,6 +22,7 @@ interface CoursesState {
   isLoading: boolean;
   error: null | string;
 
+  getCurrentCourse: (courseId: string) => Promise<void>;
   getCourses: (languageId: string, schoolId: string) => Promise<void>;
   chooseCourse: (languageId: string, schoolId: string, courseId: string) => Promise<void>;
 }
@@ -44,7 +46,7 @@ export const useCoursesStore = create<CoursesState>()(
         ) {
           return;
         }
-        set({ isLoading: true, courses: [] });
+        set({ isLoading: true, courses: [], currentCourse: null });
         try {
           const { data } = await axios.get<GetCoursesResponse>(
             courseUrls.getCourses(schoolId, languageId),
@@ -78,6 +80,40 @@ export const useCoursesStore = create<CoursesState>()(
             currentCourseId: data.courseId
           });
           useAccountStore.getState().updateCourseId(data.courseId);
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data });
+          }
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      getCurrentCourse: async (courseId: string) => {
+        set({ isLoading: true, currentCourse: null });
+        try {
+          const { data } = await axios.get<GetCourseById>(courseUrls.getCourseById(courseId), {
+            headers: createAuthHeader(useAuthStore.getState().accessToken)
+          });
+          set({
+            currentCourseId: data.courseId,
+            currentCourse: {
+              courseId: data.courseId,
+              name: data.name,
+              description: data.description,
+              activities: data.activities,
+              duration: data.duration,
+              price: data.price,
+              location: data.location,
+              languageName: data.languageName,
+              schoolName: data.schoolName,
+              admissionFee: data.admissionFee,
+              withAccommodation: data.withAccommodation,
+              schoolId: data.schoolId,
+              languageId: data.languageId,
+              isActive: data.isActive
+            }
+          });
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });

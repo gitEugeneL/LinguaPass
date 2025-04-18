@@ -5,5 +5,7 @@ export const courseUrls = {
     return `${COURSE}/school/${schoolId}/language/${languageId}`;
   },
 
+  getCourseById: (courseId: string) => `${COURSE}/courses/${courseId}`,
+
   chooseCourse: `${ACCOUNT}/choose-course`
 };
