@@ -10,6 +10,7 @@
 }
 
 .name {
+  padding-left: 10px;
   font-size: var(--font-size16);
   font-weight: var(--font-weight-medium);
   color: var(--black-color);
@@ -33,13 +34,18 @@
   }
 }
 
-.arrow {
-  margin-top: 4px;
-  padding-right: 15px;
+.wrapper {
+  display: none;
 }
 
 @media (--breakpoint-laptop) {
   .card {
     padding-left: 0;
+  }
+
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

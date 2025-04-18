@@ -1,3 +1,3 @@
-export interface MenuProps {
+export interface NavigatorProps {
   routes: { name: string; to: string; order: number }[];
 }

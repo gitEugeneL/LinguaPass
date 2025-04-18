@@ -3,6 +3,7 @@ import ArrowIcon from '../../../../../assets/icons/ArrowIcon.tsx';
 import NavItem from '../../UI/NavItem/NavItem.tsx';
 import { AccountCardProps } from './AccountCard.props.ts';
 import { useProgressStore } from '../../../../../store/progress/progress.store.ts';
+import { routesArray } from '../../../../../helpers/routeHelpers.ts';
 
 export default function AccountCard({ ...props }: AccountCardProps) {
   const status = useProgressStore((state) => state.myStatus);
@@ -19,7 +20,7 @@ export default function AccountCard({ ...props }: AccountCardProps) {
       </div>
 
       <ul className={styles.navBlock} onClick={props.toggleDrawer}>
-        {props.routes.map((route, index) => (
+        {routesArray.map((route, index) => (
           <NavItem
             key={index}
             name={route.name}

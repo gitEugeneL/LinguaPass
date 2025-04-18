@@ -61,7 +61,7 @@ export default function BaseLayout() {
 
   return (
     <div className={styles.container}>
-      <Menu routes={routesArray} />
+      <Menu />
       <div className={styles.body}>
         <Stepper isLoading={isLoading} statuses={statuses} />
         <Outlet />
