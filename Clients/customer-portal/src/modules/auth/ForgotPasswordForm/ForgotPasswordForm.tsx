@@ -1,27 +1,33 @@
+import styles from './ForgotPasswordForm.module.pcss';
 import {
   ForgotPasswordFormSchema,
   ForgotPasswordFormValidationSchema
 } from './ForgotPasswordForm.schemes.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import styles from './ForgotPasswordForm.module.pcss';
 import CustomInput from '../../../UI/CustomInput/CustomInput.tsx';
 import Button from '../../../UI/Button/Button.tsx';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import Notification from '../../../UI/Notification/Notification.tsx';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function ForgotPasswordForm() {
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
-  const generateCode = useAuthStore((state) => state.generateCode);
-  const codeExpires = useAuthStore((state) => state.codeExpires);
-  const email = useAuthStore((state) => state.email);
-  const isLoading = useAuthStore((state) => state.isLoading);
-  const error = useAuthStore((state) => state.error);
-  const resetError = useAuthStore((state) => state.resetError);
-  const resetCodeData = useAuthStore((state) => state.resetCodeData);
+  const { generateCode, codeExpires, email, isLoading, error, resetError, resetCodeData } =
+    useAuthStore(
+      useShallow((state) => ({
+        isLoading: state.isLoading,
+        error: state.error,
+        codeExpires: state.codeExpires,
+        email: state.email,
+        resetError: state.resetError,
+        generateCode: state.generateCode,
+        resetCodeData: state.resetCodeData
+      }))
+    );
 
   useEffect(() => {
     resetCodeData();

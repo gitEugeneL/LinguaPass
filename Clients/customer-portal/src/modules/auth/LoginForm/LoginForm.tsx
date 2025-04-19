@@ -8,15 +8,20 @@ import Button from '../../../UI/Button/Button.tsx';
 import { useEffect, useState } from 'react';
 import Notification from '../../../UI/Notification/Notification.tsx';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function LoginForm() {
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
-  const isLoading = useAuthStore((state) => state.isLoading);
-  const error = useAuthStore((state) => state.error);
-  const resetError = useAuthStore((state) => state.resetError);
-  const login = useAuthStore((state) => state.login);
-  const resetState = useAuthStore((state) => state.resetState);
+  const { isLoading, error, resetError, login, resetState } = useAuthStore(
+    useShallow((state) => ({
+      isLoading: state.isLoading,
+      error: state.error,
+      resetError: state.resetError,
+      login: state.login,
+      resetState: state.resetState
+    }))
+  );
 
   useEffect(() => {
     resetState();

@@ -1,3 +1,4 @@
+import styles from './ResetPasswordForm.module.pcss';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import { Navigate, useNavigate } from 'react-router';
 import * as React from 'react';
@@ -6,25 +7,31 @@ import Button from '../../../UI/Button/Button.tsx';
 import Countdown from '../../../components/auth/Countdown/Countdown.tsx';
 import CodeInput from '../../../components/auth/CodeInput/CodeInput.tsx';
 import { useForm } from 'react-hook-form';
-import styles from './ResetPasswordForm.module.pcss';
 import {
   ResetPasswordFormSchema,
   ResetPasswordFormValidationSchema
 } from './ResetPassword.schemes.ts';
 import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function ResetPasswordForm() {
   const navigate = useNavigate();
-  const codeInputsCount = 4;
 
-  const isLoading = useAuthStore((state) => state.isLoading);
-  const codeExpires = useAuthStore((state) => state.codeExpires);
-  const email = useAuthStore((state) => state.email);
-  const error = useAuthStore((state) => state.error);
-  const resetCodeData = useAuthStore((state) => state.resetCodeData);
-  const resetPassword = useAuthStore((state) => state.resetPassword);
-  const isPasswordChanged = useAuthStore((state) => state.isPasswordChanged);
+  const { isLoading, codeExpires, email, error, resetCodeData, resetPassword, isPasswordChanged } =
+    useAuthStore(
+      useShallow((state) => ({
+        isLoading: state.isLoading,
+        codeExpires: state.codeExpires,
+        email: state.email,
+        error: state.error,
+        resetCodeData: state.resetCodeData,
+        resetPassword: state.resetPassword,
+        isPasswordChanged: state.isPasswordChanged
+      }))
+    );
+
+  const codeInputsCount = 4;
 
   // reset state (expired time) for redirect
   useEffect(() => {

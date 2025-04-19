@@ -1,3 +1,4 @@
+import styles from './RegistrationForm.module.pcss';
 import { useForm } from 'react-hook-form';
 import {
   RegistrationFormSchema,
@@ -7,22 +8,25 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import CustomInput from '../../../UI/CustomInput/CustomInput.tsx';
 import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
 import Button from '../../../UI/Button/Button.tsx';
-import styles from './RegistrationForm.module.pcss';
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
 import Notification from '../../../UI/Notification/Notification.tsx';
 import { useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
 
 export default function RegistrationForm() {
   const navigate = useNavigate();
-
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
-  const isLoading = useAuthStore((state) => state.isLoading);
-  const error = useAuthStore((state) => state.error);
-  const resetError = useAuthStore((state) => state.resetError);
-  const registration = useAuthStore((state) => state.registration);
-  const userId = useAuthStore((state) => state.userId);
+  const { userId, isLoading, error, resetError, registration } = useAuthStore(
+    useShallow((state) => ({
+      userId: state.userId,
+      isLoading: state.isLoading,
+      error: state.error,
+      resetError: state.resetError,
+      registration: state.registration
+    }))
+  );
 
   // success redirect to login page
   useEffect(() => {
