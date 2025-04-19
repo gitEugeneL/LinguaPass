@@ -1,5 +1,5 @@
-import { TitleProps } from './Title.props.ts';
 import styles from './Title.module.pcss';
+import { TitleProps } from './Title.props.ts';
 import cn from 'classnames';
 
 export default function Title({
@@ -11,7 +11,7 @@ export default function Title({
   return (
     <div
       className={cn(styles.wrapper, {
-        [styles.mainWrapper]: appearance === 'main'
+        [styles.mainWrapper]: appearance === 'main' || appearance == 'primary'
       })}
     >
       {subTitle && <span className={styles.subtitle}>{subTitle}</span>}
@@ -19,7 +19,8 @@ export default function Title({
       <h1
         className={cn(styles.title, {
           [styles.mainTitle]: appearance === 'main',
-          [styles.secondaryTitle]: appearance === 'secondary'
+          [styles.secondaryTitle]: appearance === 'secondary',
+          [styles.primaryTitle]: appearance === 'primary'
         })}
       >
         {title}

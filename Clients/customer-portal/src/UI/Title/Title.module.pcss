@@ -23,6 +23,13 @@
   font-weight: var(--font-weight-regular);
 }
 
+.primaryTitle {
+  width: fit-content;
+  text-align: center;
+  font-size: var(--font-size26);
+  font-weight: var(--font-weight-semi-bold);
+}
+
 .mainTitle {
   width: fit-content;
   text-align: center;
@@ -67,11 +74,21 @@
     font-size: var(--font-size38);
   }
 
+  .primaryTitle {
+    font-size: var(--font-size28);
+  }
+
   .mainDescription {
     font-size: var(--font-size16);
   }
 
   .subtitle {
     font-size: var(--font-size18);
+  }
+}
+
+@media (--breakpoint-desktop) {
+  .primaryTitle {
+    font-size: var(--font-size32);
   }
 }
