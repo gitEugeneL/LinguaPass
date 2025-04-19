@@ -23,25 +23,18 @@ export default function SchoolList() {
     }))
   );
 
-  const {
-    isLoading,
-    countries,
-    currentCountryId,
-    currentSchool,
-    getCountries,
-    getCurrentSchool,
-    chooseSchool
-  } = useSchoolsStore(
-    useShallow((state) => ({
-      isLoading: state.isLoading,
-      countries: state.countries,
-      currentCountryId: state.currentCountryId,
-      currentSchool: state.currentSchool,
-      getCurrentSchool: state.getCurrentSchool,
-      getCountries: state.getCountries,
-      chooseSchool: state.chooseSchool
-    }))
-  );
+  const { isLoading, countries, currentCountryId, currentSchool, getCountries, getCurrentSchool, chooseSchool } =
+    useSchoolsStore(
+      useShallow((state) => ({
+        isLoading: state.isLoading,
+        countries: state.countries,
+        currentCountryId: state.currentCountryId,
+        currentSchool: state.currentSchool,
+        getCurrentSchool: state.getCurrentSchool,
+        getCountries: state.getCountries,
+        chooseSchool: state.chooseSchool
+      }))
+    );
 
   const sortedCountries = useMemo(() => {
     if (!currentCountryId) {
@@ -82,9 +75,10 @@ export default function SchoolList() {
 
   const handleChoose = async (schoolId: string, countryId: string) => {
     const isOrderCorrect = myStatus && myStatus.order >= routes.school.order;
-    const languageId = account?.languageId;
-    if (isOrderCorrect && languageId && !isLoading && schoolId !== currentSchool?.schoolId) {
-      await chooseSchool(languageId, schoolId, countryId).then(() => {
+    const accountLanguageId = account?.languageId;
+    const accountSchoolId = account?.schoolId;
+    if (isOrderCorrect && accountLanguageId && !isLoading && schoolId !== accountSchoolId) {
+      await chooseSchool(accountLanguageId, schoolId, countryId).then(() => {
         changeStep(routes.course.order);
       });
     }
