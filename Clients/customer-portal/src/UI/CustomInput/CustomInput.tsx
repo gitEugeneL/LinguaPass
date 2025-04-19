@@ -3,7 +3,14 @@ import cn from 'classnames';
 import { CustomInputProps } from './CustomInput.props.tsx';
 import { Controller } from 'react-hook-form';
 
-export default function CustomInput({ label, name, control, errors, disabled = false, ...props }: CustomInputProps) {
+export default function CustomInput({
+  label,
+  name,
+  control,
+  errors,
+  disabled = false,
+  ...props
+}: CustomInputProps) {
   return (
     <div>
       {label && <div className={styles.label}>{label}</div>}
@@ -22,6 +29,7 @@ export default function CustomInput({ label, name, control, errors, disabled = f
             onBlur={onBlur}
             onChange={onChange}
             ref={ref}
+            disabled={disabled}
           />
         )}
       />

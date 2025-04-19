@@ -22,9 +22,22 @@ export default function OptionalInput({
   };
 
   return (
-    <div className={styles.conainer}>
-      <CustomInput label={label} name={name} control={control} errors={errors} {...props} disabled={!isInputEnable} />
-      <CustomCheckbox checked={isInputEnable} onChange={handleCheckboxChange} label={checkboxLabel} />
+    <div className={styles.container}>
+      <CustomInput
+        label={label}
+        name={name}
+        control={control}
+        errors={errors}
+        {...props}
+        disabled={!isInputEnable}
+      />
+      <div className={styles.checkbox}>
+        <CustomCheckbox
+          checked={isInputEnable}
+          onChange={handleCheckboxChange}
+          label={checkboxLabel}
+        />
+      </div>
     </div>
   );
 }
