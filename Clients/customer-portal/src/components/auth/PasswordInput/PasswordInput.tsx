@@ -5,13 +5,7 @@ import { OpenIcon } from './icons/OpenIcon.tsx';
 import { CloseIcon } from './icons/CloseIcon.tsx';
 import styles from './PasswordInput.module.pcss';
 
-export default function PasswordInput({
-  label,
-  name,
-  control,
-  errors,
-  ...props
-}: PasswordInputProps) {
+export default function PasswordInput({ label, name, control, errors, ...props }: PasswordInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const handlePressIcon = () => {
