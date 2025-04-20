@@ -1,18 +1,21 @@
+using System.Reflection;
 using Account.Domain.Entities;
 using Account.Domain.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace Account.Data;
+namespace Account.Data.Persistence;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public required DbSet<CustomerAccount> CustomerAccounts { get; init; }
+    public required DbSet<CustomerContact> CustomerContacts { get; init; }
+    public required DbSet<Address> Addresses { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<CustomerAccount>()
-            .HasIndex(a => a.UserId)
-            .IsUnique();
+        /*** Add database configurations ***/
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        base.OnModelCreating(builder);
     }
 
     public override int SaveChanges()

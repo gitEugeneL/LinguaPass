@@ -1,4 +1,4 @@
-using Account.Data;
+using Account.Data.Persistence;
 using Account.Grpc.Clients;
 using Account.MessageBroker.Services.Interfaces;
 using AuthConfig.Tools;

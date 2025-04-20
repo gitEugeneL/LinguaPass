@@ -1,4 +1,4 @@
-using Account.Data;
+using Account.Data.Persistence;
 using AuthConfig.Tools;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;

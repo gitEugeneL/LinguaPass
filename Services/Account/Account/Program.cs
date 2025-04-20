@@ -1,4 +1,4 @@
-using Account.Data;
+using Account.Data.Persistence;
 using Account.Grpc;
 using Account.MessageBroker.Consumers;
 using Account.MessageBroker.Services;

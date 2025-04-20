@@ -1,4 +1,4 @@
-using Account.Data;
+using Account.Data.Persistence;
 using Account.Domain.Entities;
 using MassTransit;
 using MessageBroker.Contracts;
