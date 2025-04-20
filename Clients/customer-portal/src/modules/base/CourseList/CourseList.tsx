@@ -86,35 +86,33 @@ export default function CourseList() {
   };
 
   return (
-    <>
-      <ul className={style.container}>
-        {isInitLoading && <Loader />}
+    <ul className={style.container}>
+      {isInitLoading && <Loader />}
 
-        {!isInitLoading &&
-          sortedCourses.length !== 0 &&
-          sortedCourses.map((course) => (
-            <CourseCard
-              key={course.courseId}
-              name={course.name}
-              schoolName={course.schoolName}
-              languageName={course.languageName}
-              description={course.description}
-              activities={course.activities}
-              price={course.price}
-              admissionFee={course.admissionFee}
-              withAccommodation={course.withAccommodation}
-              duration={course.duration}
-              location={course.location}
-              courseId={course.courseId}
-              isLoading={clickedCardId === course.courseId}
-              isBlocked={clickedCardId !== course.courseId && isCardBlocked}
-              handleChoose={handleChoose}
-              {...(currentCourse && {
-                chosen: currentCourse.courseId === course.courseId
-              })}
-            />
-          ))}
-      </ul>
-    </>
+      {!isInitLoading &&
+        sortedCourses.length !== 0 &&
+        sortedCourses.map((course) => (
+          <CourseCard
+            key={course.courseId}
+            name={course.name}
+            schoolName={course.schoolName}
+            languageName={course.languageName}
+            description={course.description}
+            activities={course.activities}
+            price={course.price}
+            admissionFee={course.admissionFee}
+            withAccommodation={course.withAccommodation}
+            duration={course.duration}
+            location={course.location}
+            courseId={course.courseId}
+            isLoading={clickedCardId === course.courseId}
+            isBlocked={clickedCardId !== course.courseId && isCardBlocked}
+            handleChoose={handleChoose}
+            {...(currentCourse && {
+              chosen: currentCourse.courseId === course.courseId
+            })}
+          />
+        ))}
+    </ul>
   );
 }
