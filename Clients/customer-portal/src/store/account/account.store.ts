@@ -18,6 +18,7 @@ interface AccountState {
   updateLanguageId: (languageId: string) => void;
   updateSchoolId: (schoolId: string) => void;
   updateCourseId: (courseId: string) => void;
+  updateContactId: (contactId: string) => void;
 }
 
 export const useAccountStore = create<AccountState>()(
@@ -38,7 +39,8 @@ export const useAccountStore = create<AccountState>()(
               userId: data.userId,
               languageId: data.languageId,
               schoolId: data.schoolId,
-              courseId: data.courseId
+              courseId: data.courseId,
+              contactId: data.contactId
             }
           });
         } catch (error) {
@@ -58,7 +60,13 @@ export const useAccountStore = create<AccountState>()(
 
       updateLanguageId: (languageId: string) => get().updateAccount('languageId', languageId),
       updateSchoolId: (schoolId: string) => get().updateAccount('schoolId', schoolId),
-      updateCourseId: (courseId: string) => get().updateAccount('courseId', courseId)
+      updateCourseId: (courseId: string) => get().updateAccount('courseId', courseId),
+
+      updateContactId: (contactId: string) => {
+        set((state) => ({
+          account: state.account ? { ...state.account, contactId } : null
+        }));
+      }
     }),
     {
       name: 'account'

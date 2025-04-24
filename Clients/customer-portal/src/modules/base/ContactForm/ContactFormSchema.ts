@@ -20,10 +20,7 @@ export interface ContactFormSchema {
   corrPostcode?: string | undefined;
 }
 
-const postcodeRegex = /^[0-9A-Za-z-]{5,6}$/;
-const phoneRegex = /^\+?[0-9]{10,12}$/;
-
-export const ContactFormDefaultValues: ContactFormSchema = {
+export const contactDefaultValues: ContactFormSchema = {
   name: '',
   surname: '',
   middleName: '',
@@ -43,6 +40,9 @@ export const ContactFormDefaultValues: ContactFormSchema = {
   corrPostcode: ''
 };
 
+const postcodeRegex = /^[0-9A-Za-z-]{5,6}$/;
+const phoneRegex = /^\+?[0-9]{10,12}$/;
+
 export const createContactFormValidationSchema = (correspondAddrExists: boolean) =>
   yup.object({
     name: yup.string().required('Name is required').min(2, 'Too short').max(20, 'Too long'),
@@ -59,6 +59,7 @@ export const createContactFormValidationSchema = (correspondAddrExists: boolean)
     maidenName: yup
       .string()
       .notRequired()
+      .min(2, 'Too short')
       .max(20, 'Too long')
       .transform((value, originalValue) => (originalValue === '' ? null : value)),
 

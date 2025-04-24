@@ -1,5 +1,4 @@
 import styles from './OptionalInput.module.pcss';
-import { useState } from 'react';
 import CustomInput from '../../../UI/CustomInput/CustomInput.tsx';
 import { OptionalInputProps } from './OptionalInput.props.ts';
 import CustomCheckbox from '../../../UI/CustomCheckbox/CustomCheckbox.tsx';
@@ -10,15 +9,16 @@ export default function OptionalInput({
   name,
   control,
   errors,
-  resetField,
+  setValue,
+  isInputEnabled,
+  setInputEnabled,
   ...props
 }: OptionalInputProps) {
-  const [isInputEnable, setInputEnable] = useState<boolean>(false);
   const handleCheckboxChange = () => {
-    if (isInputEnable) {
-      resetField(name);
+    if (isInputEnabled) {
+      setValue(name, '');
     }
-    setInputEnable((state) => !state);
+    setInputEnabled(!isInputEnabled);
   };
 
   return (
@@ -29,11 +29,11 @@ export default function OptionalInput({
         control={control}
         errors={errors}
         {...props}
-        disabled={!isInputEnable}
+        disabled={!isInputEnabled}
       />
       <div className={styles.checkbox}>
         <CustomCheckbox
-          checked={isInputEnable}
+          checked={isInputEnabled}
           onChange={handleCheckboxChange}
           label={checkboxLabel}
         />

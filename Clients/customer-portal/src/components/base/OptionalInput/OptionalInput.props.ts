@@ -1,5 +1,5 @@
-import { InputHTMLAttributes } from 'react';
-import { Control, FieldErrors, FieldValues, UseFormResetField } from 'react-hook-form';
+import { Dispatch, InputHTMLAttributes, SetStateAction } from 'react';
+import { Control, FieldErrors, FieldValues, UseFormSetValue } from 'react-hook-form';
 
 export interface OptionalInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -7,5 +7,7 @@ export interface OptionalInputProps extends InputHTMLAttributes<HTMLInputElement
   name: string;
   control: Control<any>;
   errors: FieldErrors<FieldValues>;
-  resetField: UseFormResetField<any>;
+  setValue: UseFormSetValue<any>;
+  isInputEnabled: boolean;
+  setInputEnabled: Dispatch<SetStateAction<boolean>>;
 }

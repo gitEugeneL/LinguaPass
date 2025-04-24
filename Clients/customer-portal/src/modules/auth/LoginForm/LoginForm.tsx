@@ -46,7 +46,9 @@ export default function LoginForm() {
 
   const formSubmit = async (schema: LoginFormSchema) => {
     setLocalError(undefined);
-    login(schema.email, schema.password);
+    if (!isLoading) {
+      login(schema.email, schema.password);
+    }
   };
 
   const {
