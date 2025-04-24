@@ -3,17 +3,17 @@ namespace Account.Domain.Entities;
 public sealed class Address
 {
     public Guid Id { get; init; }
-    public required string Street { get; set; }
-    public required string HsApt { get; set; }
-    public required string City { get; set; }
-    public required string Country { get; set; }
-    public required string Postcode { get; set; }
+    public string Street { get; set; } = string.Empty;
+    public string HsApt { get; set; } = string.Empty;
+    public string City { get; set; } = string.Empty;
+    public string Country { get; set; } = string.Empty;
+    public string Postcode { get; set; } = string.Empty;
 
-    public required string CorrStreet { get; set; }
-    public required string CorrHsApt { get; set; }
-    public required string CorrCity { get; set; }
-    public required string CorrCountry { get; set; }
-    public required string CorrPostcode { get; set; }
+    public string? CorrStreet { get; set; } = string.Empty;
+    public string? CorrHsApt { get; set; } = string.Empty;
+    public string? CorrCity { get; set; } = string.Empty;
+    public string? CorrCountry { get; set; } = string.Empty;
+    public string? CorrPostcode { get; set; } = string.Empty;
 
     /*** Relations **/
     public List<CustomerContact> Contacts { get; init; } = [];
