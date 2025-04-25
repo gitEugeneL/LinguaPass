@@ -52,7 +52,6 @@ public sealed class Validator : Validator<Request>
             .MaximumLength(20);
 
         RuleFor(r => r.EducationLevel)
-            .NotEmpty()
-            .MaximumLength();
+            .NotEmpty();
     }
 }
