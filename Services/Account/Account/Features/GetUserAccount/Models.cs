@@ -5,5 +5,6 @@ public sealed record Response(
     Guid? LanguageId,
     Guid? SchoolId,
     Guid? CourseId,
-    Guid? ContactId
+    Guid? ContactId,
+    Guid? PersonalId
 );

@@ -34,7 +34,8 @@ public class Endpoint(
 
         var account = await dbContext
             .CustomerAccounts
-            .Include(a => a.Contact).ThenInclude(customerContact => customerContact!.Address)
+            .Include(a => a.Contact)
+            .ThenInclude(customerContact => customerContact!.Address)
             .FirstOrDefaultAsync(a => a.UserId == userId, ct);
 
         if (account is null)
@@ -42,7 +43,6 @@ public class Endpoint(
 
         var contact = account.Contact ?? new CustomerContact { Address = new Address() };
 
-        // Update contact and address in a single method to avoid duplication
         UpdateContactAndAddress(contact, req);
         if (account.Contact is null)
         {

@@ -9,13 +9,22 @@ internal class CustomerContactConfig : IEntityTypeConfiguration<CustomerContact>
     public void Configure(EntityTypeBuilder<CustomerContact> builder)
     {
         builder.Property(c => c.Name)
+            .IsRequired()
             .HasMaxLength(20);
 
         builder.Property(c => c.Surname)
+            .IsRequired()
             .HasMaxLength(50);
 
         builder.Property(c => c.Phone)
+            .IsRequired()
             .HasMaxLength(20);
+
+        builder.Property(c => c.Gender)
+            .IsRequired();
+
+        builder.Property(c => c.TypeOfSettlement)
+            .IsRequired();
 
         builder.Property(c => c.MiddleName)
             .HasMaxLength(20);

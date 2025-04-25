@@ -13,4 +13,7 @@ public sealed class CustomerAccount : BaseAuditableEntity
     /*** Relations ***/
     public Guid? ContactId { get; set; }
     public CustomerContact? Contact { get; set; }
+
+    public Guid? PersonalId { get; set; }
+    public CustomerPersonal? Personal { get; set; }
 }

@@ -13,5 +13,6 @@ internal sealed class CustomerAccountConfig : IEntityTypeConfiguration<CustomerA
 
         /*** Relations ***/
         builder.HasOne(a => a.Contact);
+        builder.HasOne(a => a.Personal);
     }
 }

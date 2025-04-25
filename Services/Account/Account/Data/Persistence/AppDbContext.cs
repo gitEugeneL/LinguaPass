@@ -10,6 +10,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     public required DbSet<CustomerAccount> CustomerAccounts { get; init; }
     public required DbSet<CustomerContact> CustomerContacts { get; init; }
     public required DbSet<Address> Addresses { get; init; }
+    public required DbSet<CustomerPersonal> CustomerPersonals { get; init; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
