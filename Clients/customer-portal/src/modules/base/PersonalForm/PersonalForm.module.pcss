@@ -1,0 +1,54 @@
+.container {
+  margin-top: 40px;
+  margin-bottom: 80px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.leftBlock,
+.rightBlock {
+  width: 100%;
+}
+
+
+.btn {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.label {
+  margin-bottom: 25px;
+  display: block;
+  font-weight: var(--font-weight-regular);
+  color: var(--grey-2-color);
+  font-size: var(--font-size15);
+  line-height: 24px;
+}
+
+@media (--breakpoint-tablet) {
+  .wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .leftBlock,
+  .rightBlock {
+    max-width: 450px;
+  }
+
+  .btn {
+    width: 50%;
+  }
+}
+
+@media (--breakpoint-desktop) {
+  .wrapper {
+    gap: 60px;
+  }
+}
