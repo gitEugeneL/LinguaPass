@@ -7,6 +7,7 @@ public sealed class CustomerPersonal : BaseAuditableEntity
 {
     public Guid Id { get; init; }
     public DateOnly Birthday { get; set; }
+    public string BirthPlace { get; set; } = string.Empty;
     public string CountryOfBirth { get; set; } = string.Empty;
     public string FathersName { get; set; } = string.Empty;
     public string MothersName { get; set; } = string.Empty;

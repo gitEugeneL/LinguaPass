@@ -27,7 +27,8 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
             .Where(p => p.Account != null && p.Account.UserId == userId)
             .Select(p => new Response(
                 p.Id,
-                p.Birthday.ToString(),
+                p.Birthday,
+                p.BirthPlace,
                 p.CountryOfBirth,
                 p.FathersName,
                 p.MothersName,

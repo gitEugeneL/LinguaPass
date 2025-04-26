@@ -2,6 +2,7 @@ namespace Account.Features.CreateUpdatePersonalData;
 
 public sealed record Request(
     string Birthday,
+    string BirthPlace,
     string CountryOfBirth,
     string FathersName,
     string MothersName,

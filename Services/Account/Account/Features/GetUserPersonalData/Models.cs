@@ -2,7 +2,8 @@ namespace Account.Features.GetUserPersonalData;
 
 public sealed record Response(
     Guid PersonalId,
-    string Birthday,
+    DateOnly Birthday,
+    string BirthPlace,
     string CountryOfBirth,
     string FathersName,
     string MothersName,

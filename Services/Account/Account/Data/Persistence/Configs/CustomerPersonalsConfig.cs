@@ -11,6 +11,10 @@ internal class CustomerPersonalsConfig : IEntityTypeConfiguration<CustomerPerson
         builder.Property(c => c.Birthday)
             .IsRequired();
 
+        builder.Property(c => c.BirthPlace)
+            .IsRequired()
+            .HasMaxLength(50);
+
         builder.Property(c => c.CountryOfBirth)
             .IsRequired()
             .HasMaxLength(30);

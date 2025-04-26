@@ -60,7 +60,8 @@ public class Endpoint(
     private static void UpdatePersonal(CustomerPersonal personal, Request req)
     {
         // Update personal properties
-        personal.Birthday = DateOnly.Parse(req.Birthday);
+        personal.Birthday = DateOnly.FromDateTime(DateTime.Parse(req.Birthday));
+        personal.BirthPlace = req.BirthPlace.Trim();
         personal.CountryOfBirth = req.CountryOfBirth.Trim();
         personal.FathersName = req.FathersName.Trim();
         personal.MothersName = req.MothersName.Trim();
