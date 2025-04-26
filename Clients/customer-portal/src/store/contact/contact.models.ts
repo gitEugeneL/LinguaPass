@@ -18,8 +18,6 @@ export interface Contact {
   corrPostcode?: string | null;
 }
 
-export type CreateContactRequest = Contact;
-
 export interface CreateContactResponse {
   userId: string;
   contactId: string;

@@ -4,6 +4,7 @@ export interface Account {
   schoolId: string | null;
   courseId: string | null;
   contactId: string | null;
+  personalId: string | null;
 }
 
 export type GetCurrentAccount = Account;

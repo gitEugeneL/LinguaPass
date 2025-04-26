@@ -20,7 +20,7 @@ interface ContactState {
 
 export const useContactStore = create<ContactState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       contact: null,
       currentContactId: null,
       isLoading: false,

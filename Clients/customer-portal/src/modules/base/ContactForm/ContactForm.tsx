@@ -100,7 +100,7 @@ export default function ContactForm() {
     const isOrderCorrect = myStatus && myStatus.order >= routes.contact.order;
     if (isOrderCorrect) {
       const isUnchanged =
-        contact != null &&
+        contact !== null &&
         (Object.keys(schema) as (keyof ContactFormSchema)[]).every(
           (key) => schema[key] === contact[key]
         );

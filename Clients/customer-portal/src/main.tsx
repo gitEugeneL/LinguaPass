@@ -1,9 +1,10 @@
+import './assets/styles/index.pcss';
+import 'react-datepicker/dist/react-datepicker.css';
 import { createBrowserRouter, Navigate } from 'react-router';
 import AuthLayout from './app/auth/layout/AuthLayout.tsx';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router/dom';
 import LoginPage from './app/auth/pages/LoginPage/LoginPage.tsx';
-import './assets/styles/index.pcss';
 import RegistrationPage from './app/auth/pages/RegistrationPage/RegistrationPage.tsx';
 import AuthProvider from './app/AuthProvider.tsx';
 import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswordPage.tsx';
@@ -14,6 +15,7 @@ import SchoolPage from './app/base/pages/SchoolPage.tsx';
 import CoursePage from './app/base/pages/CoursePage.tsx';
 import ContactInfoPage from './app/base/pages/ContactInfoPage.tsx';
 import { routes } from './helpers/routeHelpers.ts';
+import PersonalInfoPage from './app/base/pages/PerosnalInfoPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
       {
         path: routes.contact.to,
         element: <ContactInfoPage />
+      },
+      {
+        path: routes.personal.to,
+        element: <PersonalInfoPage />
+      },
+      {
+        path: routes.documents.to,
+        element: <div>documents page</div>
       }
     ]
   },

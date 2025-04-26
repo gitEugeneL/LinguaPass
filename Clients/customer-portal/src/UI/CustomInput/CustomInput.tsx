@@ -1,4 +1,4 @@
-import styles from './Input.module.pcss';
+import styles from './CustomInput.module.pcss';
 import cn from 'classnames';
 import { CustomInputProps } from './CustomInput.props.tsx';
 import { Controller } from 'react-hook-form';

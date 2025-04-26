@@ -19,6 +19,7 @@ interface AccountState {
   updateSchoolId: (schoolId: string) => void;
   updateCourseId: (courseId: string) => void;
   updateContactId: (contactId: string) => void;
+  updatePersonalId: (personalId: string) => void;
 }
 
 export const useAccountStore = create<AccountState>()(
@@ -40,7 +41,8 @@ export const useAccountStore = create<AccountState>()(
               languageId: data.languageId,
               schoolId: data.schoolId,
               courseId: data.courseId,
-              contactId: data.contactId
+              contactId: data.contactId,
+              personalId: data.personalId
             }
           });
         } catch (error) {
@@ -65,6 +67,12 @@ export const useAccountStore = create<AccountState>()(
       updateContactId: (contactId: string) => {
         set((state) => ({
           account: state.account ? { ...state.account, contactId } : null
+        }));
+      },
+
+      updatePersonalId: (personalId: string) => {
+        set((state) => ({
+          account: state.account ? { ...state.account, personalId } : null
         }));
       }
     }),
