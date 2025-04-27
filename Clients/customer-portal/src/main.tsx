@@ -16,6 +16,7 @@ import CoursePage from './app/base/pages/CoursePage.tsx';
 import ContactInfoPage from './app/base/pages/ContactInfoPage.tsx';
 import { routes } from './helpers/routeHelpers.ts';
 import PersonalInfoPage from './app/base/pages/PerosnalInfoPage.tsx';
+import HomePage from './app/base/pages/HomePage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       </AuthProvider>
     ),
     children: [
+      {
+        path: routes.home.to,
+        element: <HomePage />
+      },
       {
         path: routes.language.to,
         element: <LanguagePage />

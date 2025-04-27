@@ -1,10 +1,11 @@
 import styles from './Navigator.module.pcss';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 import { Route, routesArray } from '../../../../../helpers/routeHelpers.ts';
 import NavigatorItem from './components/NavigatorItem/NavigatorItem.tsx';
 import HomeIcon from './icons/HomeIcon.tsx';
 import { useProgressStore } from '../../../../../store/progress/progress.store.ts';
 import { useEffect, useState } from 'react';
+import cn from 'classnames';
 
 export default function Navigator() {
   const myStatus = useProgressStore((state) => state.myStatus);
@@ -26,13 +27,20 @@ export default function Navigator() {
 
   return (
     <div className={styles.card}>
-      <Link to='/home' className={styles.home}>
+      <NavLink
+        to='/home'
+        className={({ isActive }) =>
+          cn(styles.home, {
+            [styles.active]: isActive
+          })
+        }
+      >
         <HomeIcon />
-      </Link>
+      </NavLink>
 
       {routes && routes.length !== 0 && (
         <div className={styles.wrapper}>
-          {routes.map((route) => (
+          {routes.slice(1).map((route) => (
             <NavigatorItem key={route.to} to={route.to} name={route.name} />
           ))}
         </div>

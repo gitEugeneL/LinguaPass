@@ -5,6 +5,7 @@ export interface Route {
 }
 
 export const routes: Record<string, Route> = {
+  home: { name: 'Home', to: '/home', order: 0 },
   language: { name: 'Language', to: '/languages', order: 1 },
   school: { name: 'School', to: '/schools', order: 2 },
   course: { name: 'Course', to: '/courses', order: 3 },
