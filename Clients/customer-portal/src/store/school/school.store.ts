@@ -48,7 +48,7 @@ export const useSchoolsStore = create<SchoolsState>()(
 
       getCountries: async (languageId: string) => {
         if (get().chosenLanguageId !== languageId) {
-          set({ isLoading: true });
+          set({ isLoading: true, currentSchool: null, schools: [] });
           try {
             const { data } = await axios.get<GetCountriesResponse>(
               schoolUrls.getCountries(languageId),
@@ -74,7 +74,7 @@ export const useSchoolsStore = create<SchoolsState>()(
 
       getSchools: async (languageId: string, countryId: string) => {
         if (get().chosenCountryId !== countryId || get().chosenLanguageId !== languageId) {
-          set({ isLoading: true, schools: [], currentSchool: null });
+          set({ isLoading: true, schools: [] });
           try {
             const { data } = await axios.get<GetSchoolsResponse>(
               schoolUrls.getSchools(countryId, languageId),
