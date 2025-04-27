@@ -1,0 +1,130 @@
+.container {
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 135px;
+  padding: 30px 30px;
+  background: var(--white-color);
+  border-radius: var(--normal-radius);
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    box-shadow: var(--shadow-1);
+  }
+}
+
+.openedContainer {
+  max-height: 500vh;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.3s ease, max-height 0.9s ease;
+}
+
+.contentWrapper {
+  width: 100%;
+  opacity: 0;
+  display: flex;
+  transform: translateY(-20px);
+}
+
+.openedContentWrapper {
+  margin-top: 30px;
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.nameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.arrow {
+  width: fit-content;
+  display: block;
+  transition: transform 0.3s ease;
+  transform: rotate(90deg);
+}
+
+.openedArrow {
+  transform: rotate(-90deg);
+}
+
+.name {
+  color: var(--black-color);
+  font-size: var(--font-size18);
+  font-weight: var(--font-weight-semi-bold);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 12ch;
+
+  @media (min-width: 375px) {
+    max-width: 100%;
+  }
+}
+
+.bodyWrapper {
+  display: none;
+  width: 100%;
+}
+
+.bodyWrapperOpened {
+  display: block;
+}
+
+.body {
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-auto-rows: 1fr;
+  row-gap: 30px;
+}
+
+
+@media (--breakpoint-tablet) {
+  .container {
+    padding: 35px 40px;
+  }
+
+  .name {
+    font-size: var(--font-size28);
+  }
+
+  .body {
+    margin-bottom: 30px;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 50px;
+    row-gap: 50px;
+  }
+
+  .btn {
+    display: block;
+    margin-left: auto;
+    width: 160px;
+  }
+}
+
+@media (--breakpoint-laptop) {
+  .body {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 20px;
+  }
+}
+
+@media (--breakpoint-desktop) {
+  .body {
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 10px;
+  }
+}
+
