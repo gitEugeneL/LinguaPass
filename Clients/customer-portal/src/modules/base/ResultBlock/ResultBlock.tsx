@@ -11,6 +11,9 @@ import Button from '../../../UI/Button/Button.tsx';
 import { useProgressStore } from '../../../store/progress/progress.store.ts';
 import { routes } from '../../../helpers/routeHelpers.ts';
 import { useNavigate } from 'react-router';
+import ContactWidget from './widgets/ContactWidget/ContactWidget.tsx';
+import PersonalWidget from './widgets/PersonalWidget/PersonalWidget.tsx';
+import DisabledIcon from '../SchoolList/widgets/SchoolWidget/icons/DisabledIcon.tsx';
 
 export default function ResultBlock({ ...props }: ResultBlockProps) {
   const navigate = useNavigate();
@@ -20,16 +23,24 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
   const account = useAccountStore((state) => state.account);
   const status = useProgressStore((state) => state.myStatus);
 
-  const handleClick = () => {
-    setIsOpened(!isOpened);
+  const handleClick = () => setIsOpened(!isOpened);
+
+  const validRoutes = {
+    course: status && status.order > routes.course.order,
+    contact: status && status.order > routes.contact.order,
+    personal: status && status.order > routes.personal.order,
+    documents: status && status.order >= routes.documents.order
   };
+
+  const disabledRoute =
+    (!status || status?.order < routes[props.type].order) && props.type !== 'course';
 
   const handleChangeBtnClick = () => {
     const routesMap = {
       course: routes.language.to,
-      contact: routes.school.to,
-      personal: routes.course.to,
-      documents: routes.personal.to
+      contact: routes.contact.to,
+      personal: routes.personal.to,
+      documents: routes.documents.to
     };
     navigate(routesMap[props.type]);
   };
@@ -37,6 +48,7 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
   return (
     <div
       className={cn(styles.container, {
+        [styles.disabledContainer]: disabledRoute,
         [styles.openedContainer]: isOpened
       })}
       onClick={handleClick}
@@ -44,21 +56,40 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
       <div className={styles.wrapper}>
         <div className={styles.nameWrapper}>
           {props.type === 'course' &&
-            (account?.courseId && status && status.order > routes.course.order ? (
-              <div className={styles.test}>
-                <SuccessIcon />
-              </div>
+            (disabledRoute ? (
+              <DisabledIcon />
+            ) : account?.courseId && validRoutes.course ? (
+              <SuccessIcon />
             ) : (
               <ProcessesIcon />
             ))}
-          {props.type === 'contact' && (account?.contactId ? <SuccessIcon /> : <ProcessesIcon />)}
-          {props.type === 'personal' && (account?.personalId ? <SuccessIcon /> : <ProcessesIcon />)}
-          {/*todo add documents logic*/}
-          {/*todo add documents logic*/}
-          {/*todo add documents logic*/}
-          {/*todo add documents logic*/}
-          {/*todo add documents logic*/}
-          {/*{props.type === 'documents' && (account?.documentsId ? <SuccessIcon /> : <ProcessesIcon />)}*/}
+
+          {props.type === 'contact' &&
+            (disabledRoute ? (
+              <DisabledIcon />
+            ) : account?.contactId && validRoutes.contact ? (
+              <SuccessIcon />
+            ) : (
+              <ProcessesIcon />
+            ))}
+
+          {props.type === 'personal' &&
+            (disabledRoute ? (
+              <DisabledIcon />
+            ) : account?.personalId && validRoutes.personal ? (
+              <SuccessIcon />
+            ) : (
+              <ProcessesIcon />
+            ))}
+
+          {props.type === 'documents' &&
+            (disabledRoute ? (
+              <DisabledIcon />
+            ) : account?.documentsId && validRoutes.personal ? (
+              <SuccessIcon />
+            ) : (
+              <ProcessesIcon />
+            ))}
 
           {props.type === 'course' && <h2 className={styles.name}>Your course</h2>}
           {props.type === 'contact' && <h2 className={styles.name}>Your contact details</h2>}
@@ -91,8 +122,24 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
                 {props.type === 'course' && (
                   <CourseWidget
                     courseId={
-                      account?.courseId != null && status && status.order > routes.course.order
-                        ? account.courseId
+                      account?.courseId != null && validRoutes.course ? account.courseId : null
+                    }
+                    opened={isOpened}
+                  />
+                )}
+                {props.type === 'contact' && (
+                  <ContactWidget
+                    contactId={
+                      account?.contactId != null && validRoutes.contact ? account.contactId : null
+                    }
+                    opened={isOpened}
+                  />
+                )}
+                {props.type === 'personal' && (
+                  <PersonalWidget
+                    personalId={
+                      account?.personalId != null && validRoutes.personal
+                        ? account.personalId
                         : null
                     }
                     opened={isOpened}

@@ -6,10 +6,9 @@ export default function ResultItem({ ...props }: ResultItemProps) {
   return (
     <li className={styles.container}>
       <span className={styles.title}>{props.title}</span>
-
       {!props.isLoading && (
         <div className={styles.body}>
-          {props.body.length > 50 ? props.body.slice(0, 50) + '...' : props.body}
+          {props.body.length > 25 ? props.body.slice(0, 25) + '...' : props.body}
         </div>
       )}
 
