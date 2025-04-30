@@ -25,15 +25,17 @@ export default function CourseList() {
     }))
   );
 
-  const { courses, currentCourse, getCourses, getCurrentCourse, chooseCourse } = useCoursesStore(
-    useShallow((state) => ({
-      courses: state.courses,
-      currentCourse: state.currentCourse,
-      getCourses: state.getCourses,
-      getCurrentCourse: state.getCurrentCourse,
-      chooseCourse: state.chooseCourse
-    }))
-  );
+  const { courses, currentCourse, getCourses, getCurrentCourse, chooseCourse, resetCurrentCourse } =
+    useCoursesStore(
+      useShallow((state) => ({
+        courses: state.courses,
+        currentCourse: state.currentCourse,
+        getCourses: state.getCourses,
+        getCurrentCourse: state.getCurrentCourse,
+        chooseCourse: state.chooseCourse,
+        resetCurrentCourse: state.resetCurrentCourse
+      }))
+    );
 
   const sortedCourses = useMemo(() => {
     const currentCourseId = account?.courseId;
@@ -53,6 +55,9 @@ export default function CourseList() {
         await getCourses(account.schoolId, account.languageId).then(() => {
           setIsInitLoading(false);
         });
+      }
+      if (myStatus && myStatus.order <= routes.course.order) {
+        resetCurrentCourse();
       }
     };
     fetchData();

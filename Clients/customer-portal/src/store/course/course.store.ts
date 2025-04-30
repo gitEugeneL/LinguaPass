@@ -25,6 +25,7 @@ interface CoursesState {
   getCurrentCourse: (courseId: string) => Promise<void>;
   getCourses: (languageId: string, schoolId: string) => Promise<void>;
   chooseCourse: (languageId: string, schoolId: string, courseId: string) => Promise<void>;
+  resetCurrentCourse: () => void;
 }
 
 export const useCoursesStore = create<CoursesState>()(
@@ -121,6 +122,10 @@ export const useCoursesStore = create<CoursesState>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+
+      resetCurrentCourse: () => {
+        set({ currentCourse: null, currentCourseId: null });
       }
     }),
     {
