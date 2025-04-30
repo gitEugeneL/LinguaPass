@@ -42,7 +42,8 @@ export const useAccountStore = create<AccountState>()(
               schoolId: data.schoolId,
               courseId: data.courseId,
               contactId: data.contactId,
-              personalId: data.personalId
+              personalId: data.personalId,
+              documentsId: data.documentsId
             }
           });
         } catch (error) {

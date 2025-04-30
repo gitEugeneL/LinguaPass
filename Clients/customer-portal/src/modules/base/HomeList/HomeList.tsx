@@ -6,6 +6,7 @@ export default function HomeList() {
       <ResultBlock type='course' />
       <ResultBlock type='contact' />
       <ResultBlock type='personal' />
+      <ResultBlock type='documents' />
     </>
   );
 }
