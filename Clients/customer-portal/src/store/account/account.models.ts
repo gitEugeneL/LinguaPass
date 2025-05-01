@@ -9,3 +9,10 @@ export interface Account {
 }
 
 export type GetCurrentAccount = Account;
+
+export interface UserData {
+  name: string;
+  surname: string;
+}
+
+export type GetShortUserInfoResponse = UserData;

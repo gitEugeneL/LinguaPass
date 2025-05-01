@@ -2,21 +2,32 @@ import styles from './AccountCard.module.pcss';
 import ArrowIcon from '../../../../../assets/icons/ArrowIcon.tsx';
 import NavItem from '../../UI/NavItem/NavItem.tsx';
 import { AccountCardProps } from './AccountCard.props.ts';
-import { useProgressStore } from '../../../../../store/progress/progress.store.ts';
 import { routesArray } from '../../../../../helpers/routeHelpers.ts';
 
 export default function AccountCard({ ...props }: AccountCardProps) {
-  const status = useProgressStore((state) => state.myStatus);
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <div className={styles.shortName}>eug@lihon.com</div>
-        <div className={styles.nameSymbol}>EU</div>
+        <div className={styles.shortName}>{props.email}</div>
+
+        {props.email && !props.name && !props.surname && (
+          <div className={styles.nameSymbol}>{props.email.slice(0, 2).toUpperCase()}</div>
+        )}
+        {props.name && props.surname && (
+          <div className={styles.nameSymbol}>
+            {props.name.slice(0, 1).toUpperCase()}
+            {props.surname.slice(0, 1).toUpperCase()}
+          </div>
+        )}
+
         <div className={styles.arrow}>
           <ArrowIcon />
         </div>
-        <div className={styles.fullName}>Firstname Lastname</div>
+        {props.name && props.surname && (
+          <div className={styles.fullName}>
+            {props.name} {props.surname}
+          </div>
+        )}
       </div>
 
       <ul className={styles.navBlock} onClick={props.toggleDrawer}>
@@ -25,12 +36,11 @@ export default function AccountCard({ ...props }: AccountCardProps) {
             key={index}
             name={route.name}
             to={route.to}
-            disabled={status !== null && status.order < route.order}
+            disabled={props.statusOrder !== null && props.statusOrder < route.order}
           />
         ))}
 
         <div className={styles.navBottom}>
-          <NavItem name='My account' to='/' />
           <NavItem name='Logout' />
         </div>
       </ul>

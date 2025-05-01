@@ -79,6 +79,7 @@ export const useAuthStore = create<AuthState>()(
             withCredentials: true // response with secure cookie (refresh token)
           });
           set({
+            email: email,
             userId: data.userId,
             accessToken: data.accessToken,
             accessTokenExpires: data.accessTokenExpires,

@@ -1,4 +1,9 @@
-import { Account, GetCurrentAccount } from './account.models.ts';
+import {
+  Account,
+  GetCurrentAccount,
+  GetShortUserInfoResponse,
+  UserData
+} from './account.models.ts';
 import { persist } from 'zustand/middleware';
 import { create } from 'zustand';
 import axios, { AxiosError } from 'axios';
@@ -8,11 +13,13 @@ import { useAuthStore } from '../auth/auth.store.ts';
 
 interface AccountState {
   account: Account | null;
+  userData: UserData | null;
 
   isLoading: boolean;
   error: string | null;
 
   getCurrentAccount: () => Promise<void>;
+  getShortUserInfo: () => Promise<void>;
 
   updateAccount: <K extends keyof Account>(key: K, value: Account[K]) => void;
   updateLanguageId: (languageId: string) => void;
@@ -26,6 +33,7 @@ export const useAccountStore = create<AccountState>()(
   persist(
     (set, get) => ({
       account: null,
+      userData: null,
       isLoading: false,
       error: null,
 
@@ -44,6 +52,27 @@ export const useAccountStore = create<AccountState>()(
               contactId: data.contactId,
               personalId: data.personalId,
               documentsId: data.documentsId
+            }
+          });
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data });
+          }
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      getShortUserInfo: async () => {
+        set({ isLoading: true });
+        try {
+          const { data } = await axios.get<GetShortUserInfoResponse>(accountUrls.getShortUserInfo, {
+            headers: createAuthHeader(useAuthStore.getState().accessToken)
+          });
+          set({
+            userData: {
+              name: data.name,
+              surname: data.surname
             }
           });
         } catch (error) {
