@@ -40,7 +40,7 @@ export default function AccountCard({ ...props }: AccountCardProps) {
           />
         ))}
 
-        <div className={styles.navBottom}>
+        <div className={styles.navBottom} onClick={props.handleLogout}>
           <NavItem name='Logout' />
         </div>
       </ul>

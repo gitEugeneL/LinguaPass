@@ -28,6 +28,8 @@ public class Handler(
             return Result<Output>.Failure(new Error(InvalidData));
 
         dbContext.Remove(refreshToken);
+        await dbContext.SaveChangesAsync(ct);
+
         return Result<Output>.Success(new Output(true));
     }
 }

@@ -9,12 +9,20 @@ import { useAccountStore } from '../../../store/account/account.store.ts';
 import { useShallow } from 'zustand/react/shallow';
 import { routes } from '../../../helpers/routeHelpers.ts';
 import { useAuthStore } from '../../../store/auth/auth.store.ts';
+import Loader from '../../../components/base/Loader/Loader.tsx';
 
 export default function Menu() {
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false);
 
   const status = useProgressStore((state) => state.myStatus);
-  const email = useAuthStore((state) => state.email);
+
+  const { email, isLoading, logout } = useAuthStore(
+    useShallow((state) => ({
+      email: state.email,
+      isLoading: state.isLoading,
+      logout: state.logout
+    }))
+  );
 
   const { userData, getShortUserInfo } = useAccountStore(
     useShallow((state) => ({
@@ -34,29 +42,39 @@ export default function Menu() {
 
   const toggleDrawer = () => setIsDrawerOpened(!isDrawerOpened);
 
+  const handleLogout = () => logout();
+
   return (
     <>
       <div className={styles.menuBox}>
         <Navigator />
         <div className={styles.account}>
-          <AccountCard
-            statusOrder={status?.order ?? null}
-            email={email}
-            name={userData?.name ?? null}
-            surname={userData?.surname ?? null}
-          />
+          {isLoading && <Loader />}
+          {!isLoading && (
+            <AccountCard
+              statusOrder={status?.order ?? null}
+              email={email}
+              name={userData?.name ?? null}
+              surname={userData?.surname ?? null}
+              handleLogout={handleLogout}
+            />
+          )}
         </div>
         <MenuButton toggleDrawer={toggleDrawer} />
       </div>
 
       <CustomDrawer toggleDrawer={toggleDrawer} isDrawerOpened={isDrawerOpened}>
-        <AccountCard
-          toggleDrawer={toggleDrawer}
-          statusOrder={status?.order ?? null}
-          email={email}
-          name={userData?.name ?? null}
-          surname={userData?.surname ?? null}
-        />
+        {isLoading && <Loader />}
+        {!isLoading && (
+          <AccountCard
+            toggleDrawer={toggleDrawer}
+            statusOrder={status?.order ?? null}
+            email={email}
+            name={userData?.name ?? null}
+            surname={userData?.surname ?? null}
+            handleLogout={handleLogout}
+          />
+        )}
       </CustomDrawer>
     </>
   );

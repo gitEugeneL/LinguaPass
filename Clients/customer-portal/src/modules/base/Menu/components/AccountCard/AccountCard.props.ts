@@ -4,4 +4,5 @@ export interface AccountCardProps {
   surname: string | null;
   email: string | null;
   toggleDrawer?: () => void;
+  handleLogout: () => void;
 }
