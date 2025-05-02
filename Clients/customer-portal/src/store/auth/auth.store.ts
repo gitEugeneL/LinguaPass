@@ -13,6 +13,7 @@ import {
 } from './auth.models.ts';
 import axios, { AxiosError } from 'axios';
 import { authUrls } from './auth.urls.ts';
+import { createAuthHeader } from '../../helpers/authHelpers.ts';
 
 interface AuthState {
   userId: string | null;
@@ -134,18 +135,19 @@ export const useAuthStore = create<AuthState>()(
       },
 
       refresh: async () => {
-        const MAX_REFRESH_ATTEMPTS = 5;
+        const MAX_REFRESH_ATTEMPTS = 3;
         const userId = get().userId;
         if (userId) {
           const attemptRefresh = async (attempts: number) => {
             if (attempts === MAX_REFRESH_ATTEMPTS) {
               set({
                 isRefreshTokenProblem: true,
-                refreshAttempts: 0
+                refreshAttempts: 0,
+                isLoading: false
               });
               return;
             }
-            set({ error: null, isRefreshTokenProblem: false });
+            set({ error: null, isRefreshTokenProblem: false, isLoading: true });
             const request: RefreshOrLogoutRequest = { userId: userId };
             try {
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
@@ -171,7 +173,26 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      logout: async () => {},
+      logout: async () => {
+        const userId = get().userId;
+        if (userId) {
+          set({ isLoading: true, error: null });
+          try {
+            get().resetState();
+            const request: RefreshOrLogoutRequest = { userId: userId };
+            await axios.post(authUrls.logout, request, {
+              headers: createAuthHeader(get().accessToken),
+              withCredentials: true
+            });
+          } catch (error) {
+            if (error instanceof AxiosError) {
+              set({ error: 'Invalid logout' });
+            }
+          } finally {
+            set({ isLoading: false });
+          }
+        }
+      },
 
       resetState: () => {
         set({

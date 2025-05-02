@@ -1,0 +1,65 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color);
+}
+
+.card {
+  margin-left: 20px;
+  margin-right: 20px;
+  max-width: 500px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  background-color: var(--white-color);
+  border-radius: var(--small-radius);
+  box-shadow: var(--shadow-1);
+  animation: fadeInUp 0.9s ease-out forwards;
+}
+
+.btnContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  & div {
+    width: 100%;
+  }
+
+
+  @media (min-width: 400px) {
+    flex-direction: row;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title {
+  font-size: var(--font-size22);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--black-color);
+  text-align: center;
+}
+
+.description {
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-regular);
+  color: var(--grey-1-color);
+  text-align: center;
+  max-width: fit-content;
+  margin-bottom: 15px;
+}

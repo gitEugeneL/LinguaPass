@@ -18,7 +18,8 @@ export default function Button({
         [styles.secondary]: appearance === 'secondary',
         [styles.special]: appearance === 'special',
         [styles.disabled]: appearance === 'disabled',
-        [styles.danger]: appearance === 'danger'
+        [styles.danger]: appearance === 'danger',
+        [styles.secondaryDanger]: appearance === 'secondaryDanger'
       })}
       {...props}
     >

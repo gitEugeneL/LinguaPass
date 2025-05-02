@@ -9,5 +9,7 @@ export const authUrls = {
 
   generateCode: `${IDENTITY}/generate-code`,
 
-  resetPassword: `${IDENTITY}/reset-password`
+  resetPassword: `${IDENTITY}/reset-password`,
+
+  logout: `${IDENTITY}/logout`
 };
