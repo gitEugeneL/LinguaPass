@@ -1,22 +1,22 @@
 import './assets/styles/index.pcss';
 import 'react-datepicker/dist/react-datepicker.css';
-import { createBrowserRouter, Navigate } from 'react-router';
 import AuthLayout from './app/auth/layout/AuthLayout.tsx';
 import { createRoot } from 'react-dom/client';
-import { RouterProvider } from 'react-router/dom';
 import LoginPage from './app/auth/pages/LoginPage/LoginPage.tsx';
 import RegistrationPage from './app/auth/pages/RegistrationPage/RegistrationPage.tsx';
 import AuthProvider from './app/AuthProvider.tsx';
 import ForgotPasswordPage from './app/auth/pages/ForgotPasswordPage/ForgotPasswordPage.tsx';
-import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
 import BaseLayout from './app/base/layout/BaseLayout.tsx';
 import LanguagePage from './app/base/pages/LanguagePage.tsx';
 import SchoolPage from './app/base/pages/SchoolPage.tsx';
 import CoursePage from './app/base/pages/CoursePage.tsx';
 import ContactInfoPage from './app/base/pages/ContactInfoPage.tsx';
 import { routes } from './helpers/routeHelpers.ts';
-import PersonalInfoPage from './app/base/pages/PerosnalInfoPage.tsx';
 import HomePage from './app/base/pages/HomePage.tsx';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
+import ResetPasswordPage from './app/auth/pages/ResetPasswprdPage/ResetPasswordPage.tsx';
+import DocumentsPage from './app/base/pages/DocumentsPage.tsx';
+import PersonalInfoPage from './app/base/pages/PerosnalInfoPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -53,11 +53,10 @@ const router = createBrowserRouter([
       },
       {
         path: routes.documents.to,
-        element: <div>documents page</div>
+        element: <DocumentsPage />
       }
     ]
   },
-
   {
     path: '/auth',
     element: <AuthLayout />,

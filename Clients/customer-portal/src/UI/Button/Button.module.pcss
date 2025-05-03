@@ -14,7 +14,18 @@
   outline: none;
 }
 
+.primary, .danger, .special, .disabled {
+  border: 2px solid transparent;
+}
+
 .large {
+  width: 100%;
+}
+
+.small {
+  font-weight: var(--font-weight-medium);
+  height: 35px;
+  border-radius: var(--mini-radius);
   width: 100%;
 }
 
@@ -52,6 +63,7 @@
 }
 
 .secondaryDanger {
+  box-sizing: border-box; /* Включаем border и padding в размеры */
   background-color: var(--white-color);
   color: var(--red-1-color);
   border: 2px solid var(--red-1-color);
@@ -76,6 +88,5 @@
   &:hover,
   &:focus {
     background-color: var(--background-color);
-
   }
 }

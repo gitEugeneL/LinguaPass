@@ -1,5 +1,5 @@
 import ResultBlock from '../../../modules/base/ResultBlock/ResultBlock.tsx';
-import Title from '../../../UI/Title/Title.tsx';
+import FileUploader from '../../../modules/base/FileUploader/FileUploader.tsx';
 
 export default function DocumentsPage() {
   return (
@@ -7,7 +7,7 @@ export default function DocumentsPage() {
       <ResultBlock type='course' />
       <ResultBlock type='contact' />
       <ResultBlock type='personal' />
-      <Title title='Your documents' appearance='primary' />
+      <FileUploader />
     </>
   );
 }
