@@ -1,3 +1,5 @@
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
 using Storage.Helpers;
 using Storage.Services.Interfaces;
 
@@ -39,17 +41,53 @@ internal sealed class SecurityService : ISecurityService
         try
         {
             await using var stream = file.OpenReadStream();
-            using var reader = new StreamReader(stream);
-            var content = await reader.ReadToEndAsync();
-            var maliciousPatterns = new[]
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            using var pdfReader = new PdfReader(memoryStream);
+            using var pdfDocument = new PdfDocument(pdfReader);
+
+            var catalog = pdfDocument.GetCatalog().GetPdfObject();
+            if (catalog.ContainsKey(PdfName.OpenAction) || catalog.ContainsKey(PdfName.AA))
             {
-                "/JavaScript",
-                "/JS",
-                "/OpenAction",
-                "/AA",
-                "/Launch"
-            };
-            return maliciousPatterns.All(pattern => !content.Contains(pattern, StringComparison.OrdinalIgnoreCase));
+                var openAction = catalog.Get(PdfName.OpenAction);
+                if (openAction is PdfDictionary actionDict)
+                    if (actionDict.ContainsKey(PdfName.JS) ||
+                        actionDict.Get(PdfName.S)?.Equals(PdfName.JavaScript) == true)
+                        return false;
+            }
+
+            for (var i = 1; i <= pdfDocument.GetNumberOfPages(); i++)
+            {
+                var page = pdfDocument.GetPage(i);
+                var annots = page.GetPdfObject().GetAsArray(PdfName.Annots);
+                if (annots == null) continue;
+                foreach (var annot in annots)
+                {
+                    var annotDict = (PdfDictionary)annot;
+                    if (!annotDict.ContainsKey(PdfName.A) && !annotDict.ContainsKey(PdfName.AA)) continue;
+                    var action = annotDict.GetAsDictionary(PdfName.A) ?? annotDict.GetAsDictionary(PdfName.AA);
+                    if (action != null && (action.ContainsKey(PdfName.JS) ||
+                                           action.Get(PdfName.S)?.Equals(PdfName.JavaScript) == true))
+                        return false;
+                }
+            }
+
+            var names = catalog.GetAsDictionary(PdfName.Names);
+            if (names != null && names.ContainsKey(PdfName.EmbeddedFiles))
+                return false;
+
+            for (var i = 1; i <= pdfDocument.GetNumberOfPages(); i++)
+            {
+                var page = pdfDocument.GetPage(i);
+                var content = PdfTextExtractor.GetTextFromPage(page);
+                if (content.Contains("/JavaScript", StringComparison.OrdinalIgnoreCase) ||
+                    content.Contains("/JS", StringComparison.OrdinalIgnoreCase))
+                    return false;
+            }
+
+            return true;
         }
         catch
         {
