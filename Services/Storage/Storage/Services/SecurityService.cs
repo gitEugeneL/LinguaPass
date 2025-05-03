@@ -1,11 +1,10 @@
+using Storage.Helpers;
 using Storage.Services.Interfaces;
 
 namespace Storage.Services;
 
 internal sealed class SecurityService : ISecurityService
 {
-    private const long MaxFileSize = 5 * 1024 * 1024; // 5MB in bytes
-
     public bool IsValidPdf(IFormFile file)
     {
         // Check file extension
@@ -31,7 +30,7 @@ internal sealed class SecurityService : ISecurityService
 
     public bool IsFileSizeValid(IFormFile file)
     {
-        return file.Length <= MaxFileSize;
+        return file.Length <= StorageConstants.MaxFileSize;
     }
 
     public async Task<bool> IsFileSafeFromMalware(IFormFile file)
