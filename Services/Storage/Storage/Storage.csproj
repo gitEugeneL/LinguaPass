@@ -9,7 +9,6 @@
     <!-- Include shared projects -->
     <ItemGroup>
         <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
-        <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
         <ProjectReference Include="..\..\Shared\Shared.csproj"/>
     </ItemGroup>
 
@@ -18,21 +17,13 @@
         <Content Include="..\..\Common\AuthConfig\authsettings.json"
                  Link="authsettings.json"
                  CopyToOutputDirectory="Always"/>
-
-        <Content Include="..\..\Common\MessageBroker\brokersettings.json"
-                 Link="brokersettings.json"
-                 CopyToOutputDirectory="Always"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="FastEndpoints" Version="6.0.0"/>
-        <PackageReference Include="itext7" Version="9.1.0" />
+        <PackageReference Include="itext7" Version="9.1.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4"/>
         <PackageReference Include="Minio" Version="6.0.4"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="MessageBroker\"/>
     </ItemGroup>
 
 </Project>
