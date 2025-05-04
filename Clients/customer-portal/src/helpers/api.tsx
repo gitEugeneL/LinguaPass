@@ -8,3 +8,5 @@ export const COURSE = `${GATEWAY}/course`;
 export const ACCOUNT = `${GATEWAY}/account`;
 
 export const PROGRESS = `${GATEWAY}/progress`;
+
+export const STORAGE = `${GATEWAY}/storage`;

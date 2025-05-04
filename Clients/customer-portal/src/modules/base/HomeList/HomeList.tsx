@@ -1,4 +1,5 @@
 import ResultBlock from '../ResultBlock/ResultBlock.tsx';
+import ConfirmBlock from '../ConfirmBlock/ConfirmBlock.tsx';
 
 export default function HomeList() {
   return (
@@ -7,6 +8,7 @@ export default function HomeList() {
       <ResultBlock type='contact' />
       <ResultBlock type='personal' />
       <ResultBlock type='documents' />
+      <ConfirmBlock />
     </>
   );
 }

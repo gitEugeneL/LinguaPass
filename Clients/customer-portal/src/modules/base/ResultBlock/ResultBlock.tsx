@@ -14,6 +14,8 @@ import { useNavigate } from 'react-router';
 import ContactWidget from './widgets/ContactWidget/ContactWidget.tsx';
 import PersonalWidget from './widgets/PersonalWidget/PersonalWidget.tsx';
 import DisabledIcon from '../SchoolList/widgets/SchoolWidget/icons/DisabledIcon.tsx';
+import { useDocumentsStore } from '../../../store/documet/document.store.ts';
+import DocumentWidget from './widgets/DocumentWidget/DocumentWidget.tsx';
 
 export default function ResultBlock({ ...props }: ResultBlockProps) {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
 
   const account = useAccountStore((state) => state.account);
   const status = useProgressStore((state) => state.myStatus);
+  const fileNames = useDocumentsStore((state) => state.uploadedFileNames);
 
   const handleClick = () => setIsOpened(!isOpened);
 
@@ -85,7 +88,7 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
           {props.type === 'documents' &&
             (disabledRoute ? (
               <DisabledIcon />
-            ) : account?.documentsId && validRoutes.personal ? (
+            ) : fileNames.length > 0 && validRoutes.documents ? (
               <SuccessIcon />
             ) : (
               <ProcessesIcon />
@@ -146,6 +149,9 @@ export default function ResultBlock({ ...props }: ResultBlockProps) {
                   />
                 )}
               </div>
+              {props.type === 'documents' && (
+                <DocumentWidget fileNames={fileNames} opened={isOpened} />
+              )}
 
               <div className={styles.btn} onClick={handleChangeBtnClick}>
                 <Button name='Change' size='large' />
