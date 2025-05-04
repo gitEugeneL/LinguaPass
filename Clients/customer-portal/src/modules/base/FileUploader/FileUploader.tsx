@@ -4,33 +4,49 @@ import { useShallow } from 'zustand/react/shallow';
 import { ChangeEvent, useEffect } from 'react';
 import FileInput from './components/FileInput/FileInput.tsx';
 import FileCard from './components/FileCard/FileCard.tsx';
+import UploadedFile from './components/UploadedFile/UploadedFile.tsx';
 
 export default function FileUploader() {
   const {
     files,
+    uploadedFileNames,
     error,
     isLoading,
     progress,
     uploadingFileIndex,
-    addFiles,
-    removeFile,
+    addFilesToList,
+    removeFileFromList,
     uploadFile,
+    getUploadedFiles,
+    deleteFile,
     cancelUpload,
     resetError
   } = useDocumentsStore(
     useShallow((state) => ({
       files: state.files,
+      uploadedFileNames: state.uploadedFileNames,
       error: state.error,
       isLoading: state.isLoading,
       progress: state.progress,
       uploadingFileIndex: state.uploadingFileIndex,
-      addFiles: state.addFiles,
-      removeFile: state.removeFile,
+      addFilesToList: state.addFilesToList,
+      removeFileFromList: state.removeFileFromList,
       uploadFile: state.uploadFile,
+      getUploadedFiles: state.getUploadedFiles,
+      deleteFile: state.deleteFile,
       cancelUpload: state.cancelUpload,
       resetError: state.resetError
     }))
   );
+
+  useEffect(() => {
+    if (uploadedFileNames.length === 0) {
+      const fetchData = async () => {
+        await getUploadedFiles();
+      };
+      fetchData();
+    }
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -43,7 +59,7 @@ export default function FileUploader() {
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const selectedFiles: File[] = Array.from(event.target.files || []);
-    addFiles(selectedFiles);
+    addFilesToList(selectedFiles);
     event.target.value = '';
   };
 
@@ -54,23 +70,42 @@ export default function FileUploader() {
       </div>
       <FileInput handleFileChange={handleFileChange} isLoading={isLoading} error={error} />
 
+      {uploadedFileNames.length > 0 && (
+        <div className={styles.wrapper}>
+          <span className={styles.listTitle}>List of uploaded files:</span>
+          <ul className={styles.fileContainer}>
+            {uploadedFileNames.map((item, index) => (
+              <UploadedFile
+                key={index}
+                index={index}
+                name={item}
+                deleteFile={deleteFile}
+                isLoading={isLoading}
+              />
+            ))}
+          </ul>
+        </div>
+      )}
       {files.length > 0 && (
-        <ul className={styles.fileContainer}>
-          {files.map((file, index) => (
-            <FileCard
-              key={index}
-              index={index}
-              name={file.name}
-              size={file.size}
-              removeFile={() => removeFile(index)}
-              uploadFile={() => uploadFile(index)}
-              cancelUpload={cancelUpload}
-              isLoading={isLoading && uploadingFileIndex === index}
-              uploadingFileIndex={uploadingFileIndex}
-              progress={progress}
-            />
-          ))}
-        </ul>
+        <div className={styles.wrapper}>
+          <span className={styles.listTitle}>List of files ready for upload:</span>
+          <ul className={styles.fileContainer}>
+            {files.map((file, index) => (
+              <FileCard
+                key={index}
+                index={index}
+                name={file.name}
+                size={file.size}
+                removeFile={() => removeFileFromList(index)}
+                uploadFile={() => uploadFile(index)}
+                cancelUpload={cancelUpload}
+                isLoading={isLoading && uploadingFileIndex === index}
+                uploadingFileIndex={uploadingFileIndex}
+                progress={progress}
+              />
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

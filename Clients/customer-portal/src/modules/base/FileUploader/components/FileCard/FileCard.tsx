@@ -4,9 +4,26 @@ import { CloseIcon } from '../../../../../assets/icons/CloseIcon.tsx';
 import { FileCardProps } from './FileCard.props.ts';
 import cn from 'classnames';
 import ProgressBar from '../../UI/ProgressBar/ProgressBar.tsx';
+import { useDocumentsStore } from '../../../../../store/documet/document.store.ts';
 
 export default function FileCard({ ...props }: FileCardProps) {
+  const isLoading = useDocumentsStore((state) => state.isLoading);
+
   const fileSize = `${(props.size / (1024 * 1024)).toFixed(2)} MB`;
+
+  const handleCloseBtn = () => {
+    if (props.isLoading && props.progress !== 100) {
+      props.cancelUpload();
+    } else {
+      props.removeFile();
+    }
+  };
+
+  const handleUploadBtn = () => {
+    if (!isLoading) {
+      props.uploadFile();
+    }
+  };
 
   return (
     <li
@@ -19,7 +36,7 @@ export default function FileCard({ ...props }: FileCardProps) {
       <div className={styles.titleBlock}>
         <span className={styles.name}>{props.name}</span>
         <div className={styles.progressBlock}>
-          {props.isLoading && <span>{props.progress}%</span>}
+          {props.isLoading && <span className={styles.progress}>{props.progress}%</span>}
           {props.isLoading && <span>Uploading...</span>}
           {props.isLoading && <span>·</span>}
           <span>{fileSize}</span>
@@ -32,23 +49,20 @@ export default function FileCard({ ...props }: FileCardProps) {
       >
         {!props.isLoading && (
           <Button
-            name='Click to upload'
+            name='Upload'
             size='small'
             appearance={
               props.uploadingFileIndex !== null && props.uploadingFileIndex !== props.index
                 ? 'disabled'
                 : 'primary'
             }
-            onClick={props.uploadFile}
-            disabled={props.isLoading}
+            onClick={handleUploadBtn}
+            disabled={isLoading}
           />
         )}
         {props.isLoading && <ProgressBar progress={props.progress} />}
 
-        <div
-          className={styles.exit}
-          onClick={props.isLoading ? props.cancelUpload : props.removeFile}
-        >
+        <div className={styles.exit} onClick={handleCloseBtn}>
           <CloseIcon />
         </div>
       </div>

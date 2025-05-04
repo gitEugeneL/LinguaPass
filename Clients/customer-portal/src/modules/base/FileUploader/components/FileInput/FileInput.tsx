@@ -23,8 +23,7 @@ export default function FileInput({ ...props }: FileInputProps) {
       >
         <FileIcon />
         {!props.isLoading && props.error && <span>{props.error}</span>}
-        {props.isLoading && <span>Uploading...</span>}
-        {!props.isLoading && !props.error && <span>Click here to choose files</span>}
+        {!props.error && <span>Click here to choose files</span>}
 
         <div className={styles.fileDetails}>
           <span className={styles.fileType}>PDF</span>
