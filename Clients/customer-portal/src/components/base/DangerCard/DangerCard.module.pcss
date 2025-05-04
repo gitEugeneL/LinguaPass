@@ -1,14 +1,19 @@
-.container {
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--background-color);
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
 .card {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 20px;
   max-width: 500px;
   padding: 40px;
   display: flex;
@@ -19,6 +24,7 @@
   border-radius: var(--small-radius);
   box-shadow: var(--shadow-1);
   animation: fadeInUp 0.9s ease-out forwards;
+  z-index: 11;
 }
 
 .btnContainer {
@@ -30,7 +36,6 @@
   & div {
     width: 100%;
   }
-
 
   @media (min-width: 400px) {
     flex-direction: row;
@@ -56,9 +61,10 @@
 }
 
 .description {
+  line-height: 24px;
   font-size: var(--font-size16);
   font-weight: var(--font-weight-regular);
-  color: var(--grey-1-color);
+  color: var(--grey-2-color);
   text-align: center;
   max-width: fit-content;
   margin-bottom: 15px;
