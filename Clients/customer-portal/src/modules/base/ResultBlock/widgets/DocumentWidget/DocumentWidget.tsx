@@ -10,7 +10,7 @@ export default function DocumentWidget({ ...props }: DocumentWidgetProps) {
           {props.fileNames.map((item, index) => (
             <div className={styles.item} key={index}>
               <SuccessIcon />
-              {item}
+              <span className={styles.name}>{item}</span>
             </div>
           ))}
         </div>
