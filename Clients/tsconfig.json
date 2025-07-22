@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@clients/shared/*": [
+        "packages/shared/src/*"
+      ]
+    },
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true
+  },
+  "references": [
+    {
+      "path": "packages/customer-portal"
+    },
+    {
+      "path": "packages/shared"
+    }
+  ],
+  "include": [],
+  "exclude": [
+    "node_modules",
+    "**/dist"
+  ]
+}

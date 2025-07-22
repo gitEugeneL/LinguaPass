@@ -1,0 +1,26 @@
+{
+  "name": "clients",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:customer-portal": "pnpm --filter customer-portal dev",
+    "dev:manager-portal": "pnpm --filter manager-portal dev",
+    "build:customer-portal": "pnpm --filter customer-portal build",
+    "build:manager-portal": "pnpm --filter manager-portal build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-boundaries": "^5.0.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^15.15.0",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.24.1"
+  }
+}
