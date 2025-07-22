@@ -1,0 +1,60 @@
+.container {
+  width: 100%;
+  height: 85px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--normal-radius);
+  background-color: var(--white-color);
+  box-shadow: var(--shadow-2);
+  opacity: 0;
+  transition: box-shadow 0.3s ease;
+  transform: translateY(20px);
+  animation: fadeInUp 0.3s ease-out forwards;
+
+  &:hover,
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.disabled {
+  box-shadow: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+.name {
+  font-size: var(--font-size14);
+  font-weight: var(--font-weight-medium);
+  color: var(--black-color);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.btnBlock {
+  min-width: 110px;
+  width: 110px;
+}
+
+@media (min-width: 500px) {
+  .container {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+}

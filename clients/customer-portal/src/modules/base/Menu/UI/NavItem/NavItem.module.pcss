@@ -1,0 +1,48 @@
+.item {
+  display: block;
+  padding-left: 20%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 24px;
+  font-size: var(--font-size18);
+  color: var(--grey-1-color);
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: var(--green-1-color);
+    background-color: var(--green-3-color);
+  }
+}
+
+.active {
+  border-right: 5px solid var(--green-1-color);
+  color: var(--green-1-color);
+  background-color: var(--green-3-color);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--grey-1-color);
+
+  &:hover,
+  &:focus {
+    color: var(--grey-1-color);
+    background-color: transparent;
+  }
+}
+
+@media (--breakpoint-laptop) {
+  .item {
+    padding: 8px 20px;
+    font-size: var(--font-size14);
+  }
+
+  .active {
+    border: none;
+    color: var(--green-1-color);
+    background-color: var(--green-3-color);
+  }
+}

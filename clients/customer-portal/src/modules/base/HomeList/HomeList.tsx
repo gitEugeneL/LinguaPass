@@ -1,0 +1,14 @@
+import ResultBlock from '../ResultBlock/ResultBlock.tsx';
+import ConfirmBlock from '../ConfirmBlock/ConfirmBlock.tsx';
+
+export default function HomeList() {
+  return (
+    <>
+      <ResultBlock type='course' />
+      <ResultBlock type='contact' />
+      <ResultBlock type='personal' />
+      <ResultBlock type='documents' />
+      <ConfirmBlock />
+    </>
+  );
+}

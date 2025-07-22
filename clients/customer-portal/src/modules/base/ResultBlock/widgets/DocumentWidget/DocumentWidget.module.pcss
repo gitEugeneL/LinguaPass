@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -30px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--black-color);
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-medium);
+}
+
+.name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 80%;
+}
+
+.error {
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-medium);
+  color: var(--grey-2-color);
+}
+
+@media (--breakpoint-tablet) {
+  .name {
+    width: 90%;
+  }
+}
