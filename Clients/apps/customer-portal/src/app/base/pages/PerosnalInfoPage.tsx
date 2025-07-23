@@ -1,5 +1,6 @@
+import { Title } from '@clients/shared';
+
 import { PersonalForm, ResultBlock } from '../../../modules/base';
-import { Title } from '../../../UI';
 
 export function PersonalInfoPage() {
   return (

@@ -1,8 +1,8 @@
+import { createAuthHeader } from '@clients/shared';
 import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { createAuthHeader } from '../../helpers';
 import { useAuthStore } from '../index.ts';
 
 import {

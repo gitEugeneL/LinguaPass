@@ -7,46 +7,38 @@ import { useShallow } from 'zustand/react/shallow';
 import { useAuthStore } from '../../../store';
 
 import styles from './LoginForm.module.pcss';
-import { type LoginFormSchema, LoginFormValidationSchema } from './LoginForm.schemes.ts';
+import { type LoginFormSchema, LoginFormValidationSchema } from './LoginFormSchemes.ts';
 
 export function LoginForm() {
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
-  const { isLoading, error, resetError, login, resetState } = useAuthStore(
+  const { isLoading, error, resetError, loginAction } = useAuthStore(
     useShallow((state) => ({
       isLoading: state.isLoading,
       error: state.error,
       resetError: state.resetError,
-      login: state.login,
-      resetState: state.resetState
+      loginAction: state.login
     }))
   );
 
   useEffect(() => {
-    resetState();
-  }, []);
-
-  // local error for notifications
-  useEffect(() => {
     if (error) {
       setLocalError(error);
     }
-    // reset main error
     resetError();
   }, [error]);
 
-  // inputs error config
   useEffect(() => {
     if (error && !isLoading) {
       resetField('password');
-      setFocus('email');
+      setFocus('login');
     }
   }, [error, isLoading]);
 
   const formSubmit = async (schema: LoginFormSchema) => {
     setLocalError(undefined);
     if (!isLoading) {
-      login(schema.email, schema.password);
+      loginAction(schema.login, schema.password);
     }
   };
 
@@ -60,7 +52,7 @@ export function LoginForm() {
     resolver: yupResolver(LoginFormValidationSchema),
     mode: 'all',
     defaultValues: {
-      email: '',
+      login: '',
       password: ''
     }
   });
@@ -71,9 +63,9 @@ export function LoginForm() {
       <form onSubmit={handleSubmit(formSubmit)}>
         <div className={styles.formWrapper}>
           <CustomInput
-            label='Email'
-            name='email'
-            placeholder='Enter your email'
+            label='Login'
+            name='login'
+            placeholder='Enter your login'
             errors={errors}
             control={control}
           />

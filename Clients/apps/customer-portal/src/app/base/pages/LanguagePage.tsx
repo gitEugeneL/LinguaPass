@@ -1,5 +1,6 @@
+import { Title } from '@clients/shared';
+
 import { LanguageList } from '../../../modules/base';
-import { Title } from '../../../UI';
 
 export function LanguagePage() {
   return (

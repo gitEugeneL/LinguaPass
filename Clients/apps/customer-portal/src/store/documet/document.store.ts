@@ -1,8 +1,8 @@
+import { createAuthHeader } from '@clients/shared';
 import axios, { type AxiosProgressEvent, type CancelTokenSource } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { createAuthHeader } from '../../helpers';
 import { useAuthStore } from '../index.ts';
 
 import { type DeleteFileResponse, type GetUploadedFilesResponse } from './document.models.ts';

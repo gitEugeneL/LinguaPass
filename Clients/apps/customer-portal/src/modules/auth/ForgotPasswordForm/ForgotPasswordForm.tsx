@@ -1,4 +1,4 @@
-import { Button, CustomInput } from '@clients/shared';
+import { Button, CustomInput, Notification } from '@clients/shared';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,7 +6,6 @@ import { Navigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useAuthStore } from '../../../store';
-import { Notification } from '../../../UI';
 
 import styles from './ForgotPasswordForm.module.pcss';
 import {

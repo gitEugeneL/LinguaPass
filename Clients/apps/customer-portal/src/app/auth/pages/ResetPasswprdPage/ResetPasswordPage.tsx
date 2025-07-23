@@ -1,5 +1,7 @@
+import { Title } from '@clients/shared';
+
 import { ResetPasswordForm } from '../../../../modules/auth';
-import { CustomLink, Title } from '../../../../UI';
+import { CustomLink } from '../../../../UI';
 
 import styles from './ResetPassword.module.pcss';
 

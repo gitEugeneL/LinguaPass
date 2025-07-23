@@ -1,8 +1,8 @@
 import '@clients/shared/styles/index.pcss';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
-import { AuthLayout } from './app/auth';
+import { AuthLayout, LoginPage } from './app/auth';
 
 const router = createBrowserRouter([
   {
@@ -11,7 +11,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <div>test</div>
+        element: <Navigate to='login' replace />
+      },
+      {
+        path: 'login',
+        element: <LoginPage />
       }
     ]
   }

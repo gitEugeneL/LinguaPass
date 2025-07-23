@@ -1,4 +1,4 @@
-import { ACCOUNT } from '../../helpers';
+import { ACCOUNT } from '@clients/shared';
 
 export const accountUrls = {
   getCurrentAccount: `${ACCOUNT}/my-account`,

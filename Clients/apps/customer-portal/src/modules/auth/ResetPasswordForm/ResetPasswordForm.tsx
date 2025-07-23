@@ -1,4 +1,4 @@
-import { Button } from '@clients/shared';
+import { Button, PasswordInput } from '@clients/shared';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as React from 'react';
 import { useEffect } from 'react';
@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { Navigate, useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { CodeInput, Countdown, PasswordInput } from '../../../components/auth';
+import { CodeInput, Countdown } from '../../../components/auth';
 import { useAuthStore } from '../../../store';
 
 import {

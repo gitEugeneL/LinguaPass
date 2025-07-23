@@ -1,4 +1,4 @@
-import { ACCOUNT, COURSE } from '../../helpers';
+import { ACCOUNT, COURSE } from '@clients/shared';
 
 export const languageUrls = {
   getLanguages: `${COURSE}/languages`,

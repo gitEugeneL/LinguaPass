@@ -1,5 +1,6 @@
-import { CustomInput } from '@clients/shared';
 import { useState } from 'react';
+
+import { CustomInput } from '../../UI';
 
 import { CloseIcon } from './icons/CloseIcon.tsx';
 import { OpenIcon } from './icons/OpenIcon.tsx';

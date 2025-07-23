@@ -1,5 +1,7 @@
+import { Title } from '@clients/shared';
+
 import { RegistrationForm } from '../../../../modules/auth';
-import { CustomLink, Title } from '../../../../UI';
+import { CustomLink } from '../../../../UI';
 
 import styles from './RegistrationPage.module.pcss';
 

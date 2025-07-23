@@ -1,5 +1,6 @@
+import { Title } from '@clients/shared';
+
 import { SchoolList } from '../../../modules/base';
-import { Title } from '../../../UI';
 
 export function SchoolPage() {
   return (

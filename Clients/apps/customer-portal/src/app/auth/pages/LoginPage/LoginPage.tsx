@@ -1,8 +1,8 @@
-import { Button } from '@clients/shared';
+import { Button, Title } from '@clients/shared';
 import { NavLink } from 'react-router';
 
 import { LoginForm } from '../../../../modules/auth';
-import { CustomLink, Title } from '../../../../UI';
+import { CustomLink } from '../../../../UI';
 
 import styles from './LoginPage.module.pcss';
 

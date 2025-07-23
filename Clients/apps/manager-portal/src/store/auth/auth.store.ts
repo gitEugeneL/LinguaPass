@@ -1,24 +1,12 @@
 import { createAuthHeader } from '@clients/shared';
 import axios, { AxiosError } from 'axios';
-import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { create } from 'zustand/react';
 
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-import {
-  type GenerateCodeRequest,
-  type GenerateCodeResponse,
-  type LoginOrRefreshResponse,
-  type LoginRequest,
-  type RefreshOrLogoutRequest,
-  type RegistrationRequest,
-  type RegistrationResponse,
-  type ResetPasswordRequest,
-  type ResetPasswordResponse
+import type {
+  LoginOrRefreshResponse,
+  LoginRequest,
+  RefreshOrLogoutRequest
 } from './auth.models.ts';
 import { authUrls } from './auth.urls.ts';
 
@@ -27,58 +15,35 @@ interface AuthState {
   accessToken: string | null;
   accessTokenExpires: Date | null;
   refreshTokenExpires: Date | null;
-  isEmailConfirmed: boolean;
-  codeExpires: Date | null;
   email: string | null;
   error: string | null;
   isLoading: boolean;
   refreshAttempts: number;
-  isPasswordChanged: boolean | null;
   isRefreshTokenProblem: boolean | null;
+  role: string | null;
 
-  registration: (email: string, password: string, confirmPassword: string) => void;
   login: (email: string, password: string) => void;
-  generateCode: (email: string) => void;
-  resetPassword: (code: string, password: string, confirmPassword: string) => void;
   refresh: () => void;
   logout: () => void;
 
   resetError: () => void;
-  resetCodeData: () => void;
-  resetState: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       userId: null,
+      role: null,
       accessToken: null,
       accessTokenExpires: null,
       refreshTokenExpires: null,
-      codeExpires: null,
       email: null,
-      isEmailConfirmed: false,
-      isPasswordChanged: false,
       isRefreshTokenProblem: false,
       error: null,
       isLoading: false,
       refreshAttempts: 0,
 
-      registration: async (email: string, password: string, confirmPassword: string) => {
-        set({ isLoading: true, error: null });
-        const request: RegistrationRequest = { email, password, confirmPassword };
-        try {
-          const { data } = await axios.post<RegistrationResponse>(authUrls.registration, request);
-          set({ userId: data.userId });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set({ error: error.response?.data });
-          }
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
+      // TODO add  admin role here (read JWT)
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
         const request: LoginRequest = { email, password };
@@ -88,11 +53,9 @@ export const useAuthStore = create<AuthState>()(
           });
           set({
             email: email,
-            userId: data.userId,
             accessToken: data.accessToken,
             accessTokenExpires: data.accessTokenExpires,
             refreshTokenExpires: data.refreshTokenExpires,
-            isEmailConfirmed: data.isEmailConfirmed,
             isRefreshTokenProblem: false,
             refreshAttempts: 0
           });
@@ -105,44 +68,9 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      generateCode: async (email: string) => {
-        set({ isLoading: true, error: null, codeExpires: null, email: null });
-        const request: GenerateCodeRequest = { email };
-        try {
-          const { data } = await axios.post<GenerateCodeResponse>(authUrls.generateCode, request);
-          set({ codeExpires: data.codeExpires, email: email });
-        } catch (error) {
-          if (error instanceof AxiosError) {
-            set({ error: error.response?.data });
-          }
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
-      resetPassword: async (code: string, password: string, confirmPassword: string) => {
-        const email = get().email;
-        if (email) {
-          set({ isLoading: true, error: null, isPasswordChanged: false });
-          const request: ResetPasswordRequest = { email, code, password, confirmPassword };
-          try {
-            const { data } = await axios.post<ResetPasswordResponse>(
-              authUrls.resetPassword,
-              request
-            );
-            set({ userId: data.userId, isPasswordChanged: true, codeExpires: null });
-          } catch (error) {
-            if (error instanceof AxiosError) {
-              set({ error: 'Code is invalid or expired :(' });
-            }
-          } finally {
-            set({ isLoading: false });
-          }
-        }
-      },
-
+      // TODO add admin role here (read JWT)
       refresh: async () => {
-        const MAX_REFRESH_ATTEMPTS = 3;
+        const MAX_REFRESH_ATTEMPTS = 10;
         const userId = get().userId;
         if (userId) {
           const attemptRefresh = async (attempts: number) => {
@@ -185,7 +113,16 @@ export const useAuthStore = create<AuthState>()(
         if (userId) {
           set({ isLoading: true, error: null });
           try {
-            get().resetState();
+            set({
+              userId: null,
+              accessToken: null,
+              refreshTokenExpires: null,
+              isRefreshTokenProblem: false,
+              email: null,
+              error: null,
+              isLoading: false,
+              refreshAttempts: 0
+            });
             const request: RefreshOrLogoutRequest = { userId: userId };
             await axios.post(authUrls.logout, request, {
               headers: createAuthHeader(get().accessToken),
@@ -201,34 +138,14 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      resetState: () => {
-        set({
-          userId: null,
-          accessToken: null,
-          refreshTokenExpires: null,
-          isEmailConfirmed: false,
-          isPasswordChanged: false,
-          codeExpires: null,
-          isRefreshTokenProblem: false,
-          email: null,
-          error: null,
-          isLoading: false,
-          refreshAttempts: 0
-        });
-      },
-
-      resetError: () => set({ error: null }),
-
-      resetCodeData: () => set({ email: null, codeExpires: null })
+      resetError: () => set({ error: null })
     }),
     {
       name: 'auth',
       partialize: (state: AuthState) => ({
         userId: state.userId,
-        codeExpires: state.codeExpires,
         email: state.email,
         refreshTokenExpires: state.refreshTokenExpires,
-        isEmailConfirmed: state.isEmailConfirmed,
         isRefreshTokenProblem: state.isRefreshTokenProblem
       })
     }

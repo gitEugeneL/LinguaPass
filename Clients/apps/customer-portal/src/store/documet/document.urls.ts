@@ -1,4 +1,4 @@
-import { STORAGE } from '../../helpers';
+import { STORAGE } from '@clients/shared';
 
 export const storageUrls = {
   uploadFile: `${STORAGE}/upload`,

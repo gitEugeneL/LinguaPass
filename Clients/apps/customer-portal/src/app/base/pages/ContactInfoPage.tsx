@@ -1,5 +1,7 @@
+import { Title } from '@clients/shared';
+
 import { ContactForm, ResultBlock } from '../../../modules/base';
-import { Title } from '../../../UI';
+
 
 export function ContactInfoPage() {
   return (

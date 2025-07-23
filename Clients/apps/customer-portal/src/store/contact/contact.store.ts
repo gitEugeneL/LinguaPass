@@ -1,15 +1,11 @@
+import { createAuthHeader } from '@clients/shared';
 import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { createAuthHeader } from '../../helpers';
 import { useAccountStore, useAuthStore } from '../index.ts';
 
-import {
-  type Contact,
-  type CreateContactResponse,
-  type GetCurrentContactResponse
-} from './contact.models.ts';
+import { type Contact, type CreateContactResponse, type GetCurrentContactResponse } from './contact.models.ts';
 import { contactUrls } from './contact.urls.ts';
 
 interface ContactState {

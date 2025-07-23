@@ -1,7 +1,7 @@
+import { dateToShortString } from '@clients/shared';
 import { useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { dateToShortString } from '../../../../../helpers/dateHelpers.ts';
 import { usePersonalStore } from '../../../../../store';
 import { type Personal } from '../../../../../store/personal/personal.models.ts';
 import { ResultItem } from '../../components';

@@ -1,5 +1,6 @@
+import { Title } from '@clients/shared';
+
 import { CourseList } from '../../../modules/base';
-import { Title } from '../../../UI';
 
 export function CoursePage() {
   return (

@@ -1,4 +1,4 @@
-import { PROGRESS } from '../../helpers';
+import { PROGRESS } from '@clients/shared';
 
 export const progressUrls = {
   getStatuses: `${PROGRESS}/statuses`,
