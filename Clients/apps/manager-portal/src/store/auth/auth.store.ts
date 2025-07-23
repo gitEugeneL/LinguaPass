@@ -1,4 +1,4 @@
-import { createAuthHeader } from '@clients/shared';
+import { createAuthHeader, readJWTRole } from '@clients/shared';
 import axios, { AxiosError } from 'axios';
 import { persist } from 'zustand/middleware';
 import { create } from 'zustand/react';
@@ -43,7 +43,6 @@ export const useAuthStore = create<AuthState>()(
       isLoading: false,
       refreshAttempts: 0,
 
-      // TODO add  admin role here (read JWT)
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
         const request: LoginRequest = { email, password };
@@ -51,14 +50,21 @@ export const useAuthStore = create<AuthState>()(
           const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.login, request, {
             withCredentials: true // response with secure cookie (refresh token)
           });
-          set({
-            email: email,
-            accessToken: data.accessToken,
-            accessTokenExpires: data.accessTokenExpires,
-            refreshTokenExpires: data.refreshTokenExpires,
-            isRefreshTokenProblem: false,
-            refreshAttempts: 0
-          });
+
+          const role = readJWTRole(data.accessToken);
+          if (role === 'ADMIN') {
+            set({
+              role: role,
+              email: email,
+              accessToken: data.accessToken,
+              accessTokenExpires: data.accessTokenExpires,
+              refreshTokenExpires: data.refreshTokenExpires,
+              isRefreshTokenProblem: false,
+              refreshAttempts: 0
+            });
+          } else {
+            set({ error: 'login or password is incorrect' });
+          }
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });
@@ -68,7 +74,6 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      // TODO add admin role here (read JWT)
       refresh: async () => {
         const MAX_REFRESH_ATTEMPTS = 10;
         const userId = get().userId;
@@ -88,18 +93,27 @@ export const useAuthStore = create<AuthState>()(
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
                 withCredentials: true // response with secure cookie (refresh token)
               });
-              set({
-                accessToken: data.accessToken,
-                accessTokenExpires: data.accessTokenExpires,
-                refreshTokenExpires: data.refreshTokenExpires,
-                refreshAttempts: 0
-              });
+              const role = readJWTRole(data.accessToken);
+              if (role === 'ADMIN') {
+                set({
+                  role: readJWTRole(data.accessToken),
+                  accessToken: data.accessToken,
+                  accessTokenExpires: data.accessTokenExpires,
+                  refreshTokenExpires: data.refreshTokenExpires,
+                  refreshAttempts: 0
+                });
+              } else {
+                set({
+                  error: 'login or password is incorrect',
+                  refreshAttempts: get().refreshAttempts + 1
+                });
+              }
             } catch (error) {
               if (error instanceof AxiosError) {
-                set((state) => ({
+                set({
                   error: error.response?.data,
-                  refreshAttempts: state.refreshAttempts + 1
-                }));
+                  refreshAttempts: get().refreshAttempts + 1
+                });
                 setTimeout(() => attemptRefresh(attempts + 1), 1000);
               }
             }

@@ -1,14 +1,8 @@
-import { createAuthHeader } from '@clients/shared';
+import { createAuthHeader, readJWTRole } from '@clients/shared';
 import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
-// TODO add role !!!!!!!
 import {
   type GenerateCodeRequest,
   type GenerateCodeResponse,
@@ -86,16 +80,23 @@ export const useAuthStore = create<AuthState>()(
           const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.login, request, {
             withCredentials: true // response with secure cookie (refresh token)
           });
-          set({
-            email: email,
-            userId: data.userId,
-            accessToken: data.accessToken,
-            accessTokenExpires: data.accessTokenExpires,
-            refreshTokenExpires: data.refreshTokenExpires,
-            isEmailConfirmed: data.isEmailConfirmed,
-            isRefreshTokenProblem: false,
-            refreshAttempts: 0
-          });
+          const role = readJWTRole(data.accessToken);
+          if (role === 'CUSTOMER') {
+            set({
+              email: email,
+              userId: data.userId,
+              accessToken: data.accessToken,
+              accessTokenExpires: data.accessTokenExpires,
+              refreshTokenExpires: data.refreshTokenExpires,
+              isEmailConfirmed: data.isEmailConfirmed,
+              isRefreshTokenProblem: false,
+              refreshAttempts: 0
+            });
+          } else {
+            set({
+              error: 'login or password is incorrect'
+            });
+          }
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });
@@ -160,18 +161,26 @@ export const useAuthStore = create<AuthState>()(
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
                 withCredentials: true // response with secure cookie (refresh token)
               });
-              set({
-                accessToken: data.accessToken,
-                accessTokenExpires: data.accessTokenExpires,
-                refreshTokenExpires: data.refreshTokenExpires,
-                refreshAttempts: 0
-              });
+              const role = readJWTRole(data.accessToken);
+              if (role === 'CUSTOMER') {
+                set({
+                  accessToken: data.accessToken,
+                  accessTokenExpires: data.accessTokenExpires,
+                  refreshTokenExpires: data.refreshTokenExpires,
+                  refreshAttempts: 0
+                });
+              } else {
+                set({
+                  error: 'login or password is incorrect',
+                  refreshAttempts: get().refreshAttempts + 1
+                });
+              }
             } catch (error) {
               if (error instanceof AxiosError) {
-                set((state) => ({
+                set({
                   error: error.response?.data,
-                  refreshAttempts: state.refreshAttempts + 1
-                }));
+                  refreshAttempts: get().refreshAttempts + 1
+                });
                 setTimeout(() => attemptRefresh(attempts + 1), 1000);
               }
             }
