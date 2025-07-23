@@ -1,9 +1,10 @@
+import cn from 'classnames';
+import { NavLink } from 'react-router';
+
 import styles from './NavItem.module.pcss';
 import { type NavItemProps } from './NavItem.props.ts';
-import { NavLink } from 'react-router';
-import cn from 'classnames';
 
-export default function NavItem({ name, to, disabled = false }: NavItemProps) {
+export function NavItem({ name, to, disabled = false }: NavItemProps) {
   return (
     <li>
       {to && (

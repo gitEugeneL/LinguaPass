@@ -1,11 +1,12 @@
+import cn from 'classnames';
+import { Controller } from 'react-hook-form';
+
 import styles from './CustomFieldset.module.pcss';
 import { type CustomFieldsetProps } from './CustomFieldset.props.ts';
-import { Controller } from 'react-hook-form';
-import cn from 'classnames';
 import DisableIcon from './icons/DisableIcon.tsx';
 import EnableIcon from './icons/EnableIcon.tsx';
 
-export default function CustomFieldset({ label, name, control, options }: CustomFieldsetProps) {
+export function CustomFieldset({ label, name, control, options }: CustomFieldsetProps) {
   return (
     <div>
       {label && <div className={styles.label}>{label}</div>}

@@ -1,15 +1,15 @@
-import style from './CourseList.module.pcss';
-import CourseCard from './components/CourseCard/CourseCard.tsx';
 import { useEffect, useMemo, useState } from 'react';
-import { useAccountStore } from '../../../store/account/account.store.ts';
-import { useCoursesStore } from '../../../store/course/course.store.ts';
-import { useShallow } from 'zustand/react/shallow';
-import Loader from '../../../components/base/Loader/Loader.tsx';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
 import { useNavigate } from 'react-router';
-import { routes } from '../../../helpers/routeHelpers.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function CourseList() {
+import { Loader } from '../../../components/base';
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, useCoursesStore, useProgressStore } from '../../../store';
+
+import { CourseCard } from './components';
+import style from './CourseList.module.pcss';
+
+export function CourseList() {
   const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
   const [isCardBlocked, setIsCardBlocked] = useState<boolean>(false);
   const [clickedCardId, setClickedCardId] = useState<string | null>(null);

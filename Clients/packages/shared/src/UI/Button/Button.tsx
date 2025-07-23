@@ -1,6 +1,8 @@
-import styles from './Button.module.pcss';
 import cn from 'classnames';
+
 import { LoaderIndicator } from '../../assets/elements/LoaderIndicator';
+
+import styles from './Button.module.pcss';
 import type { ButtonProps } from './Button.props';
 
 export function Button({

@@ -1,9 +1,9 @@
-import Title from '../../../../UI/Title/Title.tsx';
-import styles from './ForgotPasswordPage.module.pcss';
-import CustomLink from '../../../../UI/CustomLink/CustomLink.tsx';
-import ForgotPasswordForm from '../../../../modules/auth/ForgotPasswordForm/ForgotPasswordForm.tsx';
+import { ForgotPasswordForm } from '../../../../modules/auth';
+import { CustomLink, Title } from '../../../../UI';
 
-export default function ForgotPasswordPage() {
+import styles from './ForgotPasswordPage.module.pcss';
+
+export function ForgotPasswordPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>

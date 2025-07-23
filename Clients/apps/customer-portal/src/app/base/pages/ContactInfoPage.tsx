@@ -1,8 +1,7 @@
-import Title from '../../../UI/Title/Title.tsx';
-import ContactForm from '../../../modules/base/ContactForm/ContactForm.tsx';
-import ResultBlock from '../../../modules/base/ResultBlock/ResultBlock.tsx';
+import { ContactForm, ResultBlock } from '../../../modules/base';
+import { Title } from '../../../UI';
 
-export default function ContactInfoPage() {
+export function ContactInfoPage() {
   return (
     <>
       <ResultBlock type='course' />

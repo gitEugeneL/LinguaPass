@@ -1,4 +1,4 @@
-import { STORAGE } from '../../helpers/api.tsx';
+import { STORAGE } from '../../helpers';
 
 export const storageUrls = {
   uploadFile: `${STORAGE}/upload`,

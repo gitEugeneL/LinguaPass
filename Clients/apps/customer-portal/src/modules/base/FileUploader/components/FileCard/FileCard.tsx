@@ -1,11 +1,13 @@
-import styles from './FileCard.module.pcss';
 import { Button, CloseIcon } from '@clients/shared';
-import { type FileCardProps } from './FileCard.props.ts';
 import cn from 'classnames';
-import ProgressBar from '../../UI/ProgressBar/ProgressBar.tsx';
-import { useDocumentsStore } from '../../../../../store/documet/document.store.ts';
 
-export default function FileCard({ ...props }: FileCardProps) {
+import { useDocumentsStore } from '../../../../../store';
+import { ProgressBar } from '../../UI';
+
+import styles from './FileCard.module.pcss';
+import { type FileCardProps } from './FileCard.props.ts';
+
+export function FileCard({ ...props }: FileCardProps) {
   const isLoading = useDocumentsStore((state) => state.isLoading);
 
   const fileSize = `${(props.size / (1024 * 1024)).toFixed(2)} MB`;

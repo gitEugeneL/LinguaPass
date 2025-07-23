@@ -1,10 +1,11 @@
-import styles from './DangerCard.module.pcss';
 import { Button, DangerIcon } from '@clients/shared';
-import { type DangerCardProps } from './DangerCard.props.ts';
 import cn from 'classnames';
 import { useEffect } from 'react';
 
-export default function DangerCard({ ...props }: DangerCardProps) {
+import styles from './DangerCard.module.pcss';
+import { type DangerCardProps } from './DangerCard.props.ts';
+
+export function DangerCard({ ...props }: DangerCardProps) {
   const handleBtn1Click = () => {
     if (!props.btn1IsLoading) {
       props.btn1Action();

@@ -1,10 +1,11 @@
+import cn from 'classnames';
 import { useEffect, useRef, useState } from 'react';
+import { Controller } from 'react-hook-form';
+
 import styles from './CustomSelect.module.pcss';
 import { type CustomSelectProps } from './CustomSelect.props.ts';
-import { Controller } from 'react-hook-form';
-import cn from 'classnames';
 
-export default function CustomSelect({ ...props }: CustomSelectProps) {
+export function CustomSelect({ ...props }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 

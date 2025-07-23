@@ -1,8 +1,9 @@
-import { type CustomLinkProps } from './CustomLink.props.ts';
-import styles from './CustomLink.module.pcss';
 import { NavLink } from 'react-router';
 
-export default function CustomLink({ ...props }: CustomLinkProps) {
+import styles from './CustomLink.module.pcss';
+import { type CustomLinkProps } from './CustomLink.props.ts';
+
+export function CustomLink({ ...props }: CustomLinkProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.label}>{props.label}</div>

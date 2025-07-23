@@ -1,7 +1,7 @@
-import LanguageList from '../../../modules/base/LanguageList/LanguageList.tsx';
-import Title from '../../../UI/Title/Title.tsx';
+import { LanguageList } from '../../../modules/base';
+import { Title } from '../../../UI';
 
-export default function LanguagePage() {
+export function LanguagePage() {
   return (
     <>
       <Title

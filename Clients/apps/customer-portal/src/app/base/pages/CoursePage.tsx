@@ -1,7 +1,7 @@
-import Title from '../../../UI/Title/Title.tsx';
-import CourseList from '../../../modules/base/CourseList/CourseList.tsx';
+import { CourseList } from '../../../modules/base';
+import { Title } from '../../../UI';
 
-export default function CoursePage() {
+export function CoursePage() {
   return (
     <>
       <Title

@@ -1,16 +1,15 @@
-import styles from './Menu.module.pcss';
-import MenuButton from './UI/MenuButton/MenuButton.tsx';
-import CustomDrawer from './widgets/CustomDrawer/CustomDrawer.tsx';
 import { useEffect, useState } from 'react';
-import AccountCard from './components/AccountCard/AccountCard.tsx';
-import Navigator from './widgets/Navigator/Navigator.tsx';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
-import { useAccountStore } from '../../../store/account/account.store.ts';
 import { useShallow } from 'zustand/react/shallow';
-import { routes } from '../../../helpers/routeHelpers.ts';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
 
-export default function Menu() {
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, useAuthStore, useProgressStore } from '../../../store';
+
+import { AccountCard } from './components';
+import styles from './Menu.module.pcss';
+import { MenuButton } from './UI';
+import { CustomDrawer, Navigator } from './widgets';
+
+export function Menu() {
   const [isDrawerOpened, setIsDrawerOpened] = useState<boolean>(false);
 
   const status = useProgressStore((state) => state.myStatus);

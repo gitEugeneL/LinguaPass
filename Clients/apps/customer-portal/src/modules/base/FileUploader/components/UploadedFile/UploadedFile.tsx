@@ -1,9 +1,10 @@
-import styles from './UploadedFile.module.pcss';
-import { type UploadedFileProps } from './UploadedFile.props.ts';
 import { Button } from '@clients/shared';
 import cn from 'classnames';
 
-export default function UploadedFile({ ...props }: UploadedFileProps) {
+import styles from './UploadedFile.module.pcss';
+import { type UploadedFileProps } from './UploadedFile.props.ts';
+
+export function UploadedFile({ ...props }: UploadedFileProps) {
   const handleDeleteClick = () => {
     props.deleteFile(props.name);
   };

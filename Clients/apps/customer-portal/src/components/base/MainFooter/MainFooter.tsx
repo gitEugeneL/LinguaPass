@@ -1,9 +1,9 @@
-import styles from './MainFooter.module.pcss';
-import WhatsAppIcon from './icons/WhatsAppIcon.tsx';
-import TelegramIcon from './icons/TelegramIcon.tsx';
 import InstagramIcon from './icons/InstagramIcon.tsx';
+import TelegramIcon from './icons/TelegramIcon.tsx';
+import WhatsAppIcon from './icons/WhatsAppIcon.tsx';
+import styles from './MainFooter.module.pcss';
 
-export default function MainFooter() {
+export function MainFooter() {
   return (
     <div className={styles.footer}>
       <div className={styles.mainWrapper}>

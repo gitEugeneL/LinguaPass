@@ -1,14 +1,16 @@
+import axios, { AxiosError } from 'axios';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+import { createAuthHeader } from '../../helpers';
+import { useAuthStore } from '../index.ts';
+
 import {
   type EnhancedStatus,
   type GetAllStatusesResponse,
   type GetMyStatusResponse
 } from './progress.models.ts';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import axios, { AxiosError } from 'axios';
 import { progressUrls } from './progress.urls.ts';
-import { useAuthStore } from '../auth/auth.store.ts';
-import { createAuthHeader } from '../../helpers/authHelpers.ts';
 
 interface ProgressState {
   statuses: EnhancedStatus[];

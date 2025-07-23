@@ -1,9 +1,10 @@
+import cn from 'classnames';
+
 import styles from './FileInput.module.pcss';
 import { type FileInputProps } from './FileInput.props';
 import FileIcon from './icons/FileIcon.tsx';
-import cn from 'classnames';
 
-export default function FileInput({ ...props }: FileInputProps) {
+export function FileInput({ ...props }: FileInputProps) {
   return (
     <div className={styles.container}>
       <input

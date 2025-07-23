@@ -1,4 +1,4 @@
-import { ACCOUNT } from '../../helpers/api.tsx';
+import { ACCOUNT } from '../../helpers';
 
 export const accountUrls = {
   getCurrentAccount: `${ACCOUNT}/my-account`,

@@ -1,0 +1,9 @@
+export { useAccountStore } from './account/account.store.ts';
+export { useAuthStore } from './auth/auth.store.ts';
+export { useContactStore } from './contact/contact.store.ts';
+export { useCoursesStore } from './course/course.store.ts';
+export { useDocumentsStore } from './documet/document.store.ts';
+export { useLanguagesStore } from './language/language.store.ts';
+export { usePersonalStore } from './personal/personal.store.ts';
+export { useProgressStore } from './progress/progress.store.ts';
+export { useSchoolsStore } from './school/school.store.ts';

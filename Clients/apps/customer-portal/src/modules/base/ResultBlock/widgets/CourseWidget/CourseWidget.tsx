@@ -1,11 +1,13 @@
-import { useCoursesStore } from '../../../../../store/course/course.store.ts';
-import { useShallow } from 'zustand/react/shallow';
 import { useEffect } from 'react';
-import { type CourseWidgetProps } from './CourseWidget.props.ts';
-import { type Course } from '../../../../../store/course/course.models.ts';
-import ResultItem from '../../components/ResultItem/ResultItem.tsx';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function CourseWidget({ ...props }: CourseWidgetProps) {
+import { useCoursesStore } from '../../../../../store';
+import { type Course } from '../../../../../store/course/course.models.ts';
+import { ResultItem } from '../../components';
+
+import { type CourseWidgetProps } from './CourseWidget.props.ts';
+
+export function CourseWidget({ ...props }: CourseWidgetProps) {
   const { currentCourse, getCurrentCourse, isLoading } = useCoursesStore(
     useShallow((state) => ({
       currentCourse: state.currentCourse,

@@ -1,9 +1,10 @@
+import { Loader } from '../../../components/base';
+
+import { StepperItem } from './components';
 import styles from './Stepper.module.pcss';
 import { type StepperProps } from './Stepper.props.ts';
-import Loader from '../../../components/base/Loader/Loader.tsx';
-import StepperItem from './components/StepperItem.tsx';
 
-export default function Stepper({ ...props }: StepperProps) {
+export function Stepper({ ...props }: StepperProps) {
   return (
     <div className={styles.container}>
       {props.isLoading && <Loader />}

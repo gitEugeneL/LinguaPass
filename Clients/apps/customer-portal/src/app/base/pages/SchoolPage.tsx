@@ -1,7 +1,7 @@
-import Title from '../../../UI/Title/Title.tsx';
-import SchoolList from '../../../modules/base/SchoolList/SchoolList.tsx';
+import { SchoolList } from '../../../modules/base';
+import { Title } from '../../../UI';
 
-export default function SchoolPage() {
+export function SchoolPage() {
   return (
     <>
       <Title

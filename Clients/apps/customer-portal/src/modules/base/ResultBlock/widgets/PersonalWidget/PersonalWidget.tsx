@@ -1,12 +1,14 @@
-import { type PersonalWidgetProps } from './PersonalWidget.props.ts';
-import { usePersonalStore } from '../../../../../store/personal/personal.store.ts';
-import { useShallow } from 'zustand/react/shallow';
 import { useEffect } from 'react';
-import ResultItem from '../../components/ResultItem/ResultItem.tsx';
-import { type Personal } from '../../../../../store/personal/personal.models.ts';
-import { dateToShortString } from '../../../../../helpers/dateHelpers.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function PersonalWidget({ ...props }: PersonalWidgetProps) {
+import { dateToShortString } from '../../../../../helpers/dateHelpers.ts';
+import { usePersonalStore } from '../../../../../store';
+import { type Personal } from '../../../../../store/personal/personal.models.ts';
+import { ResultItem } from '../../components';
+
+import { type PersonalWidgetProps } from './PersonalWidget.props.ts';
+
+export function PersonalWidget({ ...props }: PersonalWidgetProps) {
   const { personal, isLoading, getCurrentPersonal } = usePersonalStore(
     useShallow((state) => ({
       personal: state.personal,

@@ -1,11 +1,12 @@
-import styles from './LoginPage.module.pcss';
-import Title from '../../../../UI/Title/Title.tsx';
-import LoginForm from '../../../../modules/auth/LoginForm/LoginForm.tsx';
-import CustomLink from '../../../../UI/CustomLink/CustomLink.tsx';
-import { NavLink } from 'react-router';
 import { Button } from '@clients/shared';
+import { NavLink } from 'react-router';
 
-export default function LoginPage() {
+import { LoginForm } from '../../../../modules/auth';
+import { CustomLink, Title } from '../../../../UI';
+
+import styles from './LoginPage.module.pcss';
+
+export function LoginPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>

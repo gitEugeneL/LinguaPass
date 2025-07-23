@@ -1,18 +1,19 @@
-import styles from './LanguageCard.module.pcss';
 import { Button } from '@clients/shared';
-import UKIcon from './icons/UKIcon.tsx';
+import cn from 'classnames';
 import { useState } from 'react';
-import { type LanguageCardProps } from './LanguageCard.props.ts';
-import SpainIcon from './icons/SpainIcon.tsx';
+
+import ChinaIcon from './icons/ChinaIcon.tsx';
 import FranceIcon from './icons/FranceIcon.tsx';
 import GermanyIcon from './icons/GermanyIcon.tsx';
 import ItalyIcon from './icons/ItalyIcon.tsx';
 import JapanIcon from './icons/JapanIcon.tsx';
-import ChinaIcon from './icons/ChinaIcon.tsx';
 import PortugalIcon from './icons/PortugalIcon.tsx';
-import cn from 'classnames';
+import SpainIcon from './icons/SpainIcon.tsx';
+import UKIcon from './icons/UKIcon.tsx';
+import styles from './LanguageCard.module.pcss';
+import { type LanguageCardProps } from './LanguageCard.props.ts';
 
-export default function LanguageCard({ chosen = undefined, ...props }: LanguageCardProps) {
+export function LanguageCard({ chosen = undefined, ...props }: LanguageCardProps) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
 

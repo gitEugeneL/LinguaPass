@@ -1,9 +1,11 @@
 import { Navigate, Outlet } from 'react-router';
-import { AuthBanner } from './icons/AuthBanner.tsx';
-import styles from './AuthLayout.module.pcss';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
 
-export default function AuthLayout() {
+import { useAuthStore } from '../../../store';
+
+import styles from './AuthLayout.module.pcss';
+import { AuthBanner } from './icons/AuthBanner.tsx';
+
+export function AuthLayout() {
   const isRefreshTokenProblem = useAuthStore((state) => state.isRefreshTokenProblem);
   const refreshTokenExpires = useAuthStore((state) => state.refreshTokenExpires);
 

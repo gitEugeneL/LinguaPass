@@ -1,19 +1,21 @@
-import styles from './RegistrationForm.module.pcss';
+import { Button, CustomInput } from '@clients/shared';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
+
+import { PasswordInput } from '../../../components/auth';
+import { useAuthStore } from '../../../store';
+import { Notification } from '../../../UI';
+
+import styles from './RegistrationForm.module.pcss';
 import {
   type RegistrationFormSchema,
   RegistrationFormValidationSchema
 } from './RegistrationForm.schemes.ts';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, CustomInput } from '@clients/shared';
-import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
-import { useEffect, useState } from 'react';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
-import Notification from '../../../UI/Notification/Notification.tsx';
-import { useNavigate } from 'react-router';
-import { useShallow } from 'zustand/react/shallow';
 
-export default function RegistrationForm() {
+export function RegistrationForm() {
   const navigate = useNavigate();
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 

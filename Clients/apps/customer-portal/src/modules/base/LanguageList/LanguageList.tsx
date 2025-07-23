@@ -1,15 +1,15 @@
-import styles from './LanguageList.module.pcss';
-import { useShallow } from 'zustand/react/shallow';
-import LanguageCard from './components/LanguageCard/LanguageCard.tsx';
-import { useLanguagesStore } from '../../../store/language/language.store.ts';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
-import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import { routes } from '../../../helpers/routeHelpers.ts';
-import Loader from '../../../components/base/Loader/Loader.tsx';
-import { useAccountStore } from '../../../store/account/account.store.ts';
+import { useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function LanguageList() {
+import { Loader } from '../../../components/base';
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, useLanguagesStore, useProgressStore } from '../../../store';
+
+import { LanguageCard } from './components';
+import styles from './LanguageList.module.pcss';
+
+export function LanguageList() {
   const [loadingLanguageId, setLoadingLanguageId] = useState<string | null>(null);
   const navigate = useNavigate();
 

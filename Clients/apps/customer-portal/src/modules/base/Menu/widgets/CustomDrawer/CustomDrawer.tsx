@@ -1,10 +1,11 @@
 import 'react-modern-drawer/dist/index.css';
-import styles from './CustomDrawer.module.pcss';
-import { type CustomDrawerProps } from './CustomDrawer.props.ts';
 import { CloseIcon } from '@clients/shared';
 import Drawer from 'react-modern-drawer';
 
-export default function CustomDrawer({ children, ...props }: CustomDrawerProps) {
+import styles from './CustomDrawer.module.pcss';
+import { type CustomDrawerProps } from './CustomDrawer.props.ts';
+
+export function CustomDrawer({ children, ...props }: CustomDrawerProps) {
   return (
     <div className={styles.container}>
       <Drawer

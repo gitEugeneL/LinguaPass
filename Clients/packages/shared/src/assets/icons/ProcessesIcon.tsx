@@ -1,4 +1,4 @@
-export default function ProcessesIcon() {
+export function ProcessesIcon() {
   return (
     <svg xmlns='http://www.w3.org/2000/svg' width='34' height='34' fill='none' viewBox='0 0 34 34'>
       <path

@@ -1,8 +1,6 @@
-import ResultBlock from '../../../modules/base/ResultBlock/ResultBlock.tsx';
-import FileUploader from '../../../modules/base/FileUploader/FileUploader.tsx';
-import ConfirmBlock from '../../../modules/base/ConfirmBlock/ConfirmBlock.tsx';
+import { ConfirmBlock, FileUploader, ResultBlock } from '../../../modules/base';
 
-export default function DocumentsPage() {
+export function DocumentsPage() {
   return (
     <>
       <ResultBlock type='course' />

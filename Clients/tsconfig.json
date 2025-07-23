@@ -13,7 +13,10 @@
   },
   "references": [
     {
-      "path": "packages/customer-portal"
+      "path": "apps/customer-portal"
+    },
+    {
+      "path": "apps/manager-portal"
     },
     {
       "path": "packages/shared"

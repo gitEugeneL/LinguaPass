@@ -1,15 +1,17 @@
-import styles from './LoginForm.module.pcss';
 import { Button, CustomInput } from '@clients/shared';
-import { useForm } from 'react-hook-form';
-import { type LoginFormSchema, LoginFormValidationSchema } from './LoginForm.schemes.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
-import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
 import { useEffect, useState } from 'react';
-import Notification from '../../../UI/Notification/Notification.tsx';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
+import { useForm } from 'react-hook-form';
 import { useShallow } from 'zustand/react/shallow';
 
-export default function LoginForm() {
+import { PasswordInput } from '../../../components/auth';
+import { useAuthStore } from '../../../store';
+import { Notification } from '../../../UI';
+
+import styles from './LoginForm.module.pcss';
+import { type LoginFormSchema, LoginFormValidationSchema } from './LoginForm.schemes.ts';
+
+export function LoginForm() {
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
   const { isLoading, error, resetError, login, resetState } = useAuthStore(

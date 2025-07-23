@@ -1,10 +1,12 @@
-import styles from './AccountCard.module.pcss';
 import { ArrowIcon } from '@clients/shared';
-import NavItem from '../../UI/NavItem/NavItem.tsx';
-import { type AccountCardProps } from './AccountCard.props.ts';
-import { routesArray } from '../../../../../helpers/routeHelpers.ts';
 
-export default function AccountCard({ ...props }: AccountCardProps) {
+import { routesArray } from '../../../../../helpers/routeHelpers.ts';
+import { NavItem } from '../../UI';
+
+import styles from './AccountCard.module.pcss';
+import { type AccountCardProps } from './AccountCard.props.ts';
+
+export function AccountCard({ ...props }: AccountCardProps) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>

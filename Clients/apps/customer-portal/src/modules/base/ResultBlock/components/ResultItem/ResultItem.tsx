@@ -1,8 +1,9 @@
-import styles from './ResultItem.module.pcss';
-import { type ResultItemProps } from './ResultItem.props.ts';
 import { LoaderIndicator } from '@clients/shared';
 
-export default function ResultItem({ ...props }: ResultItemProps) {
+import styles from './ResultItem.module.pcss';
+import { type ResultItemProps } from './ResultItem.props.ts';
+
+export function ResultItem({ ...props }: ResultItemProps) {
   return (
     <li className={styles.container}>
       <span className={styles.title}>{props.title}</span>

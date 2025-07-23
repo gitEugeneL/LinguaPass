@@ -1,5 +1,9 @@
+import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+
+import { createAuthHeader } from '../../helpers';
+
 import {
   type GenerateCodeRequest,
   type GenerateCodeResponse,
@@ -11,9 +15,8 @@ import {
   type ResetPasswordRequest,
   type ResetPasswordResponse
 } from './auth.models.ts';
-import axios, { AxiosError } from 'axios';
 import { authUrls } from './auth.urls.ts';
-import { createAuthHeader } from '../../helpers/authHelpers.ts';
+
 
 interface AuthState {
   userId: string | null;

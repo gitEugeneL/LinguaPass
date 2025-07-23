@@ -1,12 +1,12 @@
-import styles from './FileUploader.module.pcss';
-import { useDocumentsStore } from '../../../store/documet/document.store.ts';
-import { useShallow } from 'zustand/react/shallow';
 import { type ChangeEvent, useEffect } from 'react';
-import FileInput from './components/FileInput/FileInput.tsx';
-import FileCard from './components/FileCard/FileCard.tsx';
-import UploadedFile from './components/UploadedFile/UploadedFile.tsx';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function FileUploader() {
+import { useDocumentsStore } from '../../../store';
+
+import { FileCard, FileInput, UploadedFile } from './components';
+import styles from './FileUploader.module.pcss';
+
+export function FileUploader() {
   const {
     files,
     uploadedFileNames,

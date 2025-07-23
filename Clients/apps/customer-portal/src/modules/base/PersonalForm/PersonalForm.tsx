@@ -1,23 +1,22 @@
-import styles from './PersonalForm.module.pcss';
-import DateInput from '../../../UI/DateInput/DateInput.tsx';
 import { Button, CustomInput } from '@clients/shared';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
+
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, usePersonalStore, useProgressStore } from '../../../store';
+import { CustomSelect, DateInput } from '../../../UI';
+
+import styles from './PersonalForm.module.pcss';
 import {
   personalDefaultValues,
   type PersonalFormSchema,
   PersonalFormValidationSchema
 } from './PersonalFormSchema.ts';
-import { yupResolver } from '@hookform/resolvers/yup';
-import CustomSelect from '../../../UI/CustomSelect/CustomSelect.tsx';
-import { useNavigate } from 'react-router';
-import { useAccountStore } from '../../../store/account/account.store.ts';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
-import { useShallow } from 'zustand/react/shallow';
-import { usePersonalStore } from '../../../store/personal/personal.store.ts';
-import { useEffect } from 'react';
-import { routes } from '../../../helpers/routeHelpers.ts';
 
-export default function PersonalForm() {
+export function PersonalForm() {
   const navigate = useNavigate();
 
   const account = useAccountStore((store) => store.account);

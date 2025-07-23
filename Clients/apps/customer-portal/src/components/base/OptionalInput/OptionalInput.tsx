@@ -1,9 +1,11 @@
-import styles from './OptionalInput.module.pcss';
-import { type OptionalInputProps } from './OptionalInput.props.ts';
-import CustomCheckbox from '../../../UI/CustomCheckbox/CustomCheckbox.tsx';
 import { CustomInput } from '@clients/shared';
 
-export default function OptionalInput({
+import { CustomCheckbox } from '../../../UI';
+
+import styles from './OptionalInput.module.pcss';
+import { type OptionalInputProps } from './OptionalInput.props.ts';
+
+export function OptionalInput({
   label,
   checkboxLabel,
   name,

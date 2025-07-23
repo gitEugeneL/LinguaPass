@@ -1,15 +1,16 @@
-import styles from './SchoolWidget.module.pcss';
 import { ArrowIcon } from '@clients/shared';
-import { type SchoolWidgetProps } from './SchoolWidget.props.ts';
 import cn from 'classnames';
-import { useShallow } from 'zustand/react/shallow';
 import * as React from 'react';
 import { useState } from 'react';
-import SchoolCard from '../../components/SchoolCard/SchoolCard.tsx';
-import { useSchoolsStore } from '../../../../../store/school/school.store.ts';
-import { useAccountStore } from '../../../../../store/account/account.store.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function SchoolWidget({ ...props }: SchoolWidgetProps) {
+import { useAccountStore, useSchoolsStore } from '../../../../../store';
+import { SchoolCard } from '../../components';
+
+import styles from './SchoolWidget.module.pcss';
+import { type SchoolWidgetProps } from './SchoolWidget.props.ts';
+
+export function SchoolWidget({ ...props }: SchoolWidgetProps) {
   const [isFirstLoad, setIsFirstLoad] = useState<boolean>(true);
 
   const account = useAccountStore((state) => state.account);

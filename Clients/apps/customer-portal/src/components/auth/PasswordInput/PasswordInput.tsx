@@ -1,17 +1,12 @@
-import { type PasswordInputProps } from './PasswordInput.props.ts';
-import { useState } from 'react';
 import { CustomInput } from '@clients/shared';
-import { OpenIcon } from './icons/OpenIcon.tsx';
-import { CloseIcon } from './icons/CloseIcon.tsx';
-import styles from './PasswordInput.module.pcss';
+import { useState } from 'react';
 
-export default function PasswordInput({
-  label,
-  name,
-  control,
-  errors,
-  ...props
-}: PasswordInputProps) {
+import { CloseIcon } from './icons/CloseIcon.tsx';
+import { OpenIcon } from './icons/OpenIcon.tsx';
+import styles from './PasswordInput.module.pcss';
+import { type PasswordInputProps } from './PasswordInput.props.ts';
+
+export function PasswordInput({ label, name, control, errors, ...props }: PasswordInputProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const handlePressIcon = () => {

@@ -1,21 +1,21 @@
-import styles from './ResetPasswordForm.module.pcss';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
-import { Navigate, useNavigate } from 'react-router';
+import { Button } from '@clients/shared';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Button } from '@clients/shared';
-import Countdown from '../../../components/auth/Countdown/Countdown.tsx';
-import CodeInput from '../../../components/auth/CodeInput/CodeInput.tsx';
 import { useForm } from 'react-hook-form';
+import { Navigate, useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
+
+import { CodeInput, Countdown, PasswordInput } from '../../../components/auth';
+import { useAuthStore } from '../../../store';
+
 import {
   type ResetPasswordFormSchema,
   ResetPasswordFormValidationSchema
 } from './ResetPassword.schemes.ts';
-import PasswordInput from '../../../components/auth/PasswordInput/PasswordInput.tsx';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useShallow } from 'zustand/react/shallow';
+import styles from './ResetPasswordForm.module.pcss';
 
-export default function ResetPasswordForm() {
+export function ResetPasswordForm() {
   const navigate = useNavigate();
 
   const { isLoading, codeExpires, email, error, resetCodeData, resetPassword, isPasswordChanged } =

@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { type CountdownProps } from './Countdown.props.ts';
-import styles from './Countdown.module.pcss';
 
-export default function Countdown({ datetime }: CountdownProps) {
+import styles from './Countdown.module.pcss';
+import { type CountdownProps } from './Countdown.props.ts';
+
+export function Countdown({ datetime }: CountdownProps) {
   const calculateTimeLeft = () => {
     const difference = new Date(datetime).getTime() - Date.now();
     return difference > 0

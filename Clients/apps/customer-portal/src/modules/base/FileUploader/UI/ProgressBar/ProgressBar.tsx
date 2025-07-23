@@ -1,7 +1,7 @@
 import styles from './ProgressBar.module.pcss';
 import { type ProgressBarProps } from './ProgressBar.props.ts';
 
-export default function ProgressBar({ ...props }: ProgressBarProps) {
+export function ProgressBar({ ...props }: ProgressBarProps) {
   const clampedProgress = Math.min(Math.max(props.progress, 0), 100);
 
   return (

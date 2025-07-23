@@ -1,11 +1,13 @@
-import { type ContactWidgetProps } from './ContactWidget.props.ts';
-import { useContactStore } from '../../../../../store/contact/contact.store.ts';
-import { useShallow } from 'zustand/react/shallow';
 import { useEffect } from 'react';
-import ResultItem from '../../components/ResultItem/ResultItem.tsx';
-import { type Contact } from '../../../../../store/contact/contact.models.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function ContactWidget({ ...props }: ContactWidgetProps) {
+import { useContactStore } from '../../../../../store';
+import { type Contact } from '../../../../../store/contact/contact.models.ts';
+import { ResultItem } from '../../components';
+
+import { type ContactWidgetProps } from './ContactWidget.props.ts';
+
+export function ContactWidget({ ...props }: ContactWidgetProps) {
   const { contact, isLoading, getCurrentContact } = useContactStore(
     useShallow((state) => ({
       contact: state.contact,

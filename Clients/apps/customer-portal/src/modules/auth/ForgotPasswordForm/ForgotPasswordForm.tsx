@@ -1,18 +1,20 @@
+import { Button, CustomInput } from '@clients/shared';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Navigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
+
+import { useAuthStore } from '../../../store';
+import { Notification } from '../../../UI';
+
 import styles from './ForgotPasswordForm.module.pcss';
 import {
   type ForgotPasswordFormSchema,
   ForgotPasswordFormValidationSchema
 } from './ForgotPasswordForm.schemes.ts';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import { Button, CustomInput } from '@clients/shared';
-import { useAuthStore } from '../../../store/auth/auth.store.ts';
-import Notification from '../../../UI/Notification/Notification.tsx';
-import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router';
-import { useShallow } from 'zustand/react/shallow';
 
-export default function ForgotPasswordForm() {
+export function ForgotPasswordForm() {
   const [localError, setLocalError] = useState<string | undefined>(undefined);
 
   const { generateCode, codeExpires, email, isLoading, error, resetError, resetCodeData } =

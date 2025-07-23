@@ -1,15 +1,17 @@
+import axios, { AxiosError } from 'axios';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+import { createAuthHeader } from '../../helpers';
+import { useAuthStore } from '../index.ts';
+
 import {
   type Account,
   type GetCurrentAccount,
   type GetShortUserInfoResponse,
   type UserData
 } from './account.models.ts';
-import { persist } from 'zustand/middleware';
-import { create } from 'zustand';
-import axios, { AxiosError } from 'axios';
 import { accountUrls } from './account.urls.ts';
-import { createAuthHeader } from '../../helpers/authHelpers.ts';
-import { useAuthStore } from '../auth/auth.store.ts';
 
 interface AccountState {
   account: Account | null;

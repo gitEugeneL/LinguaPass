@@ -1,9 +1,11 @@
-import styles from './CourseCard.module.pcss';
 import { Button } from '@clients/shared';
-import { type CourseCardProps } from './CourseCard.props.ts';
 import cn from 'classnames';
 
-export default function CourseCard({ chosen = undefined, ...props }: CourseCardProps) {
+import styles from './CourseCard.module.pcss';
+import { type CourseCardProps } from './CourseCard.props.ts';
+
+
+export function CourseCard({ chosen = undefined, ...props }: CourseCardProps) {
   const handleCLick = () => {
     if (!props.isBlocked) {
       props.handleChoose(props.courseId);

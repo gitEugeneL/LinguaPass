@@ -1,25 +1,24 @@
+import { Button, CustomInput } from '@clients/shared';
+import { yupResolver } from '@hookform/resolvers/yup';
+import cn from 'classnames';
+import { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
+
+import { OptionalInput } from '../../../components/base';
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, useContactStore, useProgressStore } from '../../../store';
+import { CustomCheckbox, CustomFieldset } from '../../../UI';
+
 import styles from './ContactForm.module.pcss';
 import {
   contactDefaultValues,
   type ContactFormSchema,
   createContactFormValidationSchema
 } from './ContactFormSchema.ts';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button, CustomInput } from '@clients/shared';
-import OptionalInput from '../../../components/base/OptionalInput/OptionalInput.tsx';
-import CustomFieldset from '../../../UI/CustomFieldset/CustomFieldset.tsx';
-import { useEffect, useMemo, useState } from 'react';
-import CustomCheckbox from '../../../UI/CustomCheckbox/CustomCheckbox.tsx';
-import cn from 'classnames';
-import { useContactStore } from '../../../store/contact/contact.store.ts';
-import { useShallow } from 'zustand/react/shallow';
-import { routes } from '../../../helpers/routeHelpers.ts';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
-import { useAccountStore } from '../../../store/account/account.store.ts';
-import { useNavigate } from 'react-router';
 
-export default function ContactForm() {
+export function ContactForm() {
   const navigate = useNavigate();
   const [corrAddrExists, setCorrAddrExists] = useState<boolean>(false);
   const [middleNameExists, setMiddleNameExists] = useState<boolean>(false);

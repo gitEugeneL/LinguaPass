@@ -1,4 +1,4 @@
-import { PROGRESS } from '../../helpers/api.tsx';
+import { PROGRESS } from '../../helpers';
 
 export const progressUrls = {
   getStatuses: `${PROGRESS}/statuses`,

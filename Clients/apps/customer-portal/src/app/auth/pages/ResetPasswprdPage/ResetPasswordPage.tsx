@@ -1,9 +1,9 @@
-import styles from './ResetPassword.module.pcss';
-import Title from '../../../../UI/Title/Title.tsx';
-import CustomLink from '../../../../UI/CustomLink/CustomLink.tsx';
-import ResetPasswordForm from '../../../../modules/auth/ResetPasswordForm/ResetPasswordForm.tsx';
+import { ResetPasswordForm } from '../../../../modules/auth';
+import { CustomLink, Title } from '../../../../UI';
 
-export default function ResetPasswordPage() {
+import styles from './ResetPassword.module.pcss';
+
+export function ResetPasswordPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>

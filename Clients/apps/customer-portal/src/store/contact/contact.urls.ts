@@ -1,4 +1,4 @@
-import { ACCOUNT } from '../../helpers/api.tsx';
+import { ACCOUNT } from '../../helpers';
 
 export const contactUrls = {
   createContact: `${ACCOUNT}/contact-data`,

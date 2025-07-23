@@ -1,8 +1,9 @@
-import styles from './StepperItem.module.pcss';
-import { type StepperItemProps } from './StepperItem.props.ts';
 import cn from 'classnames';
 
-export default function StepperItem({ ...props }: StepperItemProps) {
+import styles from './StepperItem.module.pcss';
+import { type StepperItemProps } from './StepperItem.props.ts';
+
+export function StepperItem({ ...props }: StepperItemProps) {
   return (
     <div className={styles.container}>
       {props.status === 'active' && (

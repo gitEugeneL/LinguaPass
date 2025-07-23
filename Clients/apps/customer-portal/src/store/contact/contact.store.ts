@@ -1,15 +1,16 @@
+import axios, { AxiosError } from 'axios';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+import { createAuthHeader } from '../../helpers';
+import { useAccountStore, useAuthStore } from '../index.ts';
+
 import {
   type Contact,
   type CreateContactResponse,
   type GetCurrentContactResponse
 } from './contact.models.ts';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import axios, { AxiosError } from 'axios';
 import { contactUrls } from './contact.urls.ts';
-import { createAuthHeader } from '../../helpers/authHelpers.ts';
-import { useAuthStore } from '../auth/auth.store.ts';
-import { useAccountStore } from '../account/account.store.ts';
 
 interface ContactState {
   contact: Contact | null;

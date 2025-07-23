@@ -1,8 +1,7 @@
-import Title from '../../../UI/Title/Title.tsx';
-import PersonalForm from '../../../modules/base/PersonalForm/PersonalForm.tsx';
-import ResultBlock from '../../../modules/base/ResultBlock/ResultBlock.tsx';
+import { PersonalForm, ResultBlock } from '../../../modules/base';
+import { Title } from '../../../UI';
 
-export default function PersonalInfoPage() {
+export function PersonalInfoPage() {
   return (
     <>
       <ResultBlock type='course' />

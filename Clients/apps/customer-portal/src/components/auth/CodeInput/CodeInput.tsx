@@ -1,8 +1,9 @@
-import { type CodeInputProps } from './CodeInput.props.ts';
 import { CustomInput } from '@clients/shared';
-import styles from './CodeInput.module.pcss';
 
-export default function CodeInput({ name, control, errors, ...props }: CodeInputProps) {
+import styles from './CodeInput.module.pcss';
+import { type CodeInputProps } from './CodeInput.props.ts';
+
+export function CodeInput({ name, control, errors, ...props }: CodeInputProps) {
   return (
     <CustomInput
       className={styles.input}

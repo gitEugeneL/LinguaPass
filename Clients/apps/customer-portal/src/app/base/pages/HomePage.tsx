@@ -1,5 +1,13 @@
-import HomeList from '../../../modules/base/HomeList/HomeList.tsx';
+import { ConfirmBlock, ResultBlock } from '../../../modules/base';
 
-export default function HomePage() {
-  return <HomeList />;
+export function HomePage() {
+  return (
+    <>
+      <ResultBlock type='course' />
+      <ResultBlock type='contact' />
+      <ResultBlock type='personal' />
+      <ResultBlock type='documents' />
+      <ConfirmBlock />
+    </>
+  );
 }

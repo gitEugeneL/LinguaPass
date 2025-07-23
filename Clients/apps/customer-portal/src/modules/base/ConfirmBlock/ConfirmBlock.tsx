@@ -1,10 +1,12 @@
-import styles from './ConfirmBlock.module.pcss';
 import { Button } from '@clients/shared';
-import { useDocumentsStore } from '../../../store/documet/document.store.ts';
 import { useState } from 'react';
-import DangerCard from '../../../components/base/DangerCard/DangerCard.tsx';
 
-export default function ConfirmBlock() {
+import { DangerCard } from '../../../components/base';
+import { useDocumentsStore } from '../../../store';
+
+import styles from './ConfirmBlock.module.pcss';
+
+export function ConfirmBlock() {
   const [isModalShow, setIsModalShow] = useState<boolean>(false);
 
   const uploadedFiles = useDocumentsStore((state) => state.uploadedFileNames);

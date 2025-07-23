@@ -1,8 +1,9 @@
-import styles from './Title.module.pcss';
-import { type TitleProps } from './Title.props.ts';
 import cn from 'classnames';
 
-export default function Title({
+import styles from './Title.module.pcss';
+import type { TitleProps } from './Title.props.ts';
+
+export function Title({
   title,
   subTitle = undefined,
   description = undefined,

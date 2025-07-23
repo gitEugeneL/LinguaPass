@@ -1,4 +1,4 @@
-import { ACCOUNT, COURSE } from '../../helpers/api.tsx';
+import { ACCOUNT, COURSE } from '../../helpers';
 
 export const schoolUrls = {
   getCountries: (languageId: string) => `${COURSE}/countries/language/${languageId}`,

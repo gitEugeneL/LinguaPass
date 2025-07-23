@@ -1,8 +1,8 @@
 {
   "name": "@clients/shared",
   "version": "1.0.0",
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "types": "./src/index.d.ts",
   "exports": {
     ".": {

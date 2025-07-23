@@ -1,4 +1,4 @@
-import { IDENTITY } from '../../helpers/api.tsx';
+import { IDENTITY } from '../../helpers';
 
 export const authUrls = {
   registration: `${IDENTITY}/registration`,

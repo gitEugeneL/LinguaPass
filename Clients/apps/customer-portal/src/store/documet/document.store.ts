@@ -1,10 +1,12 @@
+import axios, { type AxiosProgressEvent, type CancelTokenSource } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import axios, { type AxiosProgressEvent, type CancelTokenSource } from 'axios';
-import { storageUrls } from './document.urls.ts';
-import { createAuthHeader } from '../../helpers/authHelpers.ts';
-import { useAuthStore } from '../auth/auth.store.ts';
+
+import { createAuthHeader } from '../../helpers';
+import { useAuthStore } from '../index.ts';
+
 import { type DeleteFileResponse, type GetUploadedFilesResponse } from './document.models.ts';
+import { storageUrls } from './document.urls.ts';
 
 interface DocumentsState {
   files: File[];

@@ -1,8 +1,9 @@
-import styles from './SchoolCard.module.pcss';
-import { type SchoolCardProps } from './SchoolCard.props.ts';
 import cn from 'classnames';
 
-export default function SchoolCard({ ...props }: SchoolCardProps) {
+import styles from './SchoolCard.module.pcss';
+import { type SchoolCardProps } from './SchoolCard.props.ts';
+
+export function SchoolCard({ ...props }: SchoolCardProps) {
   const handleClick = () => {
     props.handleChoose(props.schoolId, props.countryId);
   };

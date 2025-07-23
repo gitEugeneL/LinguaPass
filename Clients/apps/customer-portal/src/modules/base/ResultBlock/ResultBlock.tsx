@@ -1,22 +1,16 @@
-import styles from './ResultBlock.module.pcss';
-import { ArrowIcon, Button } from '@clients/shared';
+import { ArrowIcon, Button, DisabledIcon, ProcessesIcon, SuccessIcon } from '@clients/shared';
 import cn from 'classnames';
-import SuccessIcon from '../SchoolList/widgets/SchoolWidget/icons/SuccessIcon.tsx';
 import { useState } from 'react';
-import CourseWidget from './widgets/CourseWidget/CourseWidget.tsx';
-import { useAccountStore } from '../../../store/account/account.store.ts';
-import { type ResultBlockProps } from './ResultBlock.props.ts';
-import ProcessesIcon from '../SchoolList/widgets/SchoolWidget/icons/ProcessesIcon.tsx';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
-import { routes } from '../../../helpers/routeHelpers.ts';
 import { useNavigate } from 'react-router';
-import ContactWidget from './widgets/ContactWidget/ContactWidget.tsx';
-import PersonalWidget from './widgets/PersonalWidget/PersonalWidget.tsx';
-import DisabledIcon from '../SchoolList/widgets/SchoolWidget/icons/DisabledIcon.tsx';
-import { useDocumentsStore } from '../../../store/documet/document.store.ts';
-import DocumentWidget from './widgets/DocumentWidget/DocumentWidget.tsx';
 
-export default function ResultBlock({ ...props }: ResultBlockProps) {
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, useDocumentsStore, useProgressStore } from '../../../store';
+
+import styles from './ResultBlock.module.pcss';
+import { type ResultBlockProps } from './ResultBlock.props.ts';
+import { ContactWidget, CourseWidget, DocumentWidget, PersonalWidget } from './widgets';
+
+export function ResultBlock({ ...props }: ResultBlockProps) {
   const navigate = useNavigate();
 
   const [isOpened, setIsOpened] = useState<boolean>(false);

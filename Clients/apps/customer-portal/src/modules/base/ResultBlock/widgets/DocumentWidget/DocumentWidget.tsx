@@ -2,7 +2,7 @@ import styles from './DocumentWidget.module.pcss';
 import { type DocumentWidgetProps } from './DocumentWidget.props.ts';
 import SuccessIcon from './icons/SuccessIcon.tsx';
 
-export default function DocumentWidget({ ...props }: DocumentWidgetProps) {
+export function DocumentWidget({ ...props }: DocumentWidgetProps) {
   return (
     <div className={styles.container}>
       {props.fileNames.length > 0 && (

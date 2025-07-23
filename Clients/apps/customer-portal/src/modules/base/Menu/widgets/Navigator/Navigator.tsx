@@ -1,13 +1,15 @@
-import styles from './Navigator.module.pcss';
-import { NavLink } from 'react-router';
-import { type Route, routesArray } from '../../../../../helpers/routeHelpers.ts';
-import NavigatorItem from './components/NavigatorItem/NavigatorItem.tsx';
-import HomeIcon from './icons/HomeIcon.tsx';
-import { useProgressStore } from '../../../../../store/progress/progress.store.ts';
-import { useEffect, useState } from 'react';
 import cn from 'classnames';
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router';
 
-export default function Navigator() {
+import { type Route, routesArray } from '../../../../../helpers';
+import { useProgressStore } from '../../../../../store';
+
+import { NavigatorItem } from './components';
+import HomeIcon from './icons/HomeIcon.tsx';
+import styles from './Navigator.module.pcss';
+
+export function Navigator() {
   const myStatus = useProgressStore((state) => state.myStatus);
 
   const [currentRoute, setCurrentRoute] = useState<Route | undefined>(undefined);

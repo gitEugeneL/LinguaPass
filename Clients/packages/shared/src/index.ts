@@ -1,10 +1,11 @@
-// export { ArrowIcon, CloseIcon, DangerIcon } from './assets/icons';
-// export * from './assets/icons';
+export { ArrowIcon } from './assets/icons/ArrowIcon.tsx';
+export { CloseIcon } from './assets/icons/CloseIcon.tsx';
+export { DangerIcon } from './assets/icons/DangerIcon.tsx';
+export { DisabledIcon } from './assets/icons/DisabledIcon.tsx';
+export { ProcessesIcon } from './assets/icons/ProcessesIcon.tsx';
+export { SuccessIcon } from './assets/icons/SuccessIcon.tsx';
 
-export { ArrowIcon } from './assets/icons/ArrowIcon';
-export { CloseIcon } from './assets/icons/CloseIcon';
-export { DangerIcon } from './assets/icons/DangerIcon';
-export { LoaderIndicator } from './assets/elements/LoaderIndicator';
+export { LoaderIndicator } from './assets/elements/LoaderIndicator.tsx';
 
-export { Button } from './UI/Button/Button';
-export { CustomInput } from './UI/CustomInput/CustomInput';
+export { Button } from './UI/Button/Button.tsx';
+export { CustomInput } from './UI/CustomInput/CustomInput.tsx';

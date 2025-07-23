@@ -1,7 +1,8 @@
-import styles from './CustomInput.module.pcss';
-import { type CustomInputProps } from './CustomInput.props.tsx';
-import { Controller } from 'react-hook-form';
 import cn from 'classnames';
+import { Controller } from 'react-hook-form';
+
+import styles from './CustomInput.module.pcss';
+import type { CustomInputProps } from './CustomInput.props.ts';
 
 export function CustomInput({
   label,

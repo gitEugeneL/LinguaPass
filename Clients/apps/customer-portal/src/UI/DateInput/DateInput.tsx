@@ -1,10 +1,12 @@
-import styles from './DateInput.module.pcss';
-import DatePicker from 'react-datepicker';
-import { type DateInputProps } from './DateInput.props.ts';
-import { Controller } from 'react-hook-form';
 import cn from 'classnames';
+import DatePicker from 'react-datepicker';
+import { Controller } from 'react-hook-form';
 
-export default function DateInput({ ...props }: DateInputProps) {
+import styles from './DateInput.module.pcss';
+import { type DateInputProps } from './DateInput.props.ts';
+
+
+export function DateInput({ ...props }: DateInputProps) {
   return (
     <div className={styles.container}>
       <div className={styles.label}>{props.label}</div>

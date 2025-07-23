@@ -1,15 +1,15 @@
-import styles from './SchoolList.module.pcss';
-import SchoolWidget from './widgets/SchoolWidget/SchoolWidget.tsx';
-import { useProgressStore } from '../../../store/progress/progress.store.ts';
-import { useShallow } from 'zustand/react/shallow';
 import { useEffect, useMemo, useState } from 'react';
-import { routes } from '../../../helpers/routeHelpers.ts';
-import { useSchoolsStore } from '../../../store/school/school.store.ts';
 import { useNavigate } from 'react-router';
-import Loader from '../../../components/base/Loader/Loader.tsx';
-import { useAccountStore } from '../../../store/account/account.store.ts';
+import { useShallow } from 'zustand/react/shallow';
 
-export default function SchoolList() {
+import { Loader } from '../../../components/base';
+import { routes } from '../../../helpers/routeHelpers.ts';
+import { useAccountStore, useProgressStore, useSchoolsStore } from '../../../store';
+
+import styles from './SchoolList.module.pcss';
+import { SchoolWidget } from './widgets';
+
+export function SchoolList() {
   const [isInitLoading, setIsInitLoading] = useState<boolean>(false);
   const [openedCountryId, setOpenedCountryId] = useState<string | null>(null);
   const navigate = useNavigate();

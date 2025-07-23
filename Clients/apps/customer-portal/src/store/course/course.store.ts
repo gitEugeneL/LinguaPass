@@ -1,9 +1,10 @@
+import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import axios, { AxiosError } from 'axios';
-import { courseUrls } from './course.urls.ts';
-import { createAuthHeader } from '../../helpers/authHelpers.ts';
-import { useAuthStore } from '../auth/auth.store.ts';
+
+import { createAuthHeader } from '../../helpers';
+import { useAccountStore, useAuthStore } from '../index.ts';
+
 import {
   type ChooseCourseRequest,
   type ChooseCourseResponse,
@@ -11,7 +12,7 @@ import {
   type GetCourseById,
   type GetCoursesResponse
 } from './course.models.ts';
-import { useAccountStore } from '../account/account.store.ts';
+import { courseUrls } from './course.urls.ts';
 
 interface CoursesState {
   courses: Course[];

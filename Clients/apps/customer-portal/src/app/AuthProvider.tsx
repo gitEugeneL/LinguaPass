@@ -1,8 +1,9 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuthStore } from '../store/auth/auth.store.ts';
 import { useShallow } from 'zustand/react/shallow';
-import DangerCard from '../components/base/DangerCard/DangerCard.tsx';
+
+import { DangerCard } from '../components/base';
+import { useAuthStore } from '../store';
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthProblem, setIsAuthProblem] = useState<boolean>(false);

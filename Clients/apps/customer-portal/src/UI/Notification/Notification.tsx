@@ -1,8 +1,9 @@
-import { type NotificationProps } from './notification.pros.ts';
 import { useEffect, useState } from 'react';
-import styles from './Notification.module.pcss';
 
-export default function Notification({ message }: NotificationProps) {
+import styles from './Notification.module.pcss';
+import type { NotificationProps } from './Notification.pros.ts';
+
+export function Notification({ message }: NotificationProps) {
   const [isShown, setIsShown] = useState<boolean>(false);
   const [isFading, setIsFading] = useState<boolean>(false);
 
