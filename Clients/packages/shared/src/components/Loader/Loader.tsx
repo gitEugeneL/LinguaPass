@@ -1,4 +1,4 @@
-import { LoaderIndicator } from '@clients/shared';
+import { LoaderIndicator } from '../../assets';
 
 import styles from './Loader.module.pcss';
 

@@ -26,6 +26,7 @@ interface AuthState {
   refresh: () => void;
   logout: () => void;
 
+  resetState: () => void;
   resetError: () => void;
 }
 
@@ -55,6 +56,7 @@ export const useAuthStore = create<AuthState>()(
           if (role === 'ADMIN') {
             set({
               clientRole: role,
+              userId: data.userId,
               email: email,
               accessToken: data.accessToken,
               accessTokenExpires: data.accessTokenExpires,
@@ -98,6 +100,7 @@ export const useAuthStore = create<AuthState>()(
               if (role === 'ADMIN') {
                 set({
                   clientRole: role,
+                  userId: data.userId,
                   accessToken: data.accessToken,
                   accessTokenExpires: data.accessTokenExpires,
                   refreshTokenExpires: data.refreshTokenExpires,
@@ -129,16 +132,7 @@ export const useAuthStore = create<AuthState>()(
         if (userId && clientRole) {
           set({ isLoading: true, error: null });
           try {
-            set({
-              userId: null,
-              accessToken: null,
-              refreshTokenExpires: null,
-              isRefreshTokenProblem: false,
-              email: null,
-              error: null,
-              isLoading: false,
-              refreshAttempts: 0
-            });
+            get().resetState();
             const request: RefreshOrLogoutRequest = { userId: userId, clientRole: clientRole };
             await axios.post(authUrls.logout, request, {
               headers: createAuthHeader(get().accessToken),
@@ -152,6 +146,20 @@ export const useAuthStore = create<AuthState>()(
             set({ isLoading: false });
           }
         }
+      },
+
+      resetState: () => {
+        set({
+          userId: null,
+          accessToken: null,
+          refreshTokenExpires: null,
+          isRefreshTokenProblem: false,
+          email: null,
+          error: null,
+          isLoading: false,
+          refreshAttempts: 0,
+          clientRole: null
+        });
       },
 
       resetError: () => set({ error: null })

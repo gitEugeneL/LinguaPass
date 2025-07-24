@@ -1,7 +1,6 @@
-import { Button } from '@clients/shared';
+import { Button, DangerCard } from '@clients/shared';
 import { useState } from 'react';
 
-import { DangerCard } from '../../../components/base';
 import { useDocumentsStore } from '../../../store';
 
 import styles from './ConfirmBlock.module.pcss';

@@ -1,4 +1,4 @@
-import { Loader } from '../../../components/base';
+import { Loader } from '@clients/shared';
 
 import { StepperItem } from './components';
 import styles from './Stepper.module.pcss';

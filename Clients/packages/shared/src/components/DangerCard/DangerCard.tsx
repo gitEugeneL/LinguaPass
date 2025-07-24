@@ -1,6 +1,8 @@
-import { Button, DangerIcon } from '@clients/shared';
 import cn from 'classnames';
 import { useEffect } from 'react';
+
+import { DangerIcon } from '../../assets';
+import { Button } from '../../UI';
 
 import styles from './DangerCard.module.pcss';
 import { type DangerCardProps } from './DangerCard.props.ts';

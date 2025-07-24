@@ -1,9 +1,9 @@
+import { Loader } from '@clients/shared';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { Loader } from '../../../components/base';
-import { routes } from '../../../helpers/routeHelpers.ts';
+import { routes } from '../../../helpers';
 import { useAccountStore, useLanguagesStore, useProgressStore } from '../../../store';
 
 import { LanguageCard } from './components';

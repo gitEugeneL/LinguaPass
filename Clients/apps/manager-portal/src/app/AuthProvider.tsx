@@ -8,7 +8,7 @@ import { useAuthStore } from '../store';
 export default function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthProblem, setIsAuthProblem] = useState<boolean>(false);
   const [manualRefreshCount, setManualRefreshCount] = useState<number>(0);
-  const MAX_MANUAL_REFRESH_COUNT = 5;
+  const MAX_MANUAL_REFRESH_COUNT = 3;
 
   const navigate = useNavigate();
 

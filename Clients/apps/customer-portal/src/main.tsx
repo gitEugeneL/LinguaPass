@@ -25,6 +25,10 @@ import { routes } from './helpers';
 
 const router = createBrowserRouter([
   {
+    path: '*',
+    element: <Navigate to='/' replace />
+  },
+  {
     path: '/',
     element: (
       <AuthProvider>
