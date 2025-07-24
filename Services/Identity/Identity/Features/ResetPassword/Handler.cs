@@ -5,6 +5,8 @@ using IdentityApi.Services.Interfaces;
 using IdentityApi.Tools;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Constants = AuthConfig.Tools.Constants;
+
 
 namespace IdentityApi.Features.ResetPassword;
 
@@ -27,7 +29,9 @@ public class Handler(
         var user = await dbContext
             .Users
             .Include(u => u.ConfirmationCode)
+            .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper()
+                                      && u.Role.Name == Constants.CustomerRole
                                       && u.EmailConfirmed == true, ct);
 
         if (user is null || lockoutService.IsConfirmLocked(user))

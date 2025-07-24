@@ -21,8 +21,9 @@ public class Handler(
 
         var refreshToken = await dbContext
             .RefreshTokens
+            .Include(rt => rt.User.Role)
             .FirstOrDefaultAsync(rt => rt.Token == command.RefreshToken
-                                       && rt.UserId == command.UserId, ct);
+                                       && rt.UserId == command.UserId && rt.User.Role.Name == command.ClientRole, ct);
 
         if (refreshToken is null)
             return Result<Output>.Failure(new Error(InvalidData));

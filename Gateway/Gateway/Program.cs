@@ -10,7 +10,7 @@ builder.WebHost.ConfigureKestrel(options =>
 /*** CORS dev config ***/
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("devWebClient", policy =>
+    options.AddPolicy("devWebClients", policy =>
     {
         policy.WithOrigins("https://localhost:5173", "https://localhost:5174")
             .AllowCredentials()
@@ -25,7 +25,7 @@ builder.Services.AddReverseProxy()
 
 var app = builder.Build();
 
-app.UseCors("devWebClient");
+app.UseCors("devWebClients");
 
 app.MapReverseProxy();
 

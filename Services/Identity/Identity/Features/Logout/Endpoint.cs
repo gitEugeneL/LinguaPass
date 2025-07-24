@@ -13,15 +13,15 @@ public class Endpoint : ICarterModule
             request, HttpContext httpContext, ISender sender, CancellationToken ct) =>
         {
             // Read refresh token (secure cookie) 
-            var userRefreshToken = CookieSetter.ReadCookie(httpContext);
-            var command = new Command(userRefreshToken, request.UserId);
+            var userRefreshToken = CookieSetter.ReadCookie(httpContext, request.ClientRole);
+            var command = new Command(userRefreshToken, request.UserId, request.ClientRole);
             var result = await sender.Send(command, ct);
 
             return result.Map<IResult>(
                 r =>
                 {
                     // remove refresh token (secure cookie)
-                    CookieSetter.RemoveCookie(httpContext);
+                    CookieSetter.RemoveCookie(httpContext, request.ClientRole);
                     return Results.NoContent();
                 },
                 e => Results.BadRequest(e.Message));

@@ -19,7 +19,7 @@ public class Endpoint : ICarterModule
                     r =>
                     {
                         // set refresh token (secure cookie) 
-                        CookieSetter.SetCookie(httpContext, r.RefreshToken, r.RefreshTokenExpires);
+                        CookieSetter.SetCookie(httpContext, r.RefreshToken, r.RefreshTokenExpires, r.Role.Name);
 
                         return Results.Ok(
                             new LoginOrRefreshResponse(

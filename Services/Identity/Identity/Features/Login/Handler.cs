@@ -73,7 +73,8 @@ public class Handler(
                 refreshToken.token,
                 accessToken.expires,
                 refreshToken.expires,
-                user.EmailConfirmed
+                user.EmailConfirmed,
+                user.Role
             ));
     }
 }

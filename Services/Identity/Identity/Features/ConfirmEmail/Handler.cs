@@ -5,6 +5,7 @@ using IdentityApi.Services.Interfaces;
 using IdentityApi.Tools;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Constants = AuthConfig.Tools.Constants;
 
 namespace IdentityApi.Features.ConfirmEmail;
 
@@ -27,7 +28,9 @@ public class Handler(
         var user = await dbContext
             .Users
             .Include(u => u.ConfirmationCode)
+            .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper()
+                                      && u.Role.Name == Constants.CustomerRole
                                       && u.EmailConfirmed == false, ct);
 
         if (user?.ConfirmationCode is null || lockoutService.IsConfirmLocked(user))

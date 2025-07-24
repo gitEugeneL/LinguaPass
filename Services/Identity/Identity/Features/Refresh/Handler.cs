@@ -27,7 +27,7 @@ public class Handler(
         var dbResult = await dbContext
             .Users
             .Include(u => u.Role)
-            .Where(u => u.Id == command.UserId)
+            .Where(u => u.Id == command.UserId && u.Role.Name == command.ClientRole)
             .Select(u => new
             {
                 User = u,
@@ -62,7 +62,8 @@ public class Handler(
                 refreshToken.token,
                 accessToken.expires,
                 refreshToken.expires,
-                dbResult.User.EmailConfirmed
+                dbResult.User.EmailConfirmed,
+                dbResult.User.Role
             ));
     }
 }

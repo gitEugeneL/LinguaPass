@@ -6,6 +6,7 @@ using IdentityApi.Services.Interfaces;
 using IdentityApi.Tools;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Constants = AuthConfig.Tools.Constants;
 
 namespace IdentityApi.Features.GenerateCode;
 
@@ -27,7 +28,8 @@ public class Handler(
         var user = await dbContext
             .Users
             .Include(u => u.ConfirmationCode)
-            .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper(), ct);
+            .Include(u => u.Role)
+            .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper() && u.Role.Name == Constants.CustomerRole, ct);
 
         if (user is null || lockoutService.IsConfirmLocked(user))
             return Result<Output>.Failure(new Error(InvalidData));

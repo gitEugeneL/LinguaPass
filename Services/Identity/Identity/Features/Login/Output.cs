@@ -1,3 +1,5 @@
+using IdentityApi.Domain.Entities;
+
 namespace IdentityApi.Features.Login;
 
 public sealed record Output(
@@ -6,5 +8,6 @@ public sealed record Output(
     string RefreshToken,
     DateTime AccessTokenExpires,
     DateTime RefreshTokenExpires,
-    bool IsEmailConfirmed
+    bool IsEmailConfirmed,
+    Role Role
 );

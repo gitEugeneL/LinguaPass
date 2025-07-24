@@ -7,7 +7,7 @@ namespace IdentityApi.Tests.Utils;
 
 public class CookieSetterTests
 {
-    private const string RefreshCookie = "refreshToken";
+    // private const string RefreshCookie = "refreshTokenCustomer";
     private readonly Mock<HttpContext> _httpContextMock = new();
     private readonly Mock<HttpRequest> _httpRequestMock = new();
     private readonly Mock<HttpResponse> _httpResponseMock = new();
@@ -20,20 +20,23 @@ public class CookieSetterTests
         _httpResponseMock.SetupGet(r => r.Cookies).Returns(_responseCookiesMock.Object);
     }
 
-    [Fact]
-    public void SetCookie_ShouldAppendCookieWithCorrectOptions()
+    [Theory]
+    [InlineData("CUSTOMER")]
+    [InlineData("ADMIN")]
+    public void SetCookie_ShouldAppendCookieWithCorrectOptions(string clientRole)
     {
         // Arrange
         var refreshToken = "test-refresh-token";
         var expires = DateTime.UtcNow.AddDays(7);
 
         // Act
-        CookieSetter.SetCookie(_httpContextMock.Object, refreshToken, expires);
+        CookieSetter.SetCookie(_httpContextMock.Object, refreshToken, expires, clientRole);
 
         // Assert
+
         _responseCookiesMock.Verify(
             c => c.Append(
-                RefreshCookie,
+                clientRole == "ADMIN" ? "refreshTokenManager" : "refreshTokenCustomer",
                 refreshToken,
                 It.Is<CookieOptions>(options =>
                     options.HttpOnly == true &&
@@ -46,28 +49,34 @@ public class CookieSetterTests
         );
     }
 
-    [Fact]
-    public void ReadCookie_ShouldReturnNull_WhenCookieDoesNotExist()
+    [Theory]
+    [InlineData("CUSTOMER")]
+    [InlineData("ADMIN")]
+    public void ReadCookie_ShouldReturnNull_WhenCookieDoesNotExist(string clientRole)
     {
         // Arrange
-        _httpRequestMock.Setup(r => r.Cookies[RefreshCookie]).Returns((string?)null);
+        _httpRequestMock
+            .Setup(r => r.Cookies[clientRole == "ADMIN" ? "refreshTokenManager" : "refreshTokenCustomer"])
+            .Returns((string?)null);
 
         // Act
-        var result = CookieSetter.ReadCookie(_httpContextMock.Object);
+        var result = CookieSetter.ReadCookie(_httpContextMock.Object, clientRole);
 
         // Assert
         result.Should().BeNull();
     }
 
-    [Fact]
-    public void RemoveCookie_ShouldDeleteCookie()
+    [Theory]
+    [InlineData("CUSTOMER")]
+    [InlineData("ADMIN")]
+    public void RemoveCookie_ShouldDeleteCookie(string clientRole)
     {
         // Act
-        CookieSetter.RemoveCookie(_httpContextMock.Object);
+        CookieSetter.RemoveCookie(_httpContextMock.Object, clientRole);
 
         // Assert
         _responseCookiesMock.Verify(
-            c => c.Delete(RefreshCookie),
+            c => c.Delete(clientRole == "ADMIN" ? "refreshTokenManager" : "refreshTokenCustomer"),
             Times.Once
         );
     }

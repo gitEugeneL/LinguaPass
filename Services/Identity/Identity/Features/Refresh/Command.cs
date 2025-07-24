@@ -5,5 +5,6 @@ namespace IdentityApi.Features.Refresh;
 
 public sealed record Command(
     string? RefreshToken,
-    Guid UserId
+    Guid UserId,
+    string ClientRole
 ) : IRequest<Result<Output>>;
