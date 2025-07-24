@@ -23,6 +23,7 @@ export interface LoginOrRefreshResponse {
 
 export interface RefreshOrLogoutRequest {
   userId: string;
+  clientRole: string;
 }
 
 export interface GenerateCodeRequest {

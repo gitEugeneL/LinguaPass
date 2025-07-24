@@ -10,8 +10,7 @@ export default defineConfig({
     https: {
       key: fs.readFileSync('devCerts/localhost+2-key.pem'),
       cert: fs.readFileSync('devCerts/localhost+2.pem')
-    },
-    port: 5173
+    }
   },
   resolve: {
     alias: {

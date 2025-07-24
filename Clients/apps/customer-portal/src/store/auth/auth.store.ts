@@ -3,16 +3,16 @@ import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import {
-  type GenerateCodeRequest,
-  type GenerateCodeResponse,
-  type LoginOrRefreshResponse,
-  type LoginRequest,
-  type RefreshOrLogoutRequest,
-  type RegistrationRequest,
-  type RegistrationResponse,
-  type ResetPasswordRequest,
-  type ResetPasswordResponse
+import type {
+  GenerateCodeRequest,
+  GenerateCodeResponse,
+  LoginOrRefreshResponse,
+  LoginRequest,
+  RefreshOrLogoutRequest,
+  RegistrationRequest,
+  RegistrationResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse
 } from './auth.models.ts';
 import { authUrls } from './auth.urls.ts';
 
@@ -29,6 +29,7 @@ interface AuthState {
   refreshAttempts: number;
   isPasswordChanged: boolean | null;
   isRefreshTokenProblem: boolean | null;
+  clientRole: string | null;
 
   registration: (email: string, password: string, confirmPassword: string) => void;
   login: (email: string, password: string) => void;
@@ -57,6 +58,7 @@ export const useAuthStore = create<AuthState>()(
       error: null,
       isLoading: false,
       refreshAttempts: 0,
+      clientRole: null,
 
       registration: async (email: string, password: string, confirmPassword: string) => {
         set({ isLoading: true, error: null });
@@ -90,7 +92,8 @@ export const useAuthStore = create<AuthState>()(
               refreshTokenExpires: data.refreshTokenExpires,
               isEmailConfirmed: data.isEmailConfirmed,
               isRefreshTokenProblem: false,
-              refreshAttempts: 0
+              refreshAttempts: 0,
+              clientRole: role
             });
           } else {
             set({
@@ -145,7 +148,8 @@ export const useAuthStore = create<AuthState>()(
       refresh: async () => {
         const MAX_REFRESH_ATTEMPTS = 3;
         const userId = get().userId;
-        if (userId) {
+        const clientRole = get().clientRole;
+        if (userId && clientRole) {
           const attemptRefresh = async (attempts: number) => {
             if (attempts === MAX_REFRESH_ATTEMPTS) {
               set({
@@ -156,7 +160,10 @@ export const useAuthStore = create<AuthState>()(
               return;
             }
             set({ error: null, isRefreshTokenProblem: false, isLoading: true });
-            const request: RefreshOrLogoutRequest = { userId: userId };
+            const request: RefreshOrLogoutRequest = {
+              userId: userId,
+              clientRole: clientRole
+            };
             try {
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
                 withCredentials: true // response with secure cookie (refresh token)
@@ -164,6 +171,7 @@ export const useAuthStore = create<AuthState>()(
               const role = readJWTRole(data.accessToken);
               if (role === 'CUSTOMER') {
                 set({
+                  clientRole: role,
                   accessToken: data.accessToken,
                   accessTokenExpires: data.accessTokenExpires,
                   refreshTokenExpires: data.refreshTokenExpires,
@@ -191,11 +199,12 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         const userId = get().userId;
-        if (userId) {
+        const clientRole = get().clientRole;
+        if (userId && clientRole) {
           set({ isLoading: true, error: null });
           try {
             get().resetState();
-            const request: RefreshOrLogoutRequest = { userId: userId };
+            const request: RefreshOrLogoutRequest = { userId: userId, clientRole: clientRole };
             await axios.post(authUrls.logout, request, {
               headers: createAuthHeader(get().accessToken),
               withCredentials: true
@@ -222,7 +231,8 @@ export const useAuthStore = create<AuthState>()(
           email: null,
           error: null,
           isLoading: false,
-          refreshAttempts: 0
+          refreshAttempts: 0,
+          clientRole: null
         });
       },
 
@@ -238,7 +248,8 @@ export const useAuthStore = create<AuthState>()(
         email: state.email,
         refreshTokenExpires: state.refreshTokenExpires,
         isEmailConfirmed: state.isEmailConfirmed,
-        isRefreshTokenProblem: state.isRefreshTokenProblem
+        isRefreshTokenProblem: state.isRefreshTokenProblem,
+        clientRole: state.clientRole
       })
     }
   )

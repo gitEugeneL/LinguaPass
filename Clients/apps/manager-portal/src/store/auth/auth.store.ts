@@ -20,7 +20,7 @@ interface AuthState {
   isLoading: boolean;
   refreshAttempts: number;
   isRefreshTokenProblem: boolean | null;
-  role: string | null;
+  clientRole: string | null;
 
   login: (email: string, password: string) => void;
   refresh: () => void;
@@ -33,7 +33,6 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       userId: null,
-      role: null,
       accessToken: null,
       accessTokenExpires: null,
       refreshTokenExpires: null,
@@ -42,6 +41,7 @@ export const useAuthStore = create<AuthState>()(
       error: null,
       isLoading: false,
       refreshAttempts: 0,
+      clientRole: null,
 
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
@@ -54,7 +54,7 @@ export const useAuthStore = create<AuthState>()(
           const role = readJWTRole(data.accessToken);
           if (role === 'ADMIN') {
             set({
-              role: role,
+              clientRole: role,
               email: email,
               accessToken: data.accessToken,
               accessTokenExpires: data.accessTokenExpires,
@@ -77,7 +77,8 @@ export const useAuthStore = create<AuthState>()(
       refresh: async () => {
         const MAX_REFRESH_ATTEMPTS = 10;
         const userId = get().userId;
-        if (userId) {
+        const clientRole = get().clientRole;
+        if (userId && clientRole) {
           const attemptRefresh = async (attempts: number) => {
             if (attempts === MAX_REFRESH_ATTEMPTS) {
               set({
@@ -88,7 +89,7 @@ export const useAuthStore = create<AuthState>()(
               return;
             }
             set({ error: null, isRefreshTokenProblem: false, isLoading: true });
-            const request: RefreshOrLogoutRequest = { userId: userId };
+            const request: RefreshOrLogoutRequest = { userId: userId, clientRole: clientRole };
             try {
               const { data } = await axios.post<LoginOrRefreshResponse>(authUrls.refresh, request, {
                 withCredentials: true // response with secure cookie (refresh token)
@@ -96,7 +97,7 @@ export const useAuthStore = create<AuthState>()(
               const role = readJWTRole(data.accessToken);
               if (role === 'ADMIN') {
                 set({
-                  role: readJWTRole(data.accessToken),
+                  clientRole: role,
                   accessToken: data.accessToken,
                   accessTokenExpires: data.accessTokenExpires,
                   refreshTokenExpires: data.refreshTokenExpires,
@@ -124,7 +125,8 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         const userId = get().userId;
-        if (userId) {
+        const clientRole = get().clientRole;
+        if (userId && clientRole) {
           set({ isLoading: true, error: null });
           try {
             set({
@@ -137,7 +139,7 @@ export const useAuthStore = create<AuthState>()(
               isLoading: false,
               refreshAttempts: 0
             });
-            const request: RefreshOrLogoutRequest = { userId: userId };
+            const request: RefreshOrLogoutRequest = { userId: userId, clientRole: clientRole };
             await axios.post(authUrls.logout, request, {
               headers: createAuthHeader(get().accessToken),
               withCredentials: true
@@ -160,7 +162,8 @@ export const useAuthStore = create<AuthState>()(
         userId: state.userId,
         email: state.email,
         refreshTokenExpires: state.refreshTokenExpires,
-        isRefreshTokenProblem: state.isRefreshTokenProblem
+        isRefreshTokenProblem: state.isRefreshTokenProblem,
+        clientRole: state.clientRole
       })
     }
   )
