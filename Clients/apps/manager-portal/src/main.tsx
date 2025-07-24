@@ -4,6 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { AuthLayout, LoginPage } from './app/auth';
 import AuthProvider from './app/AuthProvider.tsx';
+import { BaseLayout } from './app/base';
 
 const router = createBrowserRouter([
   {
@@ -14,9 +15,7 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <AuthProvider>
-        <div>
-          <h1>Hello Admin</h1>
-        </div>
+        <BaseLayout />
       </AuthProvider>
     )
   },
