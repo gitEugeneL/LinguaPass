@@ -30,7 +30,7 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         var response = await _client.PostAsJsonAsync("api/login", request);
         var result = await TestExtensions.DeserializeResponse<LoginOrRefreshResponse>(response);
         var cookies = response.Headers.GetValues("Set-Cookie").ToList();
-        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
 
         // Assert
         result.Should().NotBeNull();
@@ -43,8 +43,8 @@ public class LoginTests(CustomWebAppApplicationFactory factory) : IClassFixture<
         result.RefreshTokenExpires.Should()
             .BeCloseTo(DateTime.UtcNow.AddDays(refreshTokenDays), TimeSpan.FromSeconds(3));
 
-        cookies.Should().Contain(c => c.Contains(CookieSetter.RefreshCookie));
-        refreshTokenCookie.Should().Contain("refreshToken=");
+        cookies.Should().Contain(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
+        refreshTokenCookie.Should().Contain(CookieSetter.CustomerRefreshCookieName + "=");
         refreshTokenCookie.Should().Contain("secure");
         refreshTokenCookie.Should().Contain("httponly");
         refreshTokenCookie.Should().Contain("samesite=strict");

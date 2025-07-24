@@ -22,16 +22,17 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
         var loginResponse = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         // read cookie
         var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
-        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
         // set cookie
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         // Act
         var response =
-            await _client.PostAsJsonAsync("api/logout", new RefreshOrLogoutRequest(registrationResult.UserId));
+            await _client.PostAsJsonAsync("api/logout",
+                new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
         var logoutCookies = response.Headers.GetValues("Set-Cookie").ToList();
         logoutCookies.Should().Contain(c =>
-            c.Contains($"{CookieSetter.RefreshCookie}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"));
+            c.Contains($"{CookieSetter.CustomerRefreshCookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"));
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -51,7 +52,8 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
 
         // Act
         var response =
-            await _client.PostAsJsonAsync("api/logout", new RefreshOrLogoutRequest(registrationResult.UserId));
+            await _client.PostAsJsonAsync("api/logout",
+                new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -67,16 +69,17 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
         var loginResponse = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         // read cookie
         var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
-        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
         // set cookie
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
-        await _client.PostAsJsonAsync("api/refresh", new RefreshOrLogoutRequest(registrationResult.UserId));
+        await _client.PostAsJsonAsync("api/refresh", new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         // Act
         var response =
-            await _client.PostAsJsonAsync("api/logout", new RefreshOrLogoutRequest(registrationResult.UserId));
+            await _client.PostAsJsonAsync("api/logout",
+                new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -92,12 +95,12 @@ public class LogoutTests(CustomWebAppApplicationFactory factory) : IClassFixture
         var loginResponse = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         // read cookie
         var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
-        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
         // set cookie
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         var invalidUserId = Guid.NewGuid();
-        var request = new RefreshOrLogoutRequest(invalidUserId);
+        var request = new RefreshOrLogoutRequest(invalidUserId, "CUSTOMER");
 
         // Act
         var response = await _client.PostAsJsonAsync("api/logout", request);

@@ -28,17 +28,17 @@ public class RefreshTests(CustomWebAppApplicationFactory factory) : IClassFixtur
         var loginResponse = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         // read cookie
         var userCookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
-        var userRefreshToken = userCookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var userRefreshToken = userCookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
         // set cookie
         _client.DefaultRequestHeaders.Add("Cookie", userRefreshToken);
 
-        var request = new RefreshOrLogoutRequest(registrationResult.UserId);
+        var request = new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER");
 
         // Act
         var response = await _client.PostAsJsonAsync("api/refresh", request);
         var result = await TestExtensions.DeserializeResponse<LoginOrRefreshResponse>(response);
         var resultCookies = response.Headers.GetValues("Set-Cookie").ToList();
-        var resultRefreshToken = resultCookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var resultRefreshToken = resultCookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
 
         // Assert
         result.Should().NotBeNull();
@@ -51,8 +51,8 @@ public class RefreshTests(CustomWebAppApplicationFactory factory) : IClassFixtur
         result.RefreshTokenExpires.Should()
             .BeCloseTo(DateTime.UtcNow.AddDays(refreshTokenDays), TimeSpan.FromSeconds(3));
 
-        resultCookies.Should().Contain(c => c.Contains(CookieSetter.RefreshCookie));
-        resultRefreshToken.Should().Contain("refreshToken=");
+        resultCookies.Should().Contain(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
+        resultRefreshToken.Should().Contain(CookieSetter.CustomerRefreshCookieName + "=");
         resultRefreshToken.Should().Contain("secure");
         resultRefreshToken.Should().Contain("httponly");
         resultRefreshToken.Should().Contain("samesite=strict");
@@ -77,7 +77,8 @@ public class RefreshTests(CustomWebAppApplicationFactory factory) : IClassFixtur
 
         // Act
         var response =
-            await _client.PostAsJsonAsync("api/refresh", new RefreshOrLogoutRequest(registrationResult.UserId));
+            await _client.PostAsJsonAsync("api/refresh",
+                new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -93,16 +94,18 @@ public class RefreshTests(CustomWebAppApplicationFactory factory) : IClassFixtur
         var loginResponse = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         // read cookie
         var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
-        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
         // set cookie
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
-        await _client.PostAsJsonAsync("api/refresh", new RefreshOrLogoutRequest(registrationResult.UserId));
+        await _client.PostAsJsonAsync("api/refresh", new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         // Act
         var response =
-            await _client.PostAsJsonAsync("api/refresh", new RefreshOrLogoutRequest(registrationResult.UserId));
+            await _client.PostAsJsonAsync("api/refresh",
+                new RefreshOrLogoutRequest(registrationResult.UserId, "CUSTOMER"));
+        ;
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -118,12 +121,12 @@ public class RefreshTests(CustomWebAppApplicationFactory factory) : IClassFixtur
         var loginResponse = await _client.PostAsJsonAsync("api/login", new LoginRequest(email, password));
         // read cookie
         var cookies = loginResponse.Headers.GetValues("Set-Cookie").ToList();
-        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.RefreshCookie));
+        var refreshTokenCookie = cookies.FirstOrDefault(c => c.Contains(CookieSetter.CustomerRefreshCookieName));
         // set cookie
         _client.DefaultRequestHeaders.Add("Cookie", refreshTokenCookie);
 
         var invalidUserId = Guid.NewGuid();
-        var request = new RefreshOrLogoutRequest(invalidUserId);
+        var request = new RefreshOrLogoutRequest(invalidUserId, "CUSTOMER");
 
         // Act
         var response = await _client.PostAsJsonAsync("api/refresh", request);
