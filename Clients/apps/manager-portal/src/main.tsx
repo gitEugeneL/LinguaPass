@@ -17,7 +17,37 @@ const router = createBrowserRouter([
       <AuthProvider>
         <BaseLayout />
       </AuthProvider>
-    )
+    ),
+    children: [
+      {
+        path: '/home',
+        element: <div>home</div>
+      },
+      {
+        path: '/programs/countries',
+        element: <div>countries</div>
+      },
+      {
+        path: '/programs/schools',
+        element: <div>schools</div>
+      },
+      {
+        path: '/programs/courses',
+        element: <div>courses</div>
+      },
+      {
+        path: '/programs/courses',
+        element: <div>courses</div>
+      },
+      {
+        path: '/students/current',
+        element: <div>current</div>
+      },
+      {
+        path: '/students/archived',
+        element: <div>archived</div>
+      }
+    ]
   },
   {
     path: '/auth',

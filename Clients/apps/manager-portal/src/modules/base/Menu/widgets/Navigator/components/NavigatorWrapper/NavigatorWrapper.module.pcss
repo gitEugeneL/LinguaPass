@@ -1,0 +1,76 @@
+.nameWrapper {
+  padding-left: 40px;
+  padding-right: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-right: 2px solid transparent;
+
+  &:hover,
+  &:focus {
+    .name {
+      color: var(--green-2-color);
+    }
+
+    .arrow svg path {
+      fill: var(--green-2-color);
+    }
+  }
+}
+
+.wrapperOpened {
+  background-color: var(--green-3-color);
+  border-right: 2px solid var(--green-1-color);
+
+  .arrow svg {
+    transform: rotate(-90deg);
+  }
+
+  .arrow svg path {
+    fill: var(--green-1-color);
+  }
+
+  .name {
+    color: var(--green-1-color);
+  }
+}
+
+.name {
+  padding-bottom: 12px;
+  padding-top: 12px;
+  color: var(--grey-1-color);
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-medium);
+}
+
+.arrow {
+  & svg {
+    transition: transform 0.4s ease;
+    transform: rotate(90deg);
+  }
+}
+
+.children {
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  max-height: 0;
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.childrenOpened {
+  max-height: 100vh;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.activeParent .name {
+  color: var(--green-1-color);
+}

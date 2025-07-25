@@ -1,0 +1,33 @@
+.phoneWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color);
+}
+
+.container {
+  display: none;
+}
+
+.body {
+  flex-grow: 1;
+  min-height: 100vh;
+}
+
+@media (--breakpoint-tablet) {
+  .phoneWrapper {
+    display: none;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    min-height: 100vh;
+    background-color: var(--background-color);
+  }
+}
