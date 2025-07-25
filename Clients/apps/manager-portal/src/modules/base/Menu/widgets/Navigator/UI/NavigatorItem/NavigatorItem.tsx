@@ -14,6 +14,7 @@ export function NavigatorItem({ ...props }: NavigatorItemProps) {
             [styles.active]: isActive
           })
         }
+        onClick={props.onClick}
       >
         {props.name}
       </NavLink>

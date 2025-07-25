@@ -1,6 +1,6 @@
 import { ArrowIcon } from '@clients/shared';
 
-import { routesArray } from '../../../../../helpers/routeHelpers.ts';
+import { routesArray } from '../../../../../helpers';
 import { NavItem } from '../../UI';
 
 import styles from './AccountCard.module.pcss';

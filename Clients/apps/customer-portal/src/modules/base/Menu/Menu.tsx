@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { routes } from '../../../helpers/routeHelpers.ts';
+import { routes } from '../../../helpers';
 import { useAccountStore, useAuthStore, useProgressStore } from '../../../store';
 
 import { AccountCard } from './components';
