@@ -1,0 +1,22 @@
+.btn {
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    svg rect {
+      fill: var(--green-3-color);
+      stroke: var(--green-3-color);
+    }
+
+    svg path {
+      fill: var(--green-1-color);
+    }
+  }
+
+  &:active {
+    svg rect {
+      fill: var(--white-color);
+      stroke: var(--green-1-color);
+    }
+  }
+}

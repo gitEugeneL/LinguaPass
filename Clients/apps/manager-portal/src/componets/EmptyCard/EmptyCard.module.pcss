@@ -1,0 +1,24 @@
+.card {
+  width: 200px;
+  height: 230px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background-color: var(--white-color);
+  border-radius: var(--normal-radius);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    box-shadow: var(--shadow-1);
+  }
+}
+
+.name {
+  color: var(--black-color);
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-semi-bold);
+}

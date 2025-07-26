@@ -1,0 +1,32 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  row-gap: 40px;
+  column-gap: 20px;
+}
+
+.info {
+  display: none;
+}
+
+@media (--breakpoint-laptop) {
+  .container {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  .info {
+    display: flex;
+    gap: 20px;
+  }
+}
+
+@media (--breakpoint-desktop) {
+  .container {
+    grid-template-columns: repeat(5, auto);
+  }
+
+  .info {
+    gap: 40px;
+  }
+}
