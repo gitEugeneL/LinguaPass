@@ -1,6 +1,6 @@
 export function ArrowIcon({
-  width = 18,
-  height = 18,
+  width = 15,
+  height = 15,
   color = '#637381'
 }: {
   width?: number;

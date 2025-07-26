@@ -1,94 +1,106 @@
 .btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 55px;
-    padding: 18px 0;
-    font-family: inherit;
-    font-size: var(--font-size16);
-    font-weight: var(--font-weight-bold);
-    border-radius: var(--small-radius);
-    transition: background 0.25s ease;
-    cursor: pointer;
-    border: none;
-    outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 55px;
+  padding: 18px 20px;
+  font-family: inherit;
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--small-radius);
+  transition: background 0.25s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 .primary, .danger, .special, .disabled {
-    border: 2px solid transparent;
+  border: 2px solid transparent;
 }
 
 .large {
-    width: 100%;
+  width: 100%;
 }
 
 .small {
-    font-weight: var(--font-weight-medium);
-    height: 35px;
-    border-radius: var(--mini-radius);
-    width: 100%;
+  font-weight: var(--font-weight-medium);
+  height: 35px;
+  border-radius: var(--mini-radius);
+  width: 100%;
 }
 
 .primary {
-    color: var(--white-color);
-    background: var(--green-1-color);
+  color: var(--white-color);
+  background: var(--green-1-color);
 
-    &:hover,
-    &:focus {
-        background: var(--green-2-color);
-    }
+  &:hover,
+  &:focus {
+    background: var(--green-2-color);
+  }
 }
 
 .secondary {
-    color: var(--green-1-color);
-    border: 2px solid var(--green-1-color);
-    background: var(--white-color);
+  color: var(--green-1-color);
+  border: 2px solid var(--green-1-color);
+  background: var(--white-color);
 
-    &:hover,
-    &:focus {
-        color: var(--green-2-color);
-        border-color: var(--green-2-color);
-        background: var(--green-3-color);
-    }
+  &:hover,
+  &:focus {
+    color: var(--green-2-color);
+    border-color: var(--green-2-color);
+    background: var(--green-3-color);
+  }
 }
 
 .danger {
-    background: var(--red-1-color);
-    font-weight: var(--font-weight-medium);
-    color: var(--white-color);
+  background: var(--red-1-color);
+  font-weight: var(--font-weight-medium);
+  color: var(--white-color);
 
-    &:hover,
-    &:focus {
-        background: var(--red-2-color);
-    }
+  &:hover,
+  &:focus {
+    background: var(--red-2-color);
+  }
 }
 
 .secondaryDanger {
-    box-sizing: border-box;
-    font-weight: var(--font-weight-medium);
-    background-color: var(--white-color);
-    color: var(--red-1-color);
-    border: 1px solid var(--red-1-color);
+  box-sizing: border-box;
+  font-weight: var(--font-weight-medium);
+  background-color: var(--white-color);
+  color: var(--red-1-color);
+  border: 1px solid var(--red-1-color);
 
-    &:hover,
-    &:focus {
-        color: var(--white-color);
-        background: var(--red-2-color);
-    }
+  &:hover,
+  &:focus {
+    color: var(--white-color);
+    background: var(--red-2-color);
+  }
 }
 
 .disabled {
-    pointer-events: none;
-    cursor: not-allowed;
-    color: var(--grey-1-color);
-    background: var(--green-3-color);
+  pointer-events: none;
+  cursor: not-allowed;
+  color: var(--grey-1-color);
+  background: var(--green-3-color);
 }
 
 .special {
-    background: var(--white-color);
+  background: var(--white-color);
 
-    &:hover,
-    &:focus {
-        background-color: var(--background-color);
-    }
+  &:hover,
+  &:focus {
+    background-color: var(--background-color);
+  }
+}
+
+.specialSecondary {
+  border: 2px solid transparent;
+  color: var(--grey-1-color);
+  background: var(--grey-3-color);
+
+  &:hover,
+  &:focus {
+    color: var(--grey-2-color);
+    background-color: var(--background-color);
+  }
 }

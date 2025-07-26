@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { AuthLayout, LoginPage } from './app/auth';
 import AuthProvider from './app/AuthProvider.tsx';
-import { BaseLayout } from './app/base';
+import { BaseLayout, CountriesPage } from './app/base';
 
 const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/programs/countries',
-        element: <div>countries</div>
+        element: <CountriesPage />
       },
       {
         path: '/programs/schools',

@@ -1,6 +1,6 @@
 import cn from 'classnames';
 
-import { LoaderIndicator } from '../../assets/elements/LoaderIndicator';
+import { LoaderIndicator } from '../../assets';
 
 import styles from './Button.module.pcss';
 import type { ButtonProps } from './Button.props';
@@ -21,6 +21,7 @@ export function Button({
           [styles.primary]: appearance === 'primary',
           [styles.secondary]: appearance === 'secondary',
           [styles.special]: appearance === 'special',
+          [styles.specialSecondary]: appearance === 'specialSecondary',
           [styles.disabled]: appearance === 'disabled',
           [styles.danger]: appearance === 'danger',
           [styles.secondaryDanger]: appearance === 'secondaryDanger'

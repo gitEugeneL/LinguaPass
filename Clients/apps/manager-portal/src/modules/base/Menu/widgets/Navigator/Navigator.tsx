@@ -21,7 +21,7 @@ export function Navigator() {
   return (
     <ul className={styles.container}>
       <div>
-        <NavigatorItem name='Home' to='/home' />
+        <NavigatorItem name='Home' to='/' />
 
         <NavigatorWrapper name='Programs'>
           <NavigatorItem name='Countries' to='/programs/countries' />
@@ -36,7 +36,7 @@ export function Navigator() {
       </div>
 
       <AdminCard email={email!}>
-        <NavigatorItem name='Managers' to='#' />
+        <NavigatorItem name='Managers' to='/todo' />
         <NavigatorItem name='Logout' to='/logout' onClick={handleLogout} />
       </AdminCard>
     </ul>
