@@ -29,6 +29,12 @@
   color: var(--black-color);
   font-size: var(--font-size26);
   font-weight: var(--font-weight-semi-bold);
+
+
+  max-width: 9ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .nameWrapper {
@@ -40,4 +46,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+@media (--breakpoint-desktop) {
+  .card {
+    width: 240px;
+  }
+
+  .name {
+    max-width: 12ch;
+  }
 }

@@ -10,3 +10,10 @@ public sealed record CollectionResponse<T>(
         ? (int)Math.Ceiling(TotalItemsCount.Value / (double)PageSize.Value)
         : null;
 }
+
+public sealed record CountryResponse(
+    Guid CountryId,
+    string Name,
+    bool IsActive,
+    int SchoolsCount
+);

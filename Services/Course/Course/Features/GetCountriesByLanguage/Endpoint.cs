@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Course.Features.GetCountriesByLanguage;
 
 public class Endpoint(AppDbContext dbContext)
-    : EndpointWithoutRequest<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>>
+    : EndpointWithoutRequest<Results<BadRequest<string>, Ok<CollectionResponse<CountryResponse>>>>
 {
     public const string InvalidLanguageId = "languageId is invalid";
 
@@ -19,13 +19,13 @@ public class Endpoint(AppDbContext dbContext)
         ResponseCache(60);
     }
 
-    public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<Response>>>> ExecuteAsync(
+    public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<CountryResponse>>>> ExecuteAsync(
         CancellationToken ct)
     {
         if (!Guid.TryParse(Route<string>("languageId"), out var languageId))
             return TypedResults.BadRequest(InvalidLanguageId);
 
-        var result = new CollectionResponse<Response>(
+        var result = new CollectionResponse<CountryResponse>(
             await dbContext.Countries
                 .AsNoTracking()
                 .Where(c => c.IsActive && c.Schools
@@ -40,7 +40,7 @@ public class Endpoint(AppDbContext dbContext)
                                 .Any(l => l.Id == languageId && l.IsActive))
                 })
                 .OrderByDescending(x => x.SchoolCount)
-                .Select(x => new Response(
+                .Select(x => new CountryResponse(
                     x.Country.Id,
                     x.Country.Name,
                     x.Country.IsActive,

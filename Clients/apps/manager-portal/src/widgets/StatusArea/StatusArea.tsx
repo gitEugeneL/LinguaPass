@@ -9,7 +9,7 @@ export function StatusArea({ name, children }: StatusAreaProps) {
       <div className={style.container}>
         <div className={style.nameWrapper}>
           <BackButton />
-          <h2 className={style.name}>{name}</h2>
+          <p className={style.name}>{name}</p>
         </div>
 
         <div className={style.content}>{children}</div>

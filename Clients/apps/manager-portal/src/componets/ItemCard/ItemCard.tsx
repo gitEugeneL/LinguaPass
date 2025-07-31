@@ -30,14 +30,12 @@ export function ItemCard({ ...props }: ItemCardProps) {
         >
           {props.isActiveStatus ? 'Active' : 'Disabled'}
         </span>
-        <h3 className={styles.name}>
-          {props.name.length > 9 ? props.name.slice(0, 9) + '...' : props.name}
-        </h3>
+        <h3 className={styles.name}>{props.name}</h3>
       </div>
 
       <div className={styles.btnWrapper}>
         <Button
-          name='Schools'
+          name={`Schools: ${props.elemCount}`}
           size='small'
           appearance={isActive ? 'primary' : 'specialSecondary'}
         />

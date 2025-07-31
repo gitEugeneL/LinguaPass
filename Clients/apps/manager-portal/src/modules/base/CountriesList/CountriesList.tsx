@@ -1,19 +1,51 @@
 import { Button } from '@clients/shared';
+import { useEffect, useMemo } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 
 import { EmptyCard, ItemCard } from '../../../componets';
+import { useCountryStore } from '../../../store';
 import { StatusArea } from '../../../widgets';
 import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 
 import styles from './CountriesList.module.pcss';
 
 export function CountriesList() {
+  const { countries, isLoading, getAllCountries } = useCountryStore(
+    useShallow((state) => ({
+      countries: state.countries,
+      isLoading: state.isLoading,
+      getAllCountries: state.getAllCountries
+    }))
+  );
+
+  useEffect(() => {
+    if (countries && countries.length === 0 && !isLoading) {
+      getAllCountries();
+    }
+  }, []);
+
+  const sortedCountries = useMemo(() => {
+    return [...countries].sort((a, b) => {
+      if (a.isActive !== b.isActive) {
+        return a.isActive ? -1 : 1;
+      }
+      return (b.schoolsCount || 0) - (a.schoolsCount || 0);
+    });
+  }, [countries]);
+
   return (
     <>
       <StatusArea name='Countries'>
         <div className={styles.info}>
-          <KeyValueBlock name='total' value='-1' />
-          <KeyValueBlock name='active' value='-1' />
-          <KeyValueBlock name='disabled' value='-1' />
+          <KeyValueBlock name='total' value={countries.length.toString()} />
+          <KeyValueBlock
+            name='active'
+            value={countries.filter((country) => country.isActive).length.toString()}
+          />
+          <KeyValueBlock
+            name='disabled'
+            value={countries.filter((country) => !country.isActive).length.toString()}
+          />
         </div>
         <Button
           name='Create'
@@ -25,14 +57,16 @@ export function CountriesList() {
       </StatusArea>
 
       <div className={styles.container}>
-        <ItemCard name='Examle' isActiveStatus={true} />
-        <ItemCard name='Examle' isActiveStatus={true} />
-        <ItemCard name='Examle' isActiveStatus={true} />
-        <ItemCard name='Examle' isActiveStatus={true} />
-        <ItemCard name='Examle' isActiveStatus={true} />
-        <ItemCard name='Examle' isActiveStatus={false} />
-        <ItemCard name='Examle' isActiveStatus={false} />
-
+        {!isLoading &&
+          sortedCountries.length > 0 &&
+          sortedCountries.map((country) => (
+            <ItemCard
+              key={country.countryId}
+              name={country.name}
+              isActiveStatus={country.isActive}
+              elemCount={country.schoolsCount}
+            />
+          ))}
         <EmptyCard name='Create new country' onClick={() => console.log('create')} />
       </div>
     </>

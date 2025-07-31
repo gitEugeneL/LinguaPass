@@ -23,10 +23,22 @@
 
 @media (--breakpoint-desktop) {
   .container {
-    grid-template-columns: repeat(5, auto);
+    grid-template-columns: repeat(4, auto);
   }
 
   .info {
     gap: 40px;
+  }
+}
+
+@media (min-width: 1620px) {
+  .container {
+    grid-template-columns: repeat(5, auto);
+  }
+}
+
+@media (min-width: 1900px) {
+  .container {
+    grid-template-columns: repeat(6, auto);
   }
 }
