@@ -1,4 +1,5 @@
 export interface ItemCardProps {
+  itemId: string;
   name: string;
   isActiveStatus: boolean;
   elemCount: number;

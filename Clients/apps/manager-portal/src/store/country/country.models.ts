@@ -8,3 +8,5 @@ export interface Country {
 export interface GetCountriesResponse {
   items: Country[];
 }
+
+export type GetCountryByIdResponse = Country;

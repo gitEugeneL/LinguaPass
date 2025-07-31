@@ -1,5 +1,6 @@
-import { Button } from '@clients/shared';
+import { Button, LoaderIndicator } from '@clients/shared';
 import { useEffect, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { EmptyCard, ItemCard } from '../../../componets';
@@ -10,6 +11,9 @@ import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 import styles from './CountriesList.module.pcss';
 
 export function CountriesList() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { countries, isLoading, getAllCountries } = useCountryStore(
     useShallow((state) => ({
       countries: state.countries,
@@ -23,6 +27,10 @@ export function CountriesList() {
       getAllCountries();
     }
   }, []);
+
+  const handleCreate = () => {
+    navigate(`${location.pathname}/add-edit`);
+  };
 
   const sortedCountries = useMemo(() => {
     return [...countries].sort((a, b) => {
@@ -47,27 +55,25 @@ export function CountriesList() {
             value={countries.filter((country) => !country.isActive).length.toString()}
           />
         </div>
-        <Button
-          name='Create'
-          size='small'
-          onClick={() => {
-            console.log('create');
-          }}
-        />
+        <Button name='Create' size='small' onClick={handleCreate} />
       </StatusArea>
 
       <div className={styles.container}>
+        {isLoading && <LoaderIndicator width={150} height={150} />}
+
         {!isLoading &&
           sortedCountries.length > 0 &&
           sortedCountries.map((country) => (
             <ItemCard
               key={country.countryId}
+              itemId={country.countryId}
               name={country.name}
               isActiveStatus={country.isActive}
               elemCount={country.schoolsCount}
             />
           ))}
-        <EmptyCard name='Create new country' onClick={() => console.log('create')} />
+
+        {!isLoading && <EmptyCard name='Create new country' onClick={handleCreate} />}
       </div>
     </>
   );

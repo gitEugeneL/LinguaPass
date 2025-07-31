@@ -5,6 +5,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { AuthLayout, LoginPage } from './app/auth';
 import AuthProvider from './app/AuthProvider.tsx';
 import { BaseLayout, CountriesPage } from './app/base';
+import { AddEditCountry } from './modules/base';
 
 const router = createBrowserRouter([
   {
@@ -20,32 +21,51 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '/home',
-        element: <div>home</div>
+        path: 'home',
+        element: <div>Home</div>
       },
       {
-        path: '/programs/countries',
-        element: <CountriesPage />
+        path: 'programs',
+        children: [
+          {
+            path: 'countries',
+            children: [
+              {
+                path: '',
+                element: <CountriesPage />
+              },
+              {
+                path: 'add-edit',
+                element: <AddEditCountry />
+              },
+              {
+                path: 'add-edit/:countryId',
+                element: <AddEditCountry />
+              }
+            ]
+          },
+          {
+            path: 'schools',
+            element: <div>Schools</div>
+          },
+          {
+            path: 'courses',
+            element: <div>Courses</div>
+          }
+        ]
       },
       {
-        path: '/programs/schools',
-        element: <div>schools</div>
-      },
-      {
-        path: '/programs/courses',
-        element: <div>courses</div>
-      },
-      {
-        path: '/programs/courses',
-        element: <div>courses</div>
-      },
-      {
-        path: '/students/current',
-        element: <div>current</div>
-      },
-      {
-        path: '/students/archived',
-        element: <div>archived</div>
+        path: 'students',
+        children: [
+          {
+            path: 'current',
+            element: <div>Current Students</div>
+          },
+          {
+            path: 'archived',
+            element: <div>Archived Students</div>
+          }
+        ]
       }
     ]
   },
@@ -54,10 +74,7 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        path: '',
-        element: <Navigate to='login' replace />
-      },
-      {
+        index: true,
         path: 'login',
         element: <LoginPage />
       }

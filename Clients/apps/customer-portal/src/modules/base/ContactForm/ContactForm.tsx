@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { OptionalInput } from '../../../components/base';
-import { routes } from '../../../helpers/routeHelpers.ts';
+import { routes } from '../../../helpers';
 import { useAccountStore, useContactStore, useProgressStore } from '../../../store';
 import { CustomCheckbox, CustomFieldset } from '../../../UI';
 
