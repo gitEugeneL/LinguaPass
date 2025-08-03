@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { useEffect, useState } from 'react';
 
 import styles from './Notification.module.pcss';
@@ -27,6 +28,14 @@ export function Notification({ message }: NotificationProps) {
   if (!isShown) return null;
 
   return (
-    <div className={`${styles.error} ${isFading ? styles.fadeOut : styles.fadeIn}`}>{message}</div>
+    <div
+      className={cn(styles.error, {
+        [styles.errorOff]: !message,
+        [styles.fadeOut]: isFading,
+        [styles.fadeIn]: !isFading
+      })}
+    >
+      {message}
+    </div>
   );
 }

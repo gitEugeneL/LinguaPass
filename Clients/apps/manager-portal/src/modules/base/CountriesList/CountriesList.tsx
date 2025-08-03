@@ -73,7 +73,7 @@ export function CountriesList() {
             />
           ))}
 
-        {!isLoading && <EmptyCard name='Create new country' onClick={handleCreate} />}
+        {!isLoading && countries && <EmptyCard name='Create new country' onClick={handleCreate} />}
       </div>
     </>
   );

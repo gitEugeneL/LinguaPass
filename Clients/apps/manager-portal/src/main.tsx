@@ -4,8 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { AuthLayout, LoginPage } from './app/auth';
 import AuthProvider from './app/AuthProvider.tsx';
-import { BaseLayout, CountriesPage } from './app/base';
-import { AddEditCountry } from './modules/base';
+import { BaseLayout, CountriesPage, CountryDetailPage } from './app/base';
 
 const router = createBrowserRouter([
   {
@@ -36,11 +35,11 @@ const router = createBrowserRouter([
               },
               {
                 path: 'add-edit',
-                element: <AddEditCountry />
+                element: <CountryDetailPage />
               },
               {
                 path: 'add-edit/:countryId',
-                element: <AddEditCountry />
+                element: <CountryDetailPage />
               }
             ]
           },

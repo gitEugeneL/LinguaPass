@@ -1,7 +1,8 @@
 import { Button } from '@clients/shared';
-import cn from 'classnames';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+
+import { Status } from '../../UI/Status/Status.tsx';
 
 import styles from './ItemCard.module.pcss';
 import type { ItemCardProps } from './ItemCard.props.ts';
@@ -31,13 +32,7 @@ export function ItemCard({ ...props }: ItemCardProps) {
       onMouseLeave={handleMouseLeave}
     >
       <div className={styles.nameWrapper}>
-        <span
-          className={cn(styles.status, {
-            [styles.disabled]: !props.isActiveStatus
-          })}
-        >
-          {props.isActiveStatus ? 'Active' : 'Disabled'}
-        </span>
+        <Status isActive={props.isActiveStatus} />
         <h3 className={styles.name}>{props.name}</h3>
       </div>
 

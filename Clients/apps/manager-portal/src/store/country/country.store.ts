@@ -4,17 +4,27 @@ import { create } from 'zustand';
 
 import { useAuthStore } from '../index.ts';
 
-import type { Country, GetCountriesResponse, GetCountryByIdResponse } from './country.models.ts';
+import type {
+  Country,
+  CountryResponse,
+  CreateUpdateCountryResponse,
+  GetCountriesResponse,
+  GetCountryByIdResponse,
+  UpdateCountryRequest
+} from './country.models.ts';
 import { countryUrls } from './country.urls.ts';
 
 interface CountryState {
-  countries: Country[];
-  currentCountry: null | Country;
+  countries: CountryResponse[];
+  currentCountry: null | CountryResponse;
   isLoading: boolean;
   error: null | string;
 
   getAllCountries: () => Promise<void>;
   getCountryById: (countryId: string) => Promise<void>;
+  createCountry: (country: Country) => Promise<void>;
+  updateCountry: (country: UpdateCountryRequest) => Promise<void>;
+  resetError: () => void;
 }
 
 export const useCountryStore = create<CountryState>((set, get) => ({
@@ -41,7 +51,6 @@ export const useCountryStore = create<CountryState>((set, get) => ({
 
   getCountryById: async (countryId: string) => {
     set({ isLoading: true, currentCountry: null });
-
     try {
       const country = get().countries.find((c) => c.countryId === countryId);
       if (country) {
@@ -60,5 +69,60 @@ export const useCountryStore = create<CountryState>((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
-  }
+  },
+
+  createCountry: async (country: Country) => {
+    set({ isLoading: true });
+    try {
+      const { data } = await axios.post<CreateUpdateCountryResponse>(
+        countryUrls.createCountry,
+        country,
+        {
+          headers: createAuthHeader(useAuthStore.getState().accessToken)
+        }
+      );
+      if (get().countries.length === 0) {
+        await get().getAllCountries();
+      }
+      set({ countries: [{ ...data }, ...get().countries] });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  updateCountry: async (country: UpdateCountryRequest) => {
+    set({ isLoading: true });
+    try {
+      const { data } = await axios.patch<CreateUpdateCountryResponse>(
+        countryUrls.updateCountry,
+        country,
+        {
+          headers: createAuthHeader(useAuthStore.getState().accessToken)
+        }
+      );
+      if (get().countries.length > 0) {
+        set({
+          countries: get().countries.map((response) =>
+            response.countryId === country.countryId ? { ...data } : response
+          )
+        });
+      } else {
+        await get().getAllCountries();
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  resetError: () => set({ error: null })
 }));
