@@ -1,5 +1,6 @@
 using AuthConfig.Tools;
 using Course.Data.Persistence;
+using Course.Features.Shared;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Course.Features.GetSchoolById;
 
 public class Endpoint(
     AppDbContext dbContext
-) : EndpointWithoutRequest<Results<Ok<Response>, BadRequest<string>, NotFound<string>>>
+) : EndpointWithoutRequest<Results<Ok<SchoolResponse>, BadRequest<string>, NotFound<string>>>
 {
     public const string InvalidSchool = "schoolId is not found or invalid";
 
@@ -19,7 +20,7 @@ public class Endpoint(
         ResponseCache(60);
     }
 
-    public override async Task<Results<Ok<Response>, BadRequest<string>, NotFound<string>>> ExecuteAsync(
+    public override async Task<Results<Ok<SchoolResponse>, BadRequest<string>, NotFound<string>>> ExecuteAsync(
         CancellationToken ct)
     {
         if (!Guid.TryParse(Route<string>("schoolId"), out var schoolId))
@@ -30,7 +31,7 @@ public class Endpoint(
             .AsNoTracking()
             .Where(s => s.IsActive &&
                         s.Id == schoolId)
-            .Select(s => new Response(s.Id, s.Name, s.City, s.IsActive, s.CountryId))
+            .Select(s => new SchoolResponse(s.Id, s.Name, s.City, s.IsActive, s.CountryId))
             .FirstOrDefaultAsync(ct);
 
         return result is not null

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Course.Features.GetLanguagesByFilter;
 
-public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Response>
+public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, LanguageResponse>
 {
     public override void Configure()
     {
@@ -21,12 +21,12 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Response>
             ? parsedFilter
             : QueryFilter.Active;
 
-        var result = new CollectionResponse<Response>(
+        var result = new CollectionResponse<LanguageResponse>(
             await dbContext
                 .Languages
                 .AsNoTracking()
                 .Where(l => filter == QueryFilter.All || l.IsActive == (filter == QueryFilter.Active))
-                .Select(l => new Response(l.Id, l.Name, l.Description, l.IsActive))
+                .Select(l => new LanguageResponse(l.Id, l.Name, l.Description, l.IsActive))
                 .ToListAsync(ct));
 
         await SendResultAsync(TypedResults.Ok(result));
