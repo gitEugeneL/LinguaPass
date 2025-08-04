@@ -1,7 +1,4 @@
 .card {
-  width: 200px;
-  height: 230px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,14 +14,22 @@
   }
 }
 
+.small {
+  width: 200px;
+  height: 220px;
+
+  @media (--breakpoint-desktop) {
+    width: 240px;
+  }
+}
+
+.big {
+  width: 250px;
+  height: 292px;
+}
+
 .name {
   color: var(--black-color);
   font-size: var(--font-size16);
   font-weight: var(--font-weight-semi-bold);
-}
-
-@media (--breakpoint-desktop) {
-  .card {
-    width: 240px;
-  }
 }
