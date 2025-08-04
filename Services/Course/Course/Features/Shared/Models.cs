@@ -17,3 +17,18 @@ public sealed record CountryResponse(
     bool IsActive,
     int SchoolsCount
 );
+
+public sealed record SchoolResponse(
+    Guid SchoolId,
+    string Name,
+    string City,
+    bool IsActive,
+    Guid CountryId
+);
+
+public sealed record LanguageResponse(
+    Guid LanguageId,
+    string Name,
+    string Description,
+    bool IsActive
+);

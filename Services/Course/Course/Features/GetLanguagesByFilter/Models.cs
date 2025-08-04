@@ -8,10 +8,3 @@ public enum QueryFilter
     Active,
     Disabled
 }
-
-public sealed record Response(
-    Guid LanguageId,
-    string Name,
-    string Description,
-    bool IsActive
-);

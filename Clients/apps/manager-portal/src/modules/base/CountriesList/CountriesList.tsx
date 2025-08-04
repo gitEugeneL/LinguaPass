@@ -70,10 +70,13 @@ export function CountriesList() {
               name={country.name}
               isActiveStatus={country.isActive}
               elemCount={country.schoolsCount}
+              appearance='country'
             />
           ))}
 
-        {!isLoading && countries && <EmptyCard name='Create new country' onClick={handleCreate} />}
+        {!isLoading && countries && (
+          <EmptyCard name='Create new country' onClick={handleCreate} appearance='small' />
+        )}
       </div>
     </>
   );

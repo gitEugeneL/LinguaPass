@@ -1,9 +1,0 @@
-namespace Course.Features.GetSchoolsByLanguageAndCountry;
-
-public sealed record Response(
-    Guid SchoolId,
-    string Name,
-    string City,
-    bool IsActive,
-    Guid CountryId
-);

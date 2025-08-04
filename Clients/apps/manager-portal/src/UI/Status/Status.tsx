@@ -10,7 +10,7 @@ export function Status({ isActive = false, create = false }: StatusProps) {
         [styles.disabled]: !isActive
       })}
     >
-      {isActive && 'Active'}
+      {isActive && !create && 'Active'}
       {!isActive && !create && 'Disabled'}
       {create && 'New'}
     </span>

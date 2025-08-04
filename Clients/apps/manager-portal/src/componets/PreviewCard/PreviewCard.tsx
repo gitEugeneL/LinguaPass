@@ -12,7 +12,7 @@ export function PreviewCard({ count = 0, ...props }: PreviewCardProps) {
           <span className={styles.preview}>preview</span>
         </div>
         <h3 className={styles.name}>{props.name ? props.name : '-'}</h3>
-        <span className={styles.count}>Schools: {count}</span>
+        <span className={styles.count}>Schools: {props.isCreate ? '-' : count}</span>
       </div>
     </div>
   );

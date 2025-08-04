@@ -1,6 +1,8 @@
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 200px;
-  height: 230px;
   padding: 20px;
   background-color: var(--white-color);
   border-radius: var(--normal-radius);
@@ -12,16 +14,35 @@
   }
 }
 
+.bigCard {
+  width: 250px;
+}
+
 .name {
   color: var(--black-color);
   font-size: var(--font-size26);
   font-weight: var(--font-weight-semi-bold);
-
-
   max-width: 9ch;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.smallName {
+  max-height: 45px;
+  color: var(--black-color);
+  font-size: var(--font-size18);
+  font-weight: var(--font-weight-semi-bold);
+  max-width: max-content;
+  overflow: hidden;
+}
+
+.languages {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: start;
+  row-gap: 12px;
+  column-gap: 6px;
 }
 
 .nameWrapper {
@@ -33,6 +54,30 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.statusWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.countryWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.country {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size16);
+  color: var(--black-color);
+}
+
+.city {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size14);
+  color: var(--grey-2-color);
 }
 
 @media (--breakpoint-desktop) {
