@@ -17,4 +17,11 @@ public static class TokenReader
             ? userId
             : null;
     }
+
+    public static string? ReadUserRole(HttpContext httpContext)
+    {
+        return httpContext
+            .User
+            .FindFirstValue(ClaimTypes.Role);
+    }
 }

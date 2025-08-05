@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Course.Features.GetSchoolsByCountryId;
 
 public class Endpoint(AppDbContext dbContext)
-    : EndpointWithoutRequest<Results<Ok<CollectionResponse<Response>>, BadRequest<string>>>
+    : EndpointWithoutRequest<Results<Ok<CollectionResponse<SchoolAdminResponse>>, BadRequest<string>>>
 {
     public const string InvalidCountryId = "countryId is invalid";
 
@@ -19,7 +19,7 @@ public class Endpoint(AppDbContext dbContext)
         ResponseCache(60);
     }
 
-    public override async Task<Results<Ok<CollectionResponse<Response>>, BadRequest<string>>> ExecuteAsync(
+    public override async Task<Results<Ok<CollectionResponse<SchoolAdminResponse>>, BadRequest<string>>> ExecuteAsync(
         CancellationToken ct)
     {
         if (!Guid.TryParse(Route<string>("countryId"), out var countryId))
@@ -29,9 +29,10 @@ public class Endpoint(AppDbContext dbContext)
             .Schools
             .AsNoTracking()
             .Where(s => s.CountryId == countryId)
-            .Select(s => new Response(
+            .Select(s => new SchoolAdminResponse(
                 s.Id,
                 s.Name,
+                s.ShortName,
                 s.City,
                 s.IsActive,
                 s.CountryId,
@@ -40,6 +41,6 @@ public class Endpoint(AppDbContext dbContext)
             ))
             .ToListAsync(ct);
 
-        return TypedResults.Ok(new CollectionResponse<Response>(result));
+        return TypedResults.Ok(new CollectionResponse<SchoolAdminResponse>(result));
     }
 }

@@ -33,7 +33,7 @@ public class Endpoint(AppDbContext dbContext)
         if (country is null)
             return TypedResults.NotFound(InvalidCountryId);
 
-        if (req.Name is { } name)
+        if (req.Name is { } name && name != country.Name)
         {
             if (await dbContext.Countries.AsNoTracking().AnyAsync(c => c.Name.ToLower() == name.ToLower().Trim(), ct))
                 return TypedResults.Conflict(InvalidName);

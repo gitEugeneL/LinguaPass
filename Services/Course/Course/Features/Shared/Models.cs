@@ -18,17 +18,35 @@ public sealed record CountryResponse(
     int SchoolsCount
 );
 
-public sealed record SchoolResponse(
+public interface ISchoolResponse;
+
+public record SchoolResponse(
     Guid SchoolId,
     string Name,
     string City,
     bool IsActive,
     Guid CountryId
-);
+) : ISchoolResponse;
+
+public sealed record SchoolAdminResponse(
+    Guid SchoolId,
+    string Name,
+    string ShortName,
+    string City,
+    bool IsActive,
+    Guid CountryId,
+    int TracksCount,
+    IEnumerable<BaseLanguageResponse> Languages
+) : ISchoolResponse;
 
 public sealed record LanguageResponse(
     Guid LanguageId,
     string Name,
     string Description,
     bool IsActive
+);
+
+public sealed record BaseLanguageResponse(
+    Guid LanguageId,
+    string Name
 );

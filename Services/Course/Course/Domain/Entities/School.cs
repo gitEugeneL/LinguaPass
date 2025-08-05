@@ -12,7 +12,7 @@ public sealed class School
     public Guid CountryId { get; init; }
     public required Country Country { get; init; }
 
-    public List<Language> Languages { get; init; } = [];
+    public List<Language> Languages { get; set; } = [];
 
     public List<Track> Tracks { get; init; } = [];
 }

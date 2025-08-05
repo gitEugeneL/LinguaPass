@@ -41,8 +41,7 @@ public class Endpoint(AppDbContext dbContext)
                 s.Name,
                 s.City,
                 s.IsActive,
-                s.CountryId
-            ))
+                s.CountryId))
             .ToListAsync(ct);
 
         return TypedResults.Ok(new CollectionResponse<SchoolResponse>(result));
