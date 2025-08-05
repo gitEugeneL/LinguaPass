@@ -4,7 +4,13 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 
 import { AuthLayout, LoginPage } from './app/auth';
 import AuthProvider from './app/AuthProvider.tsx';
-import { BaseLayout, CountriesPage, CountryDetailPage, SchoolsPage } from './app/base';
+import {
+  BaseLayout,
+  CountriesPage,
+  CountryDetailPage,
+  SchoolDetailPage,
+  SchoolsPage
+} from './app/base';
 
 const router = createBrowserRouter([
   {
@@ -40,11 +46,11 @@ const router = createBrowserRouter([
               {
                 path: 'add-edit/:countryId',
                 element: <CountryDetailPage />
-              },
-              {
-                path: 'schools/:countryId',
-                element: <SchoolsPage />
               }
+              // {
+              //   path: 'schools/:countryId',
+              //   element: <SchoolsPage />
+              // }
             ]
           },
           {
@@ -53,6 +59,19 @@ const router = createBrowserRouter([
               {
                 path: '',
                 element: <SchoolsPage />
+              },
+              {
+                path: ':countryId',
+                element: <SchoolsPage />
+              },
+
+              {
+                path: 'add-edit/:countryId',
+                element: <SchoolDetailPage />
+              },
+              {
+                path: 'add-edit/:countryId/:schoolId',
+                element: <SchoolDetailPage />
               }
             ]
           },

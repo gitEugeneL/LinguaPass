@@ -1,6 +1,6 @@
 import { Button, LoaderIndicator } from '@clients/shared';
 import { useEffect, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { EmptyCard, ItemCard } from '../../../componets';
@@ -12,7 +12,6 @@ import styles from './CountriesList.module.pcss';
 
 export function CountriesList() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { countries, isLoading, getAllCountries } = useCountryStore(
     useShallow((state) => ({
@@ -29,7 +28,7 @@ export function CountriesList() {
   }, []);
 
   const handleCreate = () => {
-    navigate(`${location.pathname}/add-edit`);
+    navigate('/programs/countries/add-edit');
   };
 
   const sortedCountries = useMemo(() => {

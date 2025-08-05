@@ -7,8 +7,8 @@ export interface ItemCardProps {
   btn2Action?: () => void;
 
   appearance: 'country' | 'school' | 'course';
+  parentId?: string | null;
   country?: string | null;
   city?: string | null;
-
   languages?: string[] | null;
 }

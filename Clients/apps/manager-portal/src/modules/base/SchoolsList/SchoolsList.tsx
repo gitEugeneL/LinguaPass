@@ -1,6 +1,6 @@
 import { Button, LoaderIndicator } from '@clients/shared';
 import { useEffect, useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { EmptyCard, ItemCard } from '../../../componets';
@@ -13,7 +13,6 @@ import styles from './SchoolsList.module.pcss';
 export function SchoolsList() {
   const { countryId } = useParams<{ countryId?: string | undefined }>();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const { currentCountry, getCountryById } = useCountryStore(
     useShallow((state) => ({
@@ -43,8 +42,7 @@ export function SchoolsList() {
   }, [countryId, getCountryById]);
 
   const handleCreate = () => {
-    console.log('create school');
-    // navigate('/programs/schools/add-edit');
+    navigate(`/programs/schools/add-edit/${countryId}`);
   };
 
   const sortedSchools = useMemo(() => {
@@ -82,6 +80,7 @@ export function SchoolsList() {
               sortedSchools.length > 0 &&
               sortedSchools.map((school) => (
                 <ItemCard
+                  parentId={school.countryId}
                   appearance='school'
                   key={school.schoolId}
                   itemId={school.schoolId}

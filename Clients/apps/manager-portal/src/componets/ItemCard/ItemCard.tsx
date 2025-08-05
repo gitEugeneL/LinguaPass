@@ -1,15 +1,15 @@
 import { Button } from '@clients/shared';
 import cn from 'classnames';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
-import { Status } from '../../UI';
+import { LanguageIcon, Status } from '../../UI';
 
 import styles from './ItemCard.module.pcss';
 import type { ItemCardProps } from './ItemCard.props.ts';
-import { LanguageIcon } from './UI';
 
 export function ItemCard({
+  parentId = null,
   city = null,
   country = null,
   languages = null,
@@ -17,7 +17,6 @@ export function ItemCard({
 }: ItemCardProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleFocus = () => setIsActive(true);
   const handleBlur = () => setIsActive(false);
@@ -25,11 +24,19 @@ export function ItemCard({
   const handleMouseLeave = () => setIsActive(false);
 
   const handleEdit = () => {
-    navigate(`${location.pathname}/add-edit/${props.itemId}`);
+    if (props.appearance === 'country') {
+      navigate(`/programs/countries/add-edit/${props.itemId}`);
+    } else if (props.appearance === 'school' && parentId) {
+      navigate(`/programs/schools/add-edit/${parentId}/${props.itemId}`);
+    }
   };
 
   const handleShowList = () => {
-    navigate(`${location.pathname}/schools/${props.itemId}`);
+    if (props.appearance === 'country') {
+      navigate(`/programs/schools/${props.itemId}`);
+    } else if (props.appearance === 'school') {
+      // todo
+    }
   };
 
   return (

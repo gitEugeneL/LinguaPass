@@ -43,8 +43,6 @@ export function AddEditCountryForm({ countryId = undefined }: AddEditCountryForm
     }
   }, [localError]);
 
-  useEffect(() => {}, [localError]);
-
   useEffect(() => {
     if (error) {
       setLocalError(error);
@@ -87,7 +85,7 @@ export function AddEditCountryForm({ countryId = undefined }: AddEditCountryForm
             isActive: currentCountry.isActive
           });
         } else if (!countryId) {
-          await createCountry({ name: schema.name, isActive: false });
+          await createCountry({ name: schema.name, isActive: true });
         }
         navigate('/programs/countries');
       } catch (error) {
@@ -130,6 +128,7 @@ export function AddEditCountryForm({ countryId = undefined }: AddEditCountryForm
           </form>
         </div>
         <PreviewCard
+          appearance='country'
           name={countryName}
           isActiveStatus={currentCountry ? currentCountry.isActive : false}
           count={currentCountry ? currentCountry.schoolsCount : 0}
