@@ -15,7 +15,7 @@ public sealed class Track
 
     /*** Relations ***/
     public Guid LanguageId { get; init; }
-    public required Language Language { get; init; }
+    public required Language Language { get; set; }
 
     public Guid SchoolId { get; init; }
     public required School School { get; init; }

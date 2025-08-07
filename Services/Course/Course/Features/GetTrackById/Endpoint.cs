@@ -16,7 +16,7 @@ public class Endpoint(
     public override void Configure()
     {
         Get("/api/courses/{courseId}");
-        Policies(Constants.CustomerPolicy);
+        Policies(Constants.BasePolicy);
         ResponseCache(60);
     }
 
