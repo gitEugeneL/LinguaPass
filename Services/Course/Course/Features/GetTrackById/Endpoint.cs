@@ -1,5 +1,6 @@
 using AuthConfig.Tools;
 using Course.Data.Persistence;
+using Course.Features.Shared;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Course.Features.GetTrackById;
 
 public class Endpoint(
     AppDbContext dbContext
-) : EndpointWithoutRequest<Results<Ok<Response>, NotFound<string>, BadRequest<string>>>
+) : EndpointWithoutRequest<Results<Ok<TrackResponse>, NotFound<string>, BadRequest<string>>>
 {
     public const string InvalidTrack = "courseId is not found or invalid";
 
@@ -19,7 +20,7 @@ public class Endpoint(
         ResponseCache(60);
     }
 
-    public override async Task<Results<Ok<Response>, NotFound<string>, BadRequest<string>>> ExecuteAsync(
+    public override async Task<Results<Ok<TrackResponse>, NotFound<string>, BadRequest<string>>> ExecuteAsync(
         CancellationToken ct)
     {
         if (!Guid.TryParse(Route<string>("courseId"), out var courseId))
@@ -29,7 +30,7 @@ public class Endpoint(
             .Tracks
             .AsNoTracking()
             .Where(t => t.IsActive && t.Id == courseId)
-            .Select(t => new Response(
+            .Select(t => new TrackResponse(
                 t.Id,
                 t.Name,
                 t.Description,
@@ -42,6 +43,7 @@ public class Endpoint(
                 t.WithAccommodation,
                 t.Language.Name,
                 t.School.Name,
+                t.School.Country.Name,
                 t.SchoolId,
                 t.LanguageId)
             )

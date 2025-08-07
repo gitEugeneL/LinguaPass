@@ -5,38 +5,30 @@ using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
-namespace Course.Features.GetTracksByLanguageAndSchool;
+namespace Course.Features.GetTracksBySchoolId;
 
 public class Endpoint(AppDbContext dbContext)
-    : EndpointWithoutRequest<Results<BadRequest<string>, Ok<CollectionResponse<TrackResponse>>>>
+    : EndpointWithoutRequest<Results<Ok<CollectionResponse<TrackResponse>>, BadRequest<string>>>
 {
     public const string InvalidSchoolId = "schoolId is invalid";
-    public const string InvalidLanguageId = "languageId is invalid";
 
     public override void Configure()
     {
-        Get("/api/school/{schoolId}/language/{languageId}");
-        Policies(Constants.BasePolicy);
+        Get("/api/courses/school/{schoolId}");
+        Policies(Constants.AdminPolicy);
         ResponseCache(60);
     }
 
-    public override async Task<Results<BadRequest<string>, Ok<CollectionResponse<TrackResponse>>>> ExecuteAsync(
+    public override async Task<Results<Ok<CollectionResponse<TrackResponse>>, BadRequest<string>>> ExecuteAsync(
         CancellationToken ct)
     {
         if (!Guid.TryParse(Route<string>("schoolId"), out var schoolId))
             return TypedResults.BadRequest(InvalidSchoolId);
 
-        if (!Guid.TryParse(Route<string>("languageId"), out var languageId))
-            return TypedResults.BadRequest(InvalidLanguageId);
-
         var result = await dbContext
             .Tracks
             .AsNoTracking()
-            .Where(t => t.IsActive &&
-                        t.School.IsActive &&
-                        t.Language.IsActive &&
-                        t.LanguageId == languageId &&
-                        t.SchoolId == schoolId)
+            .Where(t => t.SchoolId == schoolId)
             .Select(t => new TrackResponse(
                 t.Id,
                 t.Name,
