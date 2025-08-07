@@ -25,7 +25,9 @@ export function LanguageIcon({ isSingle = false, ...props }: LanguageIconProps) 
         [styles[languageCode]]: props.name
       })}
     >
-      <div className={styles.title}>{isSingle ? props.name : `${languageCode.toUpperCase()}`}</div>
+      <div className={styles.title}>
+        {isSingle ? props.name + ' program' : `${languageCode.toUpperCase()}`}
+      </div>
     </div>
   );
 }

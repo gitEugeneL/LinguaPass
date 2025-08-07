@@ -48,7 +48,7 @@ export function AddEditSchool() {
   return (
     <>
       {currentSchool && schoolId && (
-        <StatusArea name={currentSchool.shortName}>
+        <StatusArea name={currentSchool.name}>
           <div className={styles.wrapper}>
             <Button name='Disable' appearance='secondaryDanger' size='small' />
             <Button name='Delete' appearance='danger' size='small' />

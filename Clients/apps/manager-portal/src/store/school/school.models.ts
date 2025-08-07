@@ -1,14 +1,11 @@
+import { type Language } from '../index.ts';
+
 export interface School {
   name: string;
   shortName: string;
   city: string;
   isActive: boolean;
   countryId: string;
-}
-
-export interface Language {
-  languageId: string;
-  name: string;
 }
 
 export interface SchoolResponse extends School {

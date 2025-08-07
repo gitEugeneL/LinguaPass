@@ -26,7 +26,7 @@ export function Navigator() {
         <NavigatorWrapper name='Programs'>
           <NavigatorItem name='Countries' to='/programs/countries' />
           <NavigatorItem name='Schools' to='/programs/schools' />
-          <NavigatorItem name='Coursees' to='/programs/courses' />
+          <NavigatorItem name='Courses' to='/programs/courses' />
         </NavigatorWrapper>
 
         <NavigatorWrapper name='Students'>

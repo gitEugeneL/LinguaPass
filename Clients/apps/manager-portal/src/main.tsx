@@ -8,6 +8,7 @@ import {
   BaseLayout,
   CountriesPage,
   CountryDetailPage,
+  CoursesPage,
   SchoolDetailPage,
   SchoolsPage
 } from './app/base';
@@ -47,10 +48,6 @@ const router = createBrowserRouter([
                 path: 'add-edit/:countryId',
                 element: <CountryDetailPage />
               }
-              // {
-              //   path: 'schools/:countryId',
-              //   element: <SchoolsPage />
-              // }
             ]
           },
           {
@@ -77,7 +74,24 @@ const router = createBrowserRouter([
           },
           {
             path: 'courses',
-            element: <div>Courses</div>
+            children: [
+              {
+                path: '',
+                element: <CoursesPage />
+              },
+              {
+                path: ':schoolId',
+                element: <CoursesPage />
+              },
+              {
+                path: 'add-edit/:schoolId',
+                element: <>add</>
+              },
+              {
+                path: 'add-edit/:schoolId/:courseId',
+                element: <>edit</>
+              }
+            ]
           }
         ]
       },

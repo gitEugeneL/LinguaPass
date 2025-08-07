@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { LanguageFieldset, PreviewCard } from '../../../../../componets';
-import { useCountryStore, useLanguagesStore, useSchoolStore } from '../../../../../store';
+import { useCountryStore, useLanguageStore, useSchoolStore } from '../../../../../store';
 
 import styles from './AddEditSchoolForm.module.pcss';
 import type { AddEditSchoolFormProps } from './AddEditSchoolForm.props.ts';
@@ -36,7 +36,7 @@ export function AddEditSchoolForm({ schoolId = undefined }: AddEditSchoolFormPro
 
   const currentCountry = useCountryStore((state) => state.currentCountry);
 
-  const { languages, getLanguages } = useLanguagesStore(
+  const { languages, getLanguages } = useLanguageStore(
     useShallow((state) => ({
       languages: state.languages,
       getLanguages: state.getLanguages

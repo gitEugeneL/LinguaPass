@@ -7,7 +7,7 @@ import { useAuthStore } from '../index.ts';
 import type { GetLanguagesResponse, Language } from './language.models.ts';
 import { languageUrls } from './language.urls.ts';
 
-interface LanguagesState {
+interface LanguageState {
   languages: Language[];
   isLoading: boolean;
   error: string | null;
@@ -15,7 +15,7 @@ interface LanguagesState {
   getLanguages: () => Promise<void>;
 }
 
-export const useLanguagesStore = create<LanguagesState>((set) => ({
+export const useLanguageStore = create<LanguageState>((set) => ({
   languages: [],
   isLoading: false,
   error: null,

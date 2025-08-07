@@ -10,6 +10,7 @@ import type { ItemCardProps } from './ItemCard.props.ts';
 
 export function ItemCard({
   parentId = null,
+  parentName = null,
   city = null,
   country = null,
   languages = null,
@@ -28,6 +29,8 @@ export function ItemCard({
       navigate(`/programs/countries/add-edit/${props.itemId}`);
     } else if (props.appearance === 'school' && parentId) {
       navigate(`/programs/schools/add-edit/${parentId}/${props.itemId}`);
+    } else if (props.appearance === 'course' && parentId) {
+      navigate(`/programs/courses/add-edit/${parentId}/${props.itemId}`);
     }
   };
 
@@ -35,14 +38,14 @@ export function ItemCard({
     if (props.appearance === 'country') {
       navigate(`/programs/schools/${props.itemId}`);
     } else if (props.appearance === 'school') {
-      // todo
+      navigate(`/programs/courses/${props.itemId}`);
     }
   };
 
   return (
     <div
       className={cn(styles.card, {
-        [styles.bigCard]: props.appearance === 'school'
+        [styles.bigCard]: props.appearance === 'school' || props.appearance === 'course'
       })}
       tabIndex={0}
       onBlur={handleBlur}
@@ -53,12 +56,12 @@ export function ItemCard({
       <div className={styles.nameWrapper}>
         <div className={styles.statusWrapper}>
           <Status isActive={props.isActiveStatus} />
-          {(props.appearance === 'school' || props.appearance === 'course') && city && country && (
+          {(props.appearance === 'school' || props.appearance === 'course') && city && country ? (
             <div className={styles.countryWrapper}>
               <span className={styles.country}>{country}</span>
               <span className={styles.city}>{city}</span>
             </div>
-          )}
+          ) : null}
         </div>
         <h3
           className={cn({
@@ -69,21 +72,33 @@ export function ItemCard({
           {props.name}
         </h3>
 
+        {parentName && props.appearance === 'course' && (
+          <span className={styles.parentName}>{parentName}</span>
+        )}
         {props.appearance === 'school' || props.appearance === 'course' ? (
           <div className={styles.languages}>
             {languages &&
-              languages.map((language) => <LanguageIcon key={language} name={language} />)}
+              languages.map((language) => (
+                <LanguageIcon
+                  isSingle={props.appearance === 'course' && languages.length === 1}
+                  key={language}
+                  name={language}
+                />
+              ))}
           </div>
         ) : null}
       </div>
 
       <div className={styles.btnWrapper}>
-        <Button
-          name={`${props.appearance === 'school' ? 'Courses' : 'Schools'}: ${props.elemCount}`}
-          size='small'
-          appearance={isActive ? 'primary' : 'specialSecondary'}
-          onClick={handleShowList}
-        />
+        {props.appearance === 'country' || props.appearance === 'school' ? (
+          <Button
+            name={`${props.appearance === 'school' ? 'Courses' : 'Schools'}: ${props.elemCount}`}
+            size='small'
+            appearance={isActive ? 'primary' : 'specialSecondary'}
+            onClick={handleShowList}
+          />
+        ) : null}
+
         <Button
           name='Edit'
           size='small'
