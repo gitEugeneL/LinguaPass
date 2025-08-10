@@ -6,6 +6,7 @@ import { useAuthStore } from '../index.ts';
 
 import type {
   CreateSchoolRequest,
+  GetPaginatedSchoolsResponse,
   GetSchoolByIdResponse,
   GetSchoolsResponse,
   SchoolResponse,
@@ -14,11 +15,19 @@ import type {
 import { schoolUrls } from './school.urls.ts';
 
 interface SchoolState {
+  paginator: {
+    totalItemsCount: number;
+    pageNumber: number;
+    pageSize: number;
+    totalPages: number;
+  } | null;
+
   schools: SchoolResponse[];
   currentSchool: null | SchoolResponse;
   isLoading: boolean;
   error: null | string;
 
+  getAllSchools: (pageNumber?: number, pageSize?: number) => Promise<void>;
   getSchoolsByCountryId: (countryId: string) => Promise<void>;
   getSchoolById: (schoolId: string) => Promise<void>;
   createSchool: (school: CreateSchoolRequest) => Promise<void>;
@@ -27,6 +36,7 @@ interface SchoolState {
 }
 
 export const useSchoolStore = create<SchoolState>((set, get) => ({
+  paginator: null,
   schools: [],
   currentSchool: null,
   isLoading: false,
@@ -118,5 +128,29 @@ export const useSchoolStore = create<SchoolState>((set, get) => ({
     }
   },
 
+  getAllSchools: async (pageNumber = 1, pageSize = 10) => {
+    set({ isLoading: true, schools: [], paginator: null });
+    try {
+      const { data } = await axios.get<GetPaginatedSchoolsResponse>(schoolUrls.getAllSchools, {
+        params: { pageNumber, pageSize },
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      set({
+        schools: data.items,
+        paginator: {
+          totalItemsCount: data.totalItemsCount,
+          pageNumber: data.pageNumber,
+          pageSize: data.pageSize,
+          totalPages: data.totalPages
+        }
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
   resetError: () => set({ error: null })
 }));

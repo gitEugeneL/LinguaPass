@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { EmptyCard, ItemCard } from '../../../componets';
+import { EmptyCard, ItemCard, Paginator } from '../../../componets';
 import { useCountryStore, useSchoolStore } from '../../../store';
 import { StatusArea } from '../../../widgets';
 import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
@@ -11,7 +11,7 @@ import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 import styles from './SchoolsList.module.pcss';
 
 export function SchoolsList() {
-  const { countryId } = useParams<{ countryId?: string | undefined }>();
+  const { countryId } = useParams<{ countryId?: string }>();
   const navigate = useNavigate();
 
   const { currentCountry, getCountryById } = useCountryStore(
@@ -21,19 +21,23 @@ export function SchoolsList() {
     }))
   );
 
-  const { schools, getSchoolsByCountryId, isLoading } = useSchoolStore(
+  const { schools, getSchoolsByCountryId, getAllSchools, isLoading, paginator } = useSchoolStore(
     useShallow((state) => ({
       schools: state.schools,
       isLoading: state.isLoading,
-      getSchoolsByCountryId: state.getSchoolsByCountryId
+      getSchoolsByCountryId: state.getSchoolsByCountryId,
+      getAllSchools: state.getAllSchools,
+      paginator: state.paginator
     }))
   );
 
   useEffect(() => {
-    if (countryId && schools && !isLoading) {
+    if (countryId) {
       getSchoolsByCountryId(countryId);
+    } else {
+      getAllSchools();
     }
-  }, []);
+  }, [countryId, getAllSchools, getSchoolsByCountryId]);
 
   useEffect(() => {
     if (countryId) {
@@ -42,7 +46,7 @@ export function SchoolsList() {
   }, [countryId, getCountryById]);
 
   const handleCreate = () => {
-    navigate(`/programs/schools/add-edit/${countryId}`);
+    navigate(countryId ? `/programs/schools/add-edit/${countryId}` : '/programs/schools/add-edit');
   };
 
   const sortedSchools = useMemo(() => {
@@ -53,6 +57,10 @@ export function SchoolsList() {
       return (b.tracksCount || 0) - (a.tracksCount || 0);
     });
   }, [schools]);
+
+  const handlePageChange = (page: number) => {
+    getAllSchools(page);
+  };
 
   return (
     <>
@@ -97,6 +105,50 @@ export function SchoolsList() {
               <EmptyCard name='Create new school' onClick={handleCreate} appearance='big' />
             )}
           </div>
+        </>
+      )}
+      {!countryId && (
+        <>
+          <StatusArea name='Schools'>
+            {paginator && (
+              <div className={styles.paginator}>
+                <Paginator
+                  pageNumber={paginator.pageNumber}
+                  totalPages={paginator.totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+          </StatusArea>
+
+          <div className={styles.container}>
+            {isLoading && <LoaderIndicator width={150} height={150} />}
+
+            {!isLoading &&
+              schools.length > 0 &&
+              schools.map((school) => (
+                <ItemCard
+                  parentId={school.countryId}
+                  appearance='school'
+                  key={school.schoolId}
+                  itemId={school.schoolId}
+                  name={school.name}
+                  isActiveStatus={school.isActive}
+                  elemCount={school.tracksCount}
+                  country={school.countryName}
+                  city={school.city}
+                  languages={school.languages.map((language) => language.name)}
+                />
+              ))}
+          </div>
+
+          {paginator && !isLoading && (
+            <Paginator
+              pageNumber={paginator.pageNumber}
+              totalPages={paginator.totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </>
       )}
     </>

@@ -10,6 +10,7 @@ export interface School {
 
 export interface SchoolResponse extends School {
   schoolId: string;
+  countryName: string;
   tracksCount: number;
   languages: Language[];
 }
@@ -30,6 +31,13 @@ export interface UpdateSchoolRequest {
 
 export interface GetSchoolsResponse {
   items: SchoolResponse[];
+}
+
+export interface GetPaginatedSchoolsResponse extends GetSchoolsResponse {
+  totalItemsCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
 }
 
 export type GetSchoolByIdResponse = SchoolResponse;
