@@ -1,10 +1,10 @@
 export interface Course {
   name: string;
   description: string;
-  activities: boolean;
+  activities: string;
   duration: string;
-  price: number;
-  admissionFee: number;
+  price: string;
+  admissionFee: string;
   isActive: boolean;
   withAccommodation: boolean;
 }
@@ -22,6 +22,20 @@ export interface CourseResponse extends Course {
 export interface CreateCourseRequest extends Course {
   schoolId: string;
   languageId: string;
+}
+
+export interface UpdateCourseRequest {
+  courseId: string;
+  schoolId: string;
+  name?: string | null;
+  description?: string | null;
+  activities?: string | null;
+  duration?: string | null;
+  price?: string | null;
+  admissionFee?: string | null;
+  isActive?: boolean | null;
+  withAccommodation?: boolean | null;
+  languageId?: string | null;
 }
 
 export interface GetCoursesResponse {

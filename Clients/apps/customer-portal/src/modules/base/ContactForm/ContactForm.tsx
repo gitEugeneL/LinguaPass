@@ -1,4 +1,4 @@
-import { Button, CustomInput } from '@clients/shared';
+import { Button, CustomCheckbox, CustomInput } from '@clients/shared';
 import { yupResolver } from '@hookform/resolvers/yup';
 import cn from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
@@ -9,7 +9,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { OptionalInput } from '../../../components/base';
 import { routes } from '../../../helpers';
 import { useAccountStore, useContactStore, useProgressStore } from '../../../store';
-import { CustomCheckbox, CustomFieldset } from '../../../UI';
+import { CustomFieldset } from '../../../UI';
 
 import styles from './ContactForm.module.pcss';
 import {

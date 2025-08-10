@@ -4,7 +4,14 @@ import { Controller } from 'react-hook-form';
 import styles from './LanguageFieldset.module.pcss';
 import type { LanguageFieldsetProps } from './LanguageFieldset.props.ts';
 
-export function LanguageFieldset({ label, name, control, options, errors }: LanguageFieldsetProps) {
+export function LanguageFieldset({
+  label,
+  name,
+  control,
+  options,
+  errors,
+  type = 'checkbox'
+}: LanguageFieldsetProps) {
   const languageCodeMap: { [key: string]: string } = {
     English: 'en',
     Spanish: 'es',
@@ -23,28 +30,37 @@ export function LanguageFieldset({ label, name, control, options, errors }: Lang
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value = [], ref } }) => (
+        render={({ field: { onChange, value = type === 'checkbox' ? [] : '', ref } }) => (
           <fieldset className={styles.fieldset}>
             {options.map((option) => {
-              const languageCode = languageCodeMap[option.label] || 'fallback';
+              const languageCode = languageCodeMap[option.label];
+              const isChecked =
+                type === 'checkbox'
+                  ? Array.isArray(value) && value.includes(option.value)
+                  : value === option.value;
+
               return (
                 <label
                   key={option.value}
-                  className={cn(styles.checkboxLabel, {
-                    [styles.checked]: value.includes(option.value),
-                    [styles[languageCode]]: value.includes(option.value)
+                  className={cn(type === 'checkbox' ? styles.checkboxLabel : styles.radioLabel, {
+                    [styles.checked]: isChecked,
+                    [styles[languageCode]]: isChecked
                   })}
                 >
                   <input
-                    type='checkbox'
+                    type={type === 'checkbox' ? 'checkbox' : 'radio'}
                     name={name}
                     value={option.value}
-                    checked={value.includes(option.value)}
+                    checked={isChecked}
                     onChange={(e) => {
-                      const newValue = e.target.checked
-                        ? [...value, option.value]
-                        : value.filter((v: string) => v !== option.value);
-                      onChange(newValue);
+                      if (type === 'checkbox') {
+                        const newValue = e.target.checked
+                          ? [...(Array.isArray(value) ? value : []), option.value]
+                          : (value as string[]).filter((v: string) => v !== option.value);
+                        onChange(newValue);
+                      } else {
+                        onChange(option.value);
+                      }
                     }}
                     ref={ref}
                     className={styles.input}

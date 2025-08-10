@@ -6,4 +6,5 @@ export interface LanguageFieldsetProps {
   control: Control<any>;
   errors: FieldErrors<FieldValues>;
   options: { value: string; label: string }[];
+  type?: 'checkbox' | 'radio';
 }

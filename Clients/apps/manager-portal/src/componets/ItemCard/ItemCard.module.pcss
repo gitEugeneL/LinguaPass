@@ -7,10 +7,21 @@
   background-color: var(--white-color);
   border-radius: var(--normal-radius);
   outline: none;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp .5s ease-out forwards;
+
 
   &:focus,
   &:hover {
     box-shadow: var(--shadow-1);
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

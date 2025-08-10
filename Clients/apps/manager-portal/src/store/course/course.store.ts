@@ -4,7 +4,13 @@ import { create } from 'zustand';
 
 import { useAuthStore } from '../index.ts';
 
-import type { CourseResponse, GetCourseByIdResponse, GetCoursesResponse } from './course.models.ts';
+import type {
+  CourseResponse,
+  CreateCourseRequest,
+  GetCourseByIdResponse,
+  GetCoursesResponse,
+  UpdateCourseRequest
+} from './course.models.ts';
 import { courseUrls } from './course.urls.ts';
 
 interface CourseState {
@@ -14,6 +20,10 @@ interface CourseState {
   error: null | string;
 
   getCoursesBySchoolId: (schoolId: string) => Promise<void>;
+  getCourseById: (courseId: string) => Promise<void>;
+  createCourse: (course: CreateCourseRequest) => Promise<void>;
+  updateCourse: (course: UpdateCourseRequest) => Promise<void>;
+  resetError: () => void;
 }
 
 export const useCourseStore = create<CourseState>((set, get) => ({
@@ -31,12 +41,7 @@ export const useCourseStore = create<CourseState>((set, get) => ({
           headers: createAuthHeader(useAuthStore.getState().accessToken)
         }
       );
-      const mappedCourses = data.items.map((item: CourseResponse) => ({
-        ...item,
-        price: Number(item.price),
-        admissionFee: Number(item.admissionFee)
-      }));
-      set({ courses: mappedCourses });
+      set({ courses: data.items });
     } catch (error) {
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });
@@ -68,5 +73,52 @@ export const useCourseStore = create<CourseState>((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
-  }
+  },
+
+  createCourse: async (course: CreateCourseRequest) => {
+    set({ isLoading: true });
+    try {
+      const { data } = await axios.post<CourseResponse>(courseUrls.createCourse, course, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      if (get().courses.length === 0) {
+        await get().getCoursesBySchoolId(course.schoolId);
+      }
+      set({ courses: [{ ...data }, ...get().courses] });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  updateCourse: async (course: UpdateCourseRequest) => {
+    set({ isLoading: true });
+    try {
+      const { data } = await axios.patch<CourseResponse>(courseUrls.updateCourse, course, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      if (get().courses.length > 0) {
+        set({
+          courses: get().courses.map((response) =>
+            response.courseId === course.courseId ? { ...data } : response
+          )
+        });
+      } else {
+        await get().getCoursesBySchoolId(course.schoolId);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  resetError: () => set({ error: null })
 }));

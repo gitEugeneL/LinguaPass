@@ -1,3 +1,5 @@
+import { AddEditCourse } from '../../../modules/base';
+
 export function CourseDetailPage() {
-  return <>Course Detail</>;
+  return <AddEditCourse />;
 }

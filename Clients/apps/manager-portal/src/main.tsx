@@ -8,6 +8,7 @@ import {
   BaseLayout,
   CountriesPage,
   CountryDetailPage,
+  CourseDetailPage,
   CoursesPage,
   SchoolDetailPage,
   SchoolsPage
@@ -85,11 +86,11 @@ const router = createBrowserRouter([
               },
               {
                 path: 'add-edit/:schoolId',
-                element: <>add</>
+                element: <CourseDetailPage />
               },
               {
                 path: 'add-edit/:schoolId/:courseId',
-                element: <>edit</>
+                element: <CourseDetailPage />
               }
             ]
           }

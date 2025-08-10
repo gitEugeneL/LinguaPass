@@ -1,6 +1,4 @@
-import { CustomInput } from '@clients/shared';
-
-import { CustomCheckbox } from '../../../UI';
+import { CustomCheckbox, CustomInput } from '@clients/shared';
 
 import styles from './OptionalInput.module.pcss';
 import { type OptionalInputProps } from './OptionalInput.props.ts';

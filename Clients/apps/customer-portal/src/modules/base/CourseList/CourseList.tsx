@@ -1,4 +1,4 @@
-import { Loader } from '@clients/shared';
+import { CourseCard, Loader } from '@clients/shared';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
@@ -6,7 +6,6 @@ import { useShallow } from 'zustand/react/shallow';
 import { routes } from '../../../helpers';
 import { useAccountStore, useCoursesStore, useProgressStore } from '../../../store';
 
-import { CourseCard } from './components';
 import style from './CourseList.module.pcss';
 
 export function CourseList() {

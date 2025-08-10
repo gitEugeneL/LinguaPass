@@ -150,8 +150,6 @@ export function AddEditSchoolForm({ schoolId = undefined }: AddEditSchoolFormPro
     (languageId) => languageOptions.find((option) => option.value === languageId)?.label || ''
   );
 
-  // todo
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.notification}>
