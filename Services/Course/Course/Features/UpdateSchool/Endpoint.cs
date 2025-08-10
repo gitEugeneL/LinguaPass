@@ -30,6 +30,7 @@ public class Endpoint(AppDbContext dbContext)
 
         var school = await dbContext
             .Schools
+            .Include(s => s.Country)
             .Include(s => s.Languages)
             .Include(school => school.Tracks)
             .FirstOrDefaultAsync(s => s.Id == schoolId, ct);
@@ -96,6 +97,7 @@ public class Endpoint(AppDbContext dbContext)
                 school.Name,
                 school.ShortName,
                 school.City,
+                school.Country.Name,
                 school.IsActive,
                 school.CountryId,
                 school.Tracks.Count,

@@ -33,6 +33,7 @@ public sealed record SchoolAdminResponse(
     string Name,
     string ShortName,
     string City,
+    string CountryName,
     bool IsActive,
     Guid CountryId,
     int TracksCount,

@@ -45,6 +45,7 @@ public class Endpoint(
                     s.Name,
                     s.ShortName,
                     s.City,
+                    s.Country.Name,
                     s.IsActive,
                     s.CountryId,
                     s.Tracks.Count,

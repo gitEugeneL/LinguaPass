@@ -75,6 +75,7 @@ public class Endpoint(AppDbContext dbContext)
                 school.Name,
                 school.ShortName,
                 school.City,
+                school.Country.Name,
                 school.IsActive,
                 school.CountryId,
                 school.Tracks.Count,

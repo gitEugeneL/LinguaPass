@@ -33,6 +33,7 @@ public class Endpoint(AppDbContext dbContext)
         if (!Guid.TryParse(req.LanguageId, out var languageId))
             return TypedResults.BadRequest(InvalidLanguage);
 
+
         if (!decimal.TryParse(req.Price, out var price) || price < 1)
             return TypedResults.BadRequest(InvalidPrice);
 

@@ -1,7 +1,7 @@
 namespace Course.Features.UpdateTrack;
 
 public sealed record Request(
-    string TrackId,
+    string CourseId,
     string? Name,
     string? Description,
     string? Activities,

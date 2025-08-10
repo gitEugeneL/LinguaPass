@@ -19,10 +19,6 @@ public sealed class Validator : Validator<Request>
             .MinimumLength(2)
             .MaximumLength(10);
 
-        RuleFor(r => r.ShortName)
-            .MinimumLength(2)
-            .MaximumLength(10);
-
         RuleFor(r => r.City)
             .MinimumLength(2)
             .MaximumLength(20);

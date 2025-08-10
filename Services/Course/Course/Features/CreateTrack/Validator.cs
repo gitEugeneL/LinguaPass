@@ -29,16 +29,13 @@ public class Validator : Validator<Request>
 
         RuleFor(r => r.Price)
             .NotEmpty()
-            .Length(20);
+            .MaximumLength(20);
 
         RuleFor(r => r.AdmissionFee)
             .NotEmpty()
-            .Length(20);
+            .MaximumLength(20);
 
         RuleFor(r => r.IsActive)
-            .NotEmpty();
-
-        RuleFor(r => r.WithAccommodation)
             .NotEmpty();
 
         RuleFor(r => r.SchoolId)

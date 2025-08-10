@@ -7,7 +7,7 @@ public class Validator : Validator<Request>
 {
     public Validator()
     {
-        RuleFor(r => r.TrackId)
+        RuleFor(r => r.CourseId)
             .NotEmpty()
             .Length(36);
 
@@ -28,10 +28,10 @@ public class Validator : Validator<Request>
             .MaximumLength(200);
 
         RuleFor(r => r.Price)
-            .Length(20);
+            .MaximumLength(20);
 
         RuleFor(r => r.AdmissionFee)
-            .Length(20);
+            .MaximumLength(20);
 
         RuleFor(r => r.LanguageId)
             .Length(36);

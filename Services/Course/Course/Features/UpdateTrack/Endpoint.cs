@@ -25,11 +25,12 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request,
     public override async Task<Results<Ok<TrackResponse>, NotFound<string>, Conflict<string>, BadRequest<string>>>
         ExecuteAsync(Request req, CancellationToken ct)
     {
-        if (!Guid.TryParse(req.TrackId, out var trackId))
+        if (!Guid.TryParse(req.CourseId, out var trackId))
             return TypedResults.NotFound(InvalidTrack);
 
         var track = await dbContext
             .Tracks
+            .Include(t => t.Language)
             .Include(t => t.School)
             .ThenInclude(school => school.Country)
             .FirstOrDefaultAsync(t => t.Id == trackId, ct);
@@ -56,7 +57,7 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request,
             if (!string.IsNullOrEmpty(duration) && !string.Equals(track.Duration, duration.Trim(),
                     StringComparison.OrdinalIgnoreCase))
                 track.Duration = duration;
-        
+
         if (req.Price is { } rPrice)
         {
             if (!decimal.TryParse(rPrice, out var price) || price < 1)
