@@ -1,4 +1,5 @@
 using Account.Data.Persistence;
+using Account.Features.Shared;
 using AuthConfig.Tools;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Account.Features.GetUserPersonalData;
 
-public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<Ok<Response>, NotFound<string>>>
+public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<Ok<PersonalResponse>, NotFound<string>>>
 {
     public const string InvalidPersonalData = "user not fount or personal data is invalid";
 
@@ -16,7 +17,7 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
         Policies(Constants.CustomerPolicy);
     }
 
-    public override async Task<Results<Ok<Response>, NotFound<string>>> ExecuteAsync(CancellationToken ct)
+    public override async Task<Results<Ok<PersonalResponse>, NotFound<string>>> ExecuteAsync(CancellationToken ct)
     {
         var userId = TokenReader.ReadUserId(HttpContext);
         if (userId is null)
@@ -25,7 +26,7 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
         var personalData = await dbContext
             .CustomerPersonals
             .Where(p => p.Account != null && p.Account.UserId == userId)
-            .Select(p => new Response(
+            .Select(p => new PersonalResponse(
                 p.Id,
                 p.Birthday,
                 p.BirthPlace,
