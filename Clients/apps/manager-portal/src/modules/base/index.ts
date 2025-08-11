@@ -5,3 +5,4 @@ export { SchoolsList } from './SchoolsList/SchoolsList';
 export { AddEditSchool } from './AddEditSchool/AddEditSchool';
 export { CourseList } from './CoursesList/CourseList';
 export { AddEditCourse } from './AddEditCourse/AddEditCourse';
+export { StudentsList } from './StudentsList/StudentsList';

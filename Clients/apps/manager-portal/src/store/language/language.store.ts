@@ -9,14 +9,17 @@ import { languageUrls } from './language.urls.ts';
 
 interface LanguageState {
   languages: Language[];
+  currentLanguage: Language | null;
   isLoading: boolean;
   error: string | null;
 
   getLanguages: () => Promise<void>;
+  getLanguageById: (languageId: string) => Promise<void>;
 }
 
-export const useLanguageStore = create<LanguageState>((set) => ({
+export const useLanguageStore = create<LanguageState>((set, get) => ({
   languages: [],
+  currentLanguage: null,
   isLoading: false,
   error: null,
 
@@ -28,6 +31,27 @@ export const useLanguageStore = create<LanguageState>((set) => ({
         headers: createAuthHeader(useAuthStore.getState().accessToken)
       });
       set({ languages: data.items });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  getLanguageById: async (languageId) => {
+    set({ isLoading: true, currentLanguage: null });
+    try {
+      let language = get().languages.find((l) => l.languageId === languageId);
+      if (!language) {
+        await get().getLanguages();
+        language = get().languages.find((l) => l.languageId === languageId);
+      }
+      set({
+        currentLanguage: language || null,
+        error: language ? null : 'Language not found'
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });

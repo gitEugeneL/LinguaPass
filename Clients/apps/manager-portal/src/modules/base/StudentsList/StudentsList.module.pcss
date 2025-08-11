@@ -1,0 +1,29 @@
+.container {
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  justify-content: center;
+  row-gap: 20px;
+  column-gap: 20px;
+
+  @media (min-width: 930px) {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  @media (min-width: 1230px) {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  @media (min-width: 1530px) {
+    grid-template-columns: repeat(4, auto);
+  }
+
+  @media (min-width: 1830px) {
+    grid-template-columns: repeat(5, auto);
+  }
+
+  @media (min-width: 2130px) {
+    grid-template-columns: repeat(6, auto);
+  }
+}
+

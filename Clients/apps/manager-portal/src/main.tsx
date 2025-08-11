@@ -10,6 +10,7 @@ import {
   CountryDetailPage,
   CourseDetailPage,
   CoursesPage,
+  CurrentStudentsPage,
   SchoolDetailPage,
   SchoolsPage
 } from './app/base';
@@ -101,7 +102,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'current',
-            element: <div>Current Students</div>
+            element: <CurrentStudentsPage />
           },
           {
             path: 'archived',

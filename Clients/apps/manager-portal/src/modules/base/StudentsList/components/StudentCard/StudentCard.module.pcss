@@ -1,0 +1,106 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  width: 280px;
+  min-height: 180px;
+  cursor: pointer;
+  background-color: var(--white-color);
+  border-radius: var(--normal-radius);
+  outline: none;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp .5s ease-out forwards;
+
+  &:focus,
+  &:hover {
+    box-shadow: var(--shadow-1);
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wrapper {
+  min-height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.date {
+  padding: 3px 15px;
+  width: fit-content;
+  height: fit-content;
+  text-align: center;
+  background-color: var(--grey-2-color);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size14);
+  color: var(--white-color);
+}
+
+.locationWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.country {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size16);
+  color: var(--black-color);
+}
+
+.city {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size14);
+  color: var(--grey-2-color);
+}
+
+.name {
+  max-height: 45px;
+  color: var(--black-color);
+  font-size: var(--font-size18);
+  font-weight: var(--font-weight-semi-bold);
+  max-width: max-content;
+  overflow: hidden;
+}
+
+.schoolName {
+  font-size: var(--font-size12);
+  font-weight: var(--font-weight-medium);
+  color: var(--grey-2-color);
+  max-width: 27ch;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.program {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 22px;
+  font-size: var(--font-size12);
+  color: var(--black-color);
+  font-weight: var(--font-weight-regular);
+  background-color: #E7DFF7;
+}
+
+.language {
+  width: fit-content;
+}
+
+.notComplete {
+  color: var(--grey-2-color);
+  font-size: var(--font-size12);
+  font-weight: var(--font-weight-medium);
+}

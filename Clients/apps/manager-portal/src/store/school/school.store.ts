@@ -72,7 +72,7 @@ export const useSchoolStore = create<SchoolState>((set, get) => ({
           schoolUrls.getSchoolById(schoolId),
           { headers: createAuthHeader(useAuthStore.getState().accessToken) }
         );
-        set({ currentSchool: data });
+        set({ currentSchool: data, schools: [{ ...data }, ...get().schools] });
       }
     } catch (error) {
       if (error instanceof AxiosError) {

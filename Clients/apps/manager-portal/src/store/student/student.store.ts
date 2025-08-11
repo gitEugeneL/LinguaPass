@@ -1,0 +1,56 @@
+import { createAuthHeader } from '@clients/shared';
+import axios, { AxiosError } from 'axios';
+import { create } from 'zustand';
+
+import { useAuthStore } from '../index.ts';
+
+import type { GetStudentsResponse, StudentResponse } from './student.models.ts';
+import { studentUrls } from './student.urls.ts';
+
+interface StudentStore {
+  paginator: {
+    totalItemsCount: number;
+    pageNumber: number;
+    pageSize: number;
+    totalPages: number;
+  } | null;
+
+  students: StudentResponse[];
+
+  isLoading: boolean;
+  error: null | string;
+
+  getAllStudents: (isActive: boolean, pageNumber?: number, pageSize?: number) => Promise<void>;
+}
+
+export const useStudentStore = create<StudentStore>((set, get) => ({
+  paginator: null,
+  students: [],
+  isLoading: false,
+  error: null,
+
+  getAllStudents: async (isActive, pageNumber = 1, pageSize = 10) => {
+    set({ isLoading: true, students: [], paginator: null });
+    try {
+      const { data } = await axios.get<GetStudentsResponse>(studentUrls.getAllStudents, {
+        params: { pageNumber, pageSize, isActive },
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      set({
+        students: data.items,
+        paginator: {
+          totalItemsCount: data.totalItemsCount,
+          pageNumber: data.pageNumber,
+          pageSize: data.pageSize,
+          totalPages: data.totalPages
+        }
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  }
+}));
