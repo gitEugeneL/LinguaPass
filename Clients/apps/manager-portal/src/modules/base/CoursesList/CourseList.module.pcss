@@ -1,4 +1,5 @@
 .container {
+  margin-bottom: 30px;
   display: grid;
   grid-template-columns: repeat(1, auto);
   justify-content: center;
@@ -28,6 +29,14 @@
 
 .info {
   display: none;
+}
+
+.paginator {
+  display: none;
+
+  @media (min-width: 980px) {
+    display: block;
+  }
 }
 
 @media (--breakpoint-laptop) {

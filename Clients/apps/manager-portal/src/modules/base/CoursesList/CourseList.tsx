@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { EmptyCard, ItemCard } from '../../../componets';
+import { EmptyCard, ItemCard, Paginator } from '../../../componets';
 import { useCourseStore, useSchoolStore } from '../../../store';
 import { StatusArea } from '../../../widgets';
 import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
@@ -21,19 +21,23 @@ export function CourseList() {
     }))
   );
 
-  const { courses, getCoursesBySchoolId, isLoading } = useCourseStore(
+  const { courses, getCoursesBySchoolId, getAllCourses, isLoading, paginator } = useCourseStore(
     useShallow((state) => ({
       courses: state.courses,
       getCoursesBySchoolId: state.getCoursesBySchoolId,
-      isLoading: state.isLoading
+      isLoading: state.isLoading,
+      getAllCourses: state.getAllCourses,
+      paginator: state.paginator
     }))
   );
 
   useEffect(() => {
-    if (schoolId && courses && !isLoading) {
+    if (schoolId) {
       getCoursesBySchoolId(schoolId);
+    } else {
+      getAllCourses();
     }
-  }, []);
+  }, [schoolId, getAllCourses, getCoursesBySchoolId]);
 
   useEffect(() => {
     if (schoolId) {
@@ -53,6 +57,10 @@ export function CourseList() {
       return 0;
     });
   }, [courses]);
+
+  const handlePageChange = (page: number) => {
+    getAllCourses(page);
+  };
 
   return (
     <>
@@ -97,6 +105,50 @@ export function CourseList() {
               <EmptyCard name='Create new course' onClick={handleCreate} appearance='big' />
             )}
           </div>
+        </>
+      )}
+      {!schoolId && (
+        <>
+          <StatusArea name='Courses'>
+            {paginator && (
+              <div className={styles.paginator}>
+                <Paginator
+                  pageNumber={paginator.pageNumber}
+                  totalPages={paginator.totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
+          </StatusArea>
+
+          <div className={styles.container}>
+            {isLoading && <LoaderIndicator width={150} height={150} />}
+
+            {!isLoading &&
+              courses.length > 0 &&
+              courses.map((course) => (
+                <ItemCard
+                  key={course.courseId}
+                  parentId={course.schoolId}
+                  parentName={course.schoolName}
+                  itemId={course.courseId}
+                  name={course.name}
+                  isActiveStatus={course.isActive}
+                  appearance='course'
+                  country={course.countryName}
+                  city={course.location}
+                  languages={[course.languageName]}
+                />
+              ))}
+          </div>
+
+          {paginator && !isLoading && (
+            <Paginator
+              pageNumber={paginator.pageNumber}
+              totalPages={paginator.totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
         </>
       )}
     </>

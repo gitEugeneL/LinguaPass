@@ -42,4 +42,11 @@ export interface GetCoursesResponse {
   items: CourseResponse[];
 }
 
+export interface GetPaginatedCoursesResponse extends GetCoursesResponse {
+  totalItemsCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export type GetCourseByIdResponse = CourseResponse;

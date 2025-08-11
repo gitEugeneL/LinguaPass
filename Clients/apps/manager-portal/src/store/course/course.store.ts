@@ -9,16 +9,25 @@ import type {
   CreateCourseRequest,
   GetCourseByIdResponse,
   GetCoursesResponse,
+  GetPaginatedCoursesResponse,
   UpdateCourseRequest
 } from './course.models.ts';
 import { courseUrls } from './course.urls.ts';
 
 interface CourseState {
+  paginator: {
+    totalItemsCount: number;
+    pageNumber: number;
+    pageSize: number;
+    totalPages: number;
+  } | null;
+
   courses: CourseResponse[];
   currentCourse: null | CourseResponse;
   isLoading: boolean;
   error: null | string;
 
+  getAllCourses: (pageNumber?: number, pageSize?: number) => Promise<void>;
   getCoursesBySchoolId: (schoolId: string) => Promise<void>;
   getCourseById: (courseId: string) => Promise<void>;
   createCourse: (course: CreateCourseRequest) => Promise<void>;
@@ -27,6 +36,7 @@ interface CourseState {
 }
 
 export const useCourseStore = create<CourseState>((set, get) => ({
+  paginator: null,
   courses: [],
   currentCourse: null,
   isLoading: false,
@@ -64,7 +74,7 @@ export const useCourseStore = create<CourseState>((set, get) => ({
             headers: createAuthHeader(useAuthStore.getState().accessToken)
           }
         );
-        set({ currentCourse: data });
+        set({ currentCourse: data, courses: [{ ...data }, ...get().courses] });
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -114,6 +124,31 @@ export const useCourseStore = create<CourseState>((set, get) => ({
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });
         throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  getAllCourses: async (pageNumber = 1, pageSize = 10) => {
+    set({ isLoading: true, courses: [], paginator: null });
+    try {
+      const { data } = await axios.get<GetPaginatedCoursesResponse>(courseUrls.getAllCourses, {
+        params: { pageNumber, pageSize },
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      set({
+        courses: data.items,
+        paginator: {
+          totalItemsCount: data.totalItemsCount,
+          pageNumber: data.pageNumber,
+          pageSize: data.pageSize,
+          totalPages: data.totalPages
+        }
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
       }
     } finally {
       set({ isLoading: false });
