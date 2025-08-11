@@ -10,6 +10,8 @@ public sealed class CustomerAccount : BaseAuditableEntity
     public Guid? SchoolId { get; set; }
     public Guid? CourseId { get; set; }
 
+    public bool IsActive { get; set; }
+
     /*** Relations ***/
     public Guid? ContactId { get; set; }
     public CustomerContact? Contact { get; set; }

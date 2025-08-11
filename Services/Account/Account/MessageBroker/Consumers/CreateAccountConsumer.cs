@@ -9,7 +9,8 @@ public sealed class CreateAccountConsumer(AppDbContext dbContext) : IConsumer<Cr
 {
     public async Task Consume(ConsumeContext<CreateAccountRequest> context)
     {
-        var account = new CustomerAccount { UserId = context.Message.UserId };
+        var account = new CustomerAccount
+            { UserId = context.Message.UserId, IsActive = true, UpdatedAt = DateTime.UtcNow };
         await dbContext
             .CustomerAccounts
             .AddAsync(account);

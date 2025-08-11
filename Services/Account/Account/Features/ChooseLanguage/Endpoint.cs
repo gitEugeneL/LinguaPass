@@ -51,6 +51,8 @@ public class Endpoint(
         await progressService.ChangeUserSteep(account.UserId, Steps.SubmissionSchool);
 
         account.LanguageId = languageId;
+        account.CourseId = null;
+        account.SchoolId = null;
         await dbContext.SaveChangesAsync(ct);
 
         return TypedResults.Ok(new Response(account.UserId, account.LanguageId));
