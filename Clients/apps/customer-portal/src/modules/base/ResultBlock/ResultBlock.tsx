@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { routes } from '../../../helpers/routeHelpers.ts';
+import { routes } from '../../../helpers';
 import { useAccountStore, useDocumentsStore, useProgressStore } from '../../../store';
 
 import styles from './ResultBlock.module.pcss';

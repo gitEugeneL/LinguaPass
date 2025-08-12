@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type Language, useCourseStore, useLanguageStore, useSchoolStore, useStudentStore } from '../../../../../store';
+import {
+  type Language,
+  useCourseStore,
+  useLanguageStore,
+  useSchoolStore,
+  useStudentStore
+} from '../../../../../store';
 import type { CourseResponse } from '../../../../../store/course/course.models.ts';
 import type { SchoolResponse } from '../../../../../store/school/school.models.ts';
 import { LanguageIcon } from '../../../../../UI';

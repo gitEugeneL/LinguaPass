@@ -1,0 +1,86 @@
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  width: 100%;
+  max-width: 2000px;
+  max-height: 135px;
+  background-color: var(--white-color);
+  border-radius: var(--normal-radius);
+
+  padding: 30px 40px;
+  cursor: pointer;
+
+
+  &:focus,
+  &:hover {
+    box-shadow: var(--shadow-1);
+  }
+}
+
+.openedContainer {
+  max-height: 500vh;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 0.3s ease, max-height 0.9s ease;
+}
+
+.title {
+  color: var(--black-color);
+  font-size: var(--font-size22);
+  font-weight: var(--font-weight-medium);
+}
+
+.nameWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow {
+  width: fit-content;
+  display: block;
+  transition: transform 0.3s ease;
+  transform: rotate(90deg);
+}
+
+.openedArrow {
+  transform: rotate(-90deg);
+}
+
+.contentWrapper {
+  width: 100%;
+  opacity: 0;
+  display: flex;
+  transform: translateY(-20px);
+}
+
+.openedContentWrapper {
+  margin-top: 30px;
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+.bodyWrapper {
+  display: none;
+  width: 100%;
+}
+
+.bodyWrapperOpened {
+  padding: 40px;
+  display: grid;
+  row-gap: 50px;
+  grid-template-columns: repeat(1, auto);
+
+  @media (min-width: 950px) {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  @media (min-width: 1300px) {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(4, auto);
+  }
+}

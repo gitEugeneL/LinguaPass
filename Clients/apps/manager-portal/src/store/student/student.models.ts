@@ -45,8 +45,8 @@ export interface Contact {
 
 export interface Personal {
   personalId: string;
-  birthday: string;
-  birthPlace: Date;
+  birthday: Date;
+  birthPlace: string;
   countryOfBirth: string;
   fathersName: string;
   mothersName: string;

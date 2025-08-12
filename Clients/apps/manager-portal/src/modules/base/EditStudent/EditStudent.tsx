@@ -1,13 +1,15 @@
-import { Button, LoaderIndicator } from '@clients/shared';
+import { Button, dateTimeToShortString, LoaderIndicator } from '@clients/shared';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { useCourseStore, useLanguageStore, useSchoolStore, useStudentStore } from '../../../store';
 import { StatusArea } from '../../../widgets';
+import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 
 import { StudyCard } from './componets';
 import styles from './EditStudent.module.pcss';
+import { InfoBlock } from './widgets';
 
 export function EditStudent() {
   const { studentId } = useParams<{ studentId?: string | undefined }>();
@@ -58,6 +60,15 @@ export function EditStudent() {
         }
       >
         {studentDetail?.isActive && (
+          <div className={styles.info}>
+            <KeyValueBlock
+              name='Last updated'
+              value={dateTimeToShortString(studentDetail.updatedAt?.toString())}
+            />
+          </div>
+        )}
+
+        {studentDetail?.isActive && (
           <Button name='Archive account' appearance='danger' size='small' />
         )}
       </StatusArea>
@@ -66,6 +77,8 @@ export function EditStudent() {
         {isLoading && <LoaderIndicator width={150} height={150} />}
 
         {!isLoading && studentDetail && <StudyCard />}
+
+        <InfoBlock />
       </div>
     </>
   );
