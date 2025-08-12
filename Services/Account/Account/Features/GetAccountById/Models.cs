@@ -8,6 +8,7 @@ public sealed record Response(
     Guid? CourseId,
     Guid? LanguageId,
     Guid? UserId,
+    bool IsActive,
     ContactResponse? Contact,
     PersonalResponse? Personal,
     DateTime CreatedAt,

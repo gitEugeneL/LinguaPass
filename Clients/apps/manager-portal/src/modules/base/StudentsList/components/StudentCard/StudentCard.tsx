@@ -59,7 +59,7 @@ export function StudentCard({ ...props }: StudentCardProps) {
         {props.name && props.surname ? `${props.name} ${props.surname}` : 'New student in process'}
       </h3>
       <span className={styles.schoolName}>
-        {props.schoolId && currentSchool ? currentSchool.name : 'School Not yet selected'}
+        {props.schoolId && currentSchool ? currentSchool.name : 'School not yet selected'}
       </span>
 
       {!props.languageId && <span className={styles.program}>Program not yet selected</span>}

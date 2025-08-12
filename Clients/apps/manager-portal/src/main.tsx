@@ -12,7 +12,8 @@ import {
   CoursesPage,
   CurrentStudentsPage,
   SchoolDetailPage,
-  SchoolsPage
+  SchoolsPage,
+  StudentDetailPage
 } from './app/base';
 
 const router = createBrowserRouter([
@@ -107,6 +108,14 @@ const router = createBrowserRouter([
           {
             path: 'archived',
             element: <div>Archived Students</div>
+          },
+          {
+            path: 'current/:studentId',
+            element: <StudentDetailPage />
+          },
+          {
+            path: 'archived/:studentId',
+            element: <StudentDetailPage />
           }
         ]
       }

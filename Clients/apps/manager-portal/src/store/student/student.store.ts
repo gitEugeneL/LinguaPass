@@ -4,7 +4,12 @@ import { create } from 'zustand';
 
 import { useAuthStore } from '../index.ts';
 
-import type { GetStudentsResponse, StudentResponse } from './student.models.ts';
+import type {
+  GetStudentDetailResponse,
+  GetStudentsResponse,
+  StudentDetailResponse,
+  StudentResponse
+} from './student.models.ts';
 import { studentUrls } from './student.urls.ts';
 
 interface StudentStore {
@@ -16,16 +21,19 @@ interface StudentStore {
   } | null;
 
   students: StudentResponse[];
+  studentDetail: StudentDetailResponse | null;
 
   isLoading: boolean;
   error: null | string;
 
   getAllStudents: (isActive: boolean, pageNumber?: number, pageSize?: number) => Promise<void>;
+  getStudentDetail: (studentId: string) => Promise<void>;
 }
 
 export const useStudentStore = create<StudentStore>((set, get) => ({
   paginator: null,
   students: [],
+  studentDetail: null,
   isLoading: false,
   error: null,
 
@@ -45,6 +53,29 @@ export const useStudentStore = create<StudentStore>((set, get) => ({
           totalPages: data.totalPages
         }
       });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  getStudentDetail: async (studentId) => {
+    set({ isLoading: true, studentDetail: null });
+    try {
+      const student = get().studentDetail;
+      if (student && student.accountId === studentId) {
+        return;
+      } else {
+        set({ studentDetail: null });
+        const { data } = await axios.get<GetStudentDetailResponse>(
+          studentUrls.getStudentDetail(studentId),
+          { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+        );
+        set({ studentDetail: data });
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });

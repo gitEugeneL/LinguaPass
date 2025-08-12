@@ -32,9 +32,10 @@ public class Endpoint(AppDbContext dbContext)
             .Select(a => new Response(
                 a.Id,
                 a.SchoolId,
-                a.ContactId,
+                a.CourseId,
                 a.LanguageId,
                 a.UserId,
+                a.IsActive,
                 a.Contact != null
                     ? new ContactResponse(
                         a.Contact.Id,

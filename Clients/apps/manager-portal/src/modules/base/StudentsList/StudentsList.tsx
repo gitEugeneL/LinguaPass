@@ -1,5 +1,6 @@
 import { Button, LoaderIndicator } from '@clients/shared';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { Paginator } from '../../../componets';
@@ -11,6 +12,8 @@ import styles from './StudentsList.module.pcss';
 import type { StudentsListProps } from './StudentsList.props.ts';
 
 export function StudentsList({ ...props }: StudentsListProps) {
+  const navigate = useNavigate();
+
   const { students, getAllStudents, isLoading, paginator } = useStudentStore(
     useShallow((state) => ({
       students: state.students,
@@ -32,6 +35,10 @@ export function StudentsList({ ...props }: StudentsListProps) {
     getAllStudents(props.type === 'current');
   };
 
+  const handleDetail = (studentId: string) => {
+    navigate(`/students/${props.type === 'current' ? 'current' : 'archived'}/${studentId}`);
+  };
+
   return (
     <>
       <StatusArea name='Current students'>
@@ -43,14 +50,15 @@ export function StudentsList({ ...props }: StudentsListProps) {
         {!isLoading &&
           students.length > 0 &&
           students.map((student) => (
-            <StudentCard
-              key={student.accountId}
-              name={student.name}
-              surname={student.surname}
-              schoolId={student.schoolId}
-              languageId={student.languageId}
-              updatedAt={student.updatedAt ? student.updatedAt : student.createdAt}
-            />
+            <div key={student.accountId} onClick={() => handleDetail(student.accountId)}>
+              <StudentCard
+                name={student.name}
+                surname={student.surname}
+                schoolId={student.schoolId}
+                languageId={student.languageId}
+                updatedAt={student.updatedAt ? student.updatedAt : student.createdAt}
+              />
+            </div>
           ))}
       </div>
 
