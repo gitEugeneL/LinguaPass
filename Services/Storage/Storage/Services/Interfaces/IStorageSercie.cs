@@ -8,6 +8,8 @@ public interface IStorageService
 
     Task<bool> UploadFile(IFormFile file, string bucketName, string fileName, string type = "application/pdf");
 
+    Task<MemoryStream> DownloadFile(string bucketName, string fileName);
+
     Task<List<string>> GetCustomerFiles(string bucketName);
 
     Task<List<string>> GetAdminFiles(string bucketName);

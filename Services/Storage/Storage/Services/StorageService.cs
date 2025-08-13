@@ -114,6 +114,26 @@ public class StorageService(IMinioClient minioClient) : IStorageService
         }
     }
 
+    public async Task<MemoryStream> DownloadFile(string bucketName, string fileName)
+    {
+        var stream = new MemoryStream();
+        var tsc = new TaskCompletionSource<bool>();
+
+        var getObjectArgs = new GetObjectArgs()
+            .WithBucket(bucketName.ToLowerInvariant())
+            .WithObject(fileName.ToLowerInvariant())
+            .WithCallbackStream(cs =>
+            {
+                cs.CopyTo(stream);
+                tsc.SetResult(true);
+            });
+
+        await minioClient.GetObjectAsync(getObjectArgs);
+        await tsc.Task;
+        stream.Seek(0, SeekOrigin.Begin);
+        return stream;
+    }
+
     private async Task<List<string>> GetFileNames(string bucketName, string folderName)
     {
         List<string> itemNames = [];
