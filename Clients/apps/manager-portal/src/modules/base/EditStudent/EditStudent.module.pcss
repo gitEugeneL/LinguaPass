@@ -4,9 +4,19 @@
   max-width: 2000px;
 }
 
+.mainWrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 40px;
+
+  @media (--breakpoint-desktop) {
+    flex-direction: row;
+  }
+}
+
 .info {
   display: none;
-
   @media (min-width: 950px) {
     display: flex;
   }

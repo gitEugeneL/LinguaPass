@@ -4,5 +4,6 @@ export { useSchoolStore } from './school/school.store.ts';
 export { useLanguageStore } from './language/language.store.ts';
 export { useCourseStore } from './course/course.store.ts';
 export { useStudentStore } from './student/student.store.ts';
+export { useDocumentStore } from './documet/document.store.ts';
 
 export { type Language } from './language/language.models';

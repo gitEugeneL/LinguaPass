@@ -1,0 +1,35 @@
+.card {
+  padding: 40px;
+  width: 100%;
+  background-color: var(--white-color);
+  border-radius: var(--normal-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+  align-items: center;
+  justify-content: center;
+  row-gap: 30px;
+  column-gap: 30px;
+  
+  @media (--breakpoint-laptop) {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  @media (--breakpoint-desktop) {
+    grid-template-columns: repeat(4, auto);
+  }
+}
+
+.info {
+  margin-right: auto;
+  margin-left: auto;
+  color: var(--grey-2-color);
+  font-size: var(--font-size16);
+  font-weight: var(--font-weight-regular);
+}

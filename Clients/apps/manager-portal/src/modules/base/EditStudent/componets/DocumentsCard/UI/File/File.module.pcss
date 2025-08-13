@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  gap: 7px;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+
+  &:focus,
+  &:hover {
+    .name {
+      color: var(--green-1-color);
+      text-decoration: underline;
+    }
+
+    svg path {
+      fill: var(--green-1-color);
+    }
+  }
+
+  &:active {
+    .name {
+      color: var(--green-2-color);
+    }
+
+    svg path {
+      fill: var(--green-2-color);
+    }
+  }
+}
+
+.name {
+  font-weight: var(--font-weight-regular);
+  color: var(--black-color);
+  font-size: var(--font-size14);
+  max-width: 30ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+}

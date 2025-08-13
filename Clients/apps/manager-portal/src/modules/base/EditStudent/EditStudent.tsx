@@ -7,7 +7,7 @@ import { useCourseStore, useLanguageStore, useSchoolStore, useStudentStore } fro
 import { StatusArea } from '../../../widgets';
 import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 
-import { StudyCard } from './componets';
+import { DocumentsCard, StudyCard } from './componets';
 import styles from './EditStudent.module.pcss';
 import { InfoBlock } from './widgets';
 
@@ -76,7 +76,10 @@ export function EditStudent() {
       <div className={styles.container}>
         {isLoading && <LoaderIndicator width={150} height={150} />}
 
-        {!isLoading && studentDetail && <StudyCard />}
+        <div className={styles.mainWrapper}>
+          {!isLoading && studentDetail && <StudyCard />}
+          {!isLoading && studentDetail && <DocumentsCard />}
+        </div>
 
         <InfoBlock />
       </div>

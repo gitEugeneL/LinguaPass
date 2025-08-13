@@ -2,11 +2,15 @@
   display: flex;
   flex-direction: column;
   padding: 40px;
-  width: 400px;
+  min-width: 400px;
   gap: 15px;
-
+  width: 100%;
   border-radius: var(--normal-radius);
   background-color: var(--white-color);
+
+  @media (--breakpoint-desktop) {
+    max-width: 400px;
+  }
 }
 
 .language {
