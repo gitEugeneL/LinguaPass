@@ -38,7 +38,7 @@ export const useStudentStore = create<StudentStore>((set, get) => ({
   error: null,
 
   getAllStudents: async (isActive, pageNumber = 1, pageSize = 10) => {
-    set({ isLoading: true, students: [], paginator: null });
+    set({ isLoading: true, students: [], paginator: null, studentDetail: null });
     try {
       const { data } = await axios.get<GetStudentsResponse>(studentUrls.getAllStudents, {
         params: { pageNumber, pageSize, isActive },

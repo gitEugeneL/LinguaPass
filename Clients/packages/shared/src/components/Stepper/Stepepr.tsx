@@ -1,8 +1,8 @@
-import { Loader } from '@clients/shared';
+import { Loader } from '../index.ts';
 
-import { StepperItem } from './components';
 import styles from './Stepper.module.pcss';
 import { type StepperProps } from './Stepper.props.ts';
+import { StepperItem } from './UI/idnex.ts';
 
 export function Stepper({ ...props }: StepperProps) {
   return (

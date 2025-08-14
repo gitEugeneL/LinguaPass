@@ -1,10 +1,11 @@
+import { Stepper } from '@clients/shared';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { MainFooter } from '../../../components/base';
 import { routesArray } from '../../../helpers';
-import { Menu, Stepper } from '../../../modules/base';
+import { Menu } from '../../../modules/base';
 import { useAccountStore, useProgressStore } from '../../../store';
 
 import styles from './BaseLayout.module.pcss';

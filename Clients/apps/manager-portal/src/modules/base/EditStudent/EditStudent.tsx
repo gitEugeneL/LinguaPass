@@ -1,13 +1,13 @@
-import { Button, dateTimeToShortString } from '@clients/shared';
+import { Button, dateTimeToShortString, Stepper } from '@clients/shared';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useCourseStore, useLanguageStore, useSchoolStore, useStudentStore } from '../../../store';
+import { useCourseStore, useLanguageStore, useProgressStore, useSchoolStore, useStudentStore } from '../../../store';
 import { StatusArea } from '../../../widgets';
 import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 
-import { DocumentsCard, StudyCard } from './componets';
+import { DocumentsCard, InteractionCard, StudyCard } from './componets';
 import styles from './EditStudent.module.pcss';
 import { InfoBlock } from './widgets';
 
@@ -22,9 +22,28 @@ export function EditStudent() {
     }))
   );
 
+  const { studentStatuses, getStudentStatus, statusLoading } = useProgressStore(
+    useShallow((state) => ({
+      studentStatuses: state.studentStatuses,
+      getStudentStatus: state.getStudentStatus,
+      statusLoading: state.isLoading
+    }))
+  );
+
   const getLanguageById = useLanguageStore((state) => state.getLanguageById);
   const getSchoolById = useSchoolStore((state) => state.getSchoolById);
   const getCourseById = useCourseStore((state) => state.getCourseById);
+
+  useEffect(() => {
+    if (
+      !isLoading &&
+      studentDetail &&
+      studentDetail.userId &&
+      studentDetail.accountId === studentId
+    ) {
+      getStudentStatus(studentDetail.userId);
+    }
+  }, [getStudentStatus, isLoading, studentDetail, studentId]);
 
   useEffect(() => {
     if (studentId) {
@@ -36,19 +55,25 @@ export function EditStudent() {
     if (studentDetail && studentDetail.courseId && !isLoading) {
       getCourseById(studentDetail.courseId);
     }
-  }, [studentDetail, getCourseById, isLoading]);
+  }, [getCourseById, isLoading, studentDetail]);
 
   useEffect(() => {
     if (studentDetail && studentDetail.schoolId && !isLoading) {
       getSchoolById(studentDetail.schoolId);
     }
-  }, [studentDetail, getSchoolById, isLoading]);
+  }, [getSchoolById, isLoading, studentDetail]);
 
   useEffect(() => {
     if (studentDetail && studentDetail.languageId && !isLoading) {
       getLanguageById(studentDetail.languageId);
     }
-  }, [studentDetail, getLanguageById, isLoading]);
+  }, [getLanguageById, isLoading, studentDetail]);
+
+  const handleRefresh = () => {
+    if (studentId) {
+      getStudentDetail(studentId);
+    }
+  };
 
   return (
     <>
@@ -64,14 +89,17 @@ export function EditStudent() {
         {studentDetail?.isActive && (
           <div className={styles.info}>
             <KeyValueBlock
-              name='Last updated'
+              name='Last upd'
               value={dateTimeToShortString(studentDetail.updatedAt?.toString())}
             />
           </div>
         )}
 
         {studentDetail?.isActive && (
-          <Button name='Archive account' appearance='danger' size='small' />
+          <div className={styles.btnWrapper}>
+            <Button name='Refresh' size='small' onClick={handleRefresh} />
+            <Button name='Archive' appearance='danger' size='small' />
+          </div>
         )}
       </StatusArea>
 
@@ -82,6 +110,10 @@ export function EditStudent() {
         </div>
 
         <InfoBlock />
+
+        <Stepper isLoading={statusLoading} statuses={studentStatuses} />
+
+        <InteractionCard />
       </div>
     </>
   );

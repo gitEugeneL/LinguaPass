@@ -38,7 +38,7 @@ export function DocumentsCard() {
     ) {
       getFileNames(studentDetail.userId);
     }
-  }, [studentDetail, isLoading, getFileNames, studentId]);
+  }, [isLoading, getFileNames, studentId, studentDetail]);
 
   const handleDownload = (fileName: string) => {
     if (studentDetail && studentDetail.userId) {

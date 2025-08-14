@@ -37,6 +37,8 @@ export function StudyCard() {
       if (currentCourse) {
         setCurrentCourse(currentCourse);
       }
+    } else if (studentDetail && !studentDetail.courseId) {
+      setCurrentCourse(null);
     }
   }, [courses, isLoading, studentDetail]);
 
@@ -46,6 +48,8 @@ export function StudyCard() {
       if (currentSchool) {
         setCurrentSchool(currentSchool);
       }
+    } else if (studentDetail && !studentDetail.schoolId) {
+      setCurrentSchool(null);
     }
   }, [isLoading, schools, studentDetail]);
 

@@ -7,4 +7,3 @@ export { Menu } from './Menu/Menu';
 export { PersonalForm } from './PersonalForm/PersonalForm';
 export { ResultBlock } from './ResultBlock/ResultBlock';
 export { SchoolList } from './SchoolList/SchoolList';
-export { Stepper } from './Stepper/Stepepr';
