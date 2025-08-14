@@ -1,4 +1,4 @@
-import { Button, dateTimeToShortString, LoaderIndicator } from '@clients/shared';
+import { Button, dateTimeToShortString } from '@clients/shared';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
@@ -54,9 +54,11 @@ export function EditStudent() {
     <>
       <StatusArea
         name={
-          !isLoading && studentDetail?.contact?.name && studentDetail.contact.surname
-            ? studentDetail.contact.name + ' ' + studentDetail.contact.surname
-            : 'New student'
+          !isLoading
+            ? studentDetail?.contact?.name && studentDetail.contact.surname
+              ? studentDetail.contact.name + ' ' + studentDetail.contact.surname
+              : 'New student'
+            : ''
         }
       >
         {studentDetail?.isActive && (
@@ -74,11 +76,9 @@ export function EditStudent() {
       </StatusArea>
 
       <div className={styles.container}>
-        {isLoading && <LoaderIndicator width={150} height={150} />}
-
         <div className={styles.mainWrapper}>
-          {!isLoading && studentDetail && <StudyCard />}
-          {!isLoading && studentDetail && <DocumentsCard />}
+          {<StudyCard />}
+          {<DocumentsCard />}
         </div>
 
         <InfoBlock />

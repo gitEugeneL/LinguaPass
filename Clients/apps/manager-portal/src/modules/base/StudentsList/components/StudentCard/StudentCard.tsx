@@ -1,14 +1,18 @@
 import { dateTimeToShortString } from '@clients/shared';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useLanguageStore, useSchoolStore } from '../../../../../store';
+import { type Language, useLanguageStore, useSchoolStore } from '../../../../../store';
+import type { SchoolResponse } from '../../../../../store/school/school.models.ts';
 import { LanguageIcon } from '../../../../../UI';
 
 import styles from './StudentCard.module.pcss';
 import type { StudentCardProps } from './StudentCard.props.ts';
 
 export function StudentCard({ ...props }: StudentCardProps) {
+  const [currentSchool, setCurrentSchool] = useState<SchoolResponse | null>(null);
+  const [currentLanguage, setCurrentLanguage] = useState<Language | null>(null);
+
   const { languages, getLanguageById } = useLanguageStore(
     useShallow((state) => ({
       languages: state.languages,
@@ -24,6 +28,22 @@ export function StudentCard({ ...props }: StudentCardProps) {
   );
 
   useEffect(() => {
+    if (props.schoolId && schools) {
+      const currentSchool = schools.find((school) => school.schoolId === props.schoolId);
+      if (currentSchool) {
+        setCurrentSchool(currentSchool);
+      }
+    }
+  }, [props.schoolId, schools]);
+
+  useEffect(() => {
+    const currentLanguage = languages.find((language) => language.languageId === props.languageId);
+    if (props.languageId && currentLanguage) {
+      setCurrentLanguage(currentLanguage);
+    }
+  }, [languages, props.languageId]);
+
+  useEffect(() => {
     if (props.schoolId) {
       getSchoolById(props.schoolId);
     }
@@ -34,9 +54,6 @@ export function StudentCard({ ...props }: StudentCardProps) {
       getLanguageById(props.languageId);
     }
   }, [props.languageId]);
-
-  const currentLanguage = languages.find((language) => language.languageId === props.languageId);
-  const currentSchool = schools.find((school) => school.schoolId === props.schoolId);
 
   return (
     <div className={styles.card}>

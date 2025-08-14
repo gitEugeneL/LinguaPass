@@ -1,4 +1,5 @@
-import { LoaderIndicator } from '@clients/shared';
+import { Loader } from '@clients/shared';
+import cn from 'classnames';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
@@ -18,11 +19,12 @@ export function DocumentsCard() {
     }))
   );
 
-  const { fileNames, getFileNames, openFile } = useDocumentStore(
+  const { fileNames, getFileNames, openFile, fileLoading } = useDocumentStore(
     useShallow((state) => ({
       fileNames: state.fileNames,
       getFileNames: state.getFileNames,
-      openFile: state.openFile
+      openFile: state.openFile,
+      fileLoading: state.isLoading
     }))
   );
 
@@ -45,24 +47,31 @@ export function DocumentsCard() {
   };
 
   return (
-    <ul className={styles.card}>
-      {isLoading && (
+    <ul
+      className={cn(styles.card, {
+        [styles.cardTest]: !isLoading && !fileLoading
+      })}
+    >
+      {isLoading || fileLoading ? (
         <div className={styles.info}>
-          <LoaderIndicator color='secondary' width={100} height={100} />
+          <Loader color='secondary' />
+        </div>
+      ) : null}
+
+      {!isLoading && !fileLoading && (
+        <div className={styles.wrapper}>
+          {!isLoading && !fileLoading && fileNames && fileNames.length === 0 && (
+            <div className={styles.info}>Any files yet... 😔</div>
+          )}
+
+          {!isLoading &&
+            fileNames &&
+            fileNames.length > 0 &&
+            fileNames.map((fileName, index) => (
+              <File key={index} name={fileName} handleClick={handleDownload} />
+            ))}
         </div>
       )}
-      <div className={styles.wrapper}>
-        {!isLoading && fileNames && fileNames.length === 0 && (
-          <div className={styles.info}>Any files yet... 😔</div>
-        )}
-
-        {!isLoading &&
-          fileNames &&
-          fileNames.length > 0 &&
-          fileNames.map((fileName, index) => (
-            <File key={index} name={fileName} handleClick={handleDownload} />
-          ))}
-      </div>
     </ul>
   );
 }
