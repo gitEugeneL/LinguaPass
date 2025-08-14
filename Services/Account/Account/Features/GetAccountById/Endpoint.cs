@@ -16,7 +16,6 @@ public class Endpoint(AppDbContext dbContext)
     {
         Get("/api/customers/{customerId}");
         Policies(Constants.AdminPolicy);
-        ResponseCache(60);
     }
 
     public override async Task<Results<Ok<Response>, NotFound<string>>> ExecuteAsync(
