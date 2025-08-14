@@ -2,12 +2,14 @@ using AuthConfig.Tools;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Storage.Helpers;
+using Storage.MessageBroker.Services.Interfaces;
 using Storage.Services.Interfaces;
 
 namespace Storage.Features.DeleteUserFile;
 
 public class Endpoint(
-    IStorageService storageService
+    IStorageService storageService,
+    IAccountService accountService
 ) : EndpointWithoutRequest<Results<Ok<Response>, BadRequest<string>, NotFound<string>>>
 {
     public const string InvalidUser = "user not fount or invalid";
@@ -33,6 +35,9 @@ public class Endpoint(
 
         var deleteResult = await storageService
             .DeleteFile(userId.ToString()!.ToLowerInvariant(), StorageConstants.CustomerFilesFolder, fileName);
+
+        // RabbitMQ request (consumer: account microservice)
+        await accountService.UpdateAccountDate(userId.Value);
 
         return deleteResult
             ? TypedResults.Ok(new Response(deleteResult))

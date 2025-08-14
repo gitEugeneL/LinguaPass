@@ -1,6 +1,9 @@
 using AuthConfig.Configs;
 using FastEndpoints;
+using MessageBroker.Configs;
 using Minio;
+using Storage.MessageBroker.Services;
+using Storage.MessageBroker.Services.Interfaces;
 using Storage.Services;
 using Storage.Services.Interfaces;
 
@@ -13,6 +16,9 @@ builder.Services
 /*** Add common auth settings ***/
 builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
 
+/*** Add common rabbitMQ settings ***/
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
+
 /*** JWT auth configuration (Common config) ***/
 builder.Services.ConfigureAuthentication(builder.Configuration);
 
@@ -23,14 +29,10 @@ builder.Services.ConfigureAuthPolicy();
 builder.Services.AddFastEndpoints();
 
 /*** RabbitMQ configuration (Common config) ***/
-//todo
-//todo
-//todo
-//todo
-//todo
-//todo
-//todo
-//todo
+builder.Services.ConfigureMassTransit(builder.Configuration);
+
+/*** Message broker services ***/
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 /*** MinIO fileStorage configuration ***/
 builder.Services.AddMinio(options =>

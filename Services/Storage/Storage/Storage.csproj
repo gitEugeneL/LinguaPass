@@ -9,13 +9,18 @@
     <!-- Include shared projects -->
     <ItemGroup>
         <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
-        <ProjectReference Include="..\..\Shared\Shared.csproj"/>
+        <ProjectReference Include="..\..\Common\GrpcProtos\GrpcProtos.csproj"/>
+        <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
     </ItemGroup>
 
     <!-- Include shared settings -->
     <ItemGroup>
         <Content Include="..\..\Common\AuthConfig\authsettings.json"
                  Link="authsettings.json"
+                 CopyToOutputDirectory="Always"/>
+
+        <Content Include="..\..\Common\MessageBroker\brokersettings.json"
+                 Link="brokersettings.json"
                  CopyToOutputDirectory="Always"/>
     </ItemGroup>
 

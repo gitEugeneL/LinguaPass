@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 /*** Add common auth settings ***/
 builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
+
 /*** Add common rabbitMQ settings ***/
 builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
 
@@ -36,6 +37,7 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
     busConfigurator =>
     {
         busConfigurator.AddConsumer<CreateAccountConsumer>();
+        busConfigurator.AddConsumer<UpdateDateAccountConsumer>();
         // add another consumers
     });
 

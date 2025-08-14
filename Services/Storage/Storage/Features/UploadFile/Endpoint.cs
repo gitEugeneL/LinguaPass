@@ -2,13 +2,15 @@ using AuthConfig.Tools;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Storage.Helpers;
+using Storage.MessageBroker.Services.Interfaces;
 using Storage.Services.Interfaces;
 
 namespace Storage.Features.UploadFile;
 
 public class Endpoint(
     ISecurityService securityService,
-    IStorageService storageService
+    IStorageService storageService,
+    IAccountService accountService
 ) : EndpointWithoutRequest<Results<Ok<Response>, BadRequest<string>>>
 {
     public const string InvalidUser = "user not fount or invalid";
@@ -58,6 +60,9 @@ public class Endpoint(
             .Select(name => name
                 .Replace($"{StorageConstants.CustomerFilesFolder.ToLowerInvariant()}/", ""))
             .ToList();
+
+        // RabbitMQ request (consumer: account microservice)
+        await accountService.UpdateAccountDate(userId.Value);
 
         return TypedResults.Ok(new Response(cleanedFileNames));
     }
