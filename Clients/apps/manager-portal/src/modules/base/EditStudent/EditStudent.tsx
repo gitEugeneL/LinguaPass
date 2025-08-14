@@ -1,5 +1,5 @@
-import { Button, dateTimeToShortString, Stepper } from '@clients/shared';
-import { useEffect } from 'react';
+import { Button, formatElapsedTime, Stepper } from '@clients/shared';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
@@ -13,6 +13,8 @@ import { InfoBlock } from './widgets';
 
 export function EditStudent() {
   const { studentId } = useParams<{ studentId?: string | undefined }>();
+
+  const [elapsedTime, setElapsedTime] = useState<string>('');
 
   const { studentDetail, getStudentDetail, isLoading } = useStudentStore(
     useShallow((state) => ({
@@ -33,6 +35,12 @@ export function EditStudent() {
   const getLanguageById = useLanguageStore((state) => state.getLanguageById);
   const getSchoolById = useSchoolStore((state) => state.getSchoolById);
   const getCourseById = useCourseStore((state) => state.getCourseById);
+
+  useEffect(() => {
+    if (studentDetail?.updatedAt) {
+      setElapsedTime(formatElapsedTime(new Date(studentDetail?.updatedAt)));
+    }
+  }, [studentDetail?.updatedAt]);
 
   useEffect(() => {
     if (
@@ -88,10 +96,7 @@ export function EditStudent() {
       >
         {studentDetail?.isActive && (
           <div className={styles.info}>
-            <KeyValueBlock
-              name='Last upd'
-              value={dateTimeToShortString(studentDetail.updatedAt?.toString())}
-            />
+            <KeyValueBlock name='Student upd' value={elapsedTime} />
           </div>
         )}
 

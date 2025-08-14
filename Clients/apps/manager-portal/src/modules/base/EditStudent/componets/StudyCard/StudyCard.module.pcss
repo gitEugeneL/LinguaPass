@@ -8,6 +8,13 @@
   width: 100%;
   border-radius: var(--normal-radius);
   background-color: var(--white-color);
+
+  &:focus,
+  &:hover {
+    box-shadow: var(--shadow-1);
+  }
+
+
   @media (--breakpoint-desktop) {
     max-width: 400px;
   }

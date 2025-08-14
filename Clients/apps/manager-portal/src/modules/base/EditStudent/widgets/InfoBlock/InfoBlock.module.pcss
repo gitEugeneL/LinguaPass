@@ -7,10 +7,9 @@
   max-height: 135px;
   background-color: var(--white-color);
   border-radius: var(--normal-radius);
-
   padding: 30px 40px;
   cursor: pointer;
-
+  overflow: hidden;
 
   &:focus,
   &:hover {
@@ -19,9 +18,10 @@
 }
 
 .openedContainer {
-  max-height: 500vh;
+  max-height: 2000px;
   box-shadow: var(--shadow-1);
   transition: box-shadow 0.3s ease, max-height 0.9s ease;
+  overflow: hidden;
 }
 
 .title {
@@ -70,17 +70,20 @@
   padding: 40px;
   display: grid;
   row-gap: 50px;
-  grid-template-columns: repeat(1, auto);
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 
   @media (min-width: 950px) {
-    grid-template-columns: repeat(2, auto);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (min-width: 1300px) {
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   @media (min-width: 1600px) {
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

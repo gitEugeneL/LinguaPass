@@ -16,7 +16,6 @@ public class Endpoint(AppDbContext dbContext)
     {
         Get("/api/schools/country/{countryId}");
         Policies(Constants.AdminPolicy);
-        ResponseCache(60);
     }
 
     public override async Task<Results<Ok<CollectionResponse<SchoolAdminResponse>>, BadRequest<string>>> ExecuteAsync(
