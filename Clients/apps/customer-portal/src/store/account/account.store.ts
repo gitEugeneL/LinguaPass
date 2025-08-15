@@ -9,6 +9,7 @@ import {
   type Account,
   type GetCurrentAccount,
   type GetShortUserInfoResponse,
+  type SendApplicationResponse,
   type UserData
 } from './account.models.ts';
 import { accountUrls } from './account.urls.ts';
@@ -29,6 +30,8 @@ interface AccountState {
   updateCourseId: (courseId: string) => void;
   updateContactId: (contactId: string) => void;
   updatePersonalId: (personalId: string) => void;
+
+  sendApplication: () => Promise<void>;
 }
 
 export const useAccountStore = create<AccountState>()(
@@ -53,7 +56,9 @@ export const useAccountStore = create<AccountState>()(
               courseId: data.courseId,
               contactId: data.contactId,
               personalId: data.personalId,
-              documentsId: data.documentsId
+              documentsId: data.documentsId,
+              isApplicationComplete: data.isApplicationComplete,
+              applicationNote: data.applicationNote
             }
           });
         } catch (error) {
@@ -106,6 +111,24 @@ export const useAccountStore = create<AccountState>()(
         set((state) => ({
           account: state.account ? { ...state.account, personalId } : null
         }));
+      },
+
+      sendApplication: async () => {
+        set({ isLoading: true });
+        try {
+          await axios.patch<SendApplicationResponse>(
+            accountUrls.sendApplication,
+            {},
+            { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+          );
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data });
+            throw error;
+          }
+        } finally {
+          set({ isLoading: false });
+        }
       }
     }),
     {

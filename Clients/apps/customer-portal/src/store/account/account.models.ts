@@ -6,6 +6,8 @@ export interface Account {
   contactId: string | null;
   personalId: string | null;
   documentsId: string | null;
+  applicationNote: string | null;
+  isApplicationComplete: boolean;
 }
 
 export type GetCurrentAccount = Account;
@@ -16,3 +18,7 @@ export interface UserData {
 }
 
 export type GetShortUserInfoResponse = UserData;
+
+export interface SendApplicationResponse {
+  userId: string;
+}

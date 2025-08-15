@@ -38,7 +38,7 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
     {
         busConfigurator.AddConsumer<CreateAccountConsumer>();
         busConfigurator.AddConsumer<UpdateDateAccountConsumer>();
-        // add another consumers
+        // another consumers
     });
 
 /*** Message broker services ***/

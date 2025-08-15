@@ -12,6 +12,10 @@ public sealed class CustomerAccount : BaseAuditableEntity
 
     public bool IsActive { get; set; }
 
+    public bool IsApplicationComplete { get; set; }
+
+    public string? ApplicationNote { get; set; }
+
     /*** Relations ***/
     public Guid? ContactId { get; set; }
     public CustomerContact? Contact { get; set; }

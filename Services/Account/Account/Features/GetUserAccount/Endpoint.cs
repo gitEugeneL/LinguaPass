@@ -27,7 +27,16 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
             .AsNoTracking()
             .Where(a => a.UserId == userId)
             .Select(a =>
-                new Response(a.UserId, a.LanguageId, a.SchoolId, a.CourseId, a.ContactId, a.PersonalId))
+                new Response(
+                    a.UserId, 
+                    a.LanguageId, 
+                    a.SchoolId, 
+                    a.CourseId, 
+                    a.ContactId, 
+                    a.PersonalId,
+                    a.IsApplicationComplete,
+                    a.ApplicationNote
+                    ))
             .FirstOrDefaultAsync(ct);
 
         return userAccount is not null

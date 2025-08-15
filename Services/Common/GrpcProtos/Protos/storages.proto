@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Common.GrpcProtos";
+
+package storages;
+
+service Storages {
+      rpc CheckFilesExist(CheckFilesRequest) returns (CheckFilesResponse);
+}
+
+message CheckFilesRequest {
+  string userId = 1;
+}
+
+message CheckFilesResponse {
+  bool FilesExist = 1;
+}

@@ -8,8 +8,9 @@ public enum Steps
     SubmissionCourse = 3,
     SubmissionContact = 4,
     SubmissionPersonal = 5,
-    SubmissionDocuments = 6
+    SubmissionDocuments = 6,
 
     /*** Review steps ***/
-    // ReviewExample = 7
+    ReviewProcessing = 7,
+    ReviewComplete = 8
 }

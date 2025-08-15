@@ -35,6 +35,7 @@ public class Endpoint(AppDbContext dbContext)
                 a.LanguageId,
                 a.UserId,
                 a.IsActive,
+                a.IsApplicationComplete,
                 a.Contact != null
                     ? new ContactResponse(
                         a.Contact.Id,

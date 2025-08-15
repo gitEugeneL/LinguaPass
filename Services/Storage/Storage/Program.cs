@@ -2,6 +2,7 @@ using AuthConfig.Configs;
 using FastEndpoints;
 using MessageBroker.Configs;
 using Minio;
+using Storage.Grps.Servers;
 using Storage.MessageBroker.Services;
 using Storage.MessageBroker.Services.Interfaces;
 using Storage.Services;
@@ -25,6 +26,9 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 /*** Auth Policy (Common config) ***/
 builder.Services.ConfigureAuthPolicy();
 
+/*** Add gRPC functionality (server) ***/
+builder.Services.AddGrpc();
+
 /*** Fast Endpoints ***/
 builder.Services.AddFastEndpoints();
 
@@ -47,6 +51,9 @@ builder.Services.AddMinio(options =>
 });
 
 var app = builder.Build();
+
+/*** Add gRPC servers ***/
+app.MapGrpcService<StorageServer>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -3,6 +3,7 @@ using FastEndpoints;
 using MessageBroker.Configs;
 using Microsoft.EntityFrameworkCore;
 using Progress.Data;
+using Progress.Grps.Servers;
 using Progress.MessageBroker.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,9 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 /*** Auth Policy (Common config) ***/
 builder.Services.ConfigureAuthPolicy();
 
+/*** Add gRPC functionality (server) ***/
+builder.Services.AddGrpc();
+
 /*** Fast Endpoints ***/
 builder.Services.AddFastEndpoints();
 
@@ -35,6 +39,9 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
     });
 
 var app = builder.Build();
+
+/*** Add gRPC servers ***/
+app.MapGrpcService<ProgressServer>();
 
 app.UseAuthentication();
 app.UseAuthorization();

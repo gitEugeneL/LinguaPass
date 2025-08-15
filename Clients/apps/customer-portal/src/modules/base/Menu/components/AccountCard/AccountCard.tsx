@@ -1,6 +1,6 @@
 import { ArrowIcon } from '@clients/shared';
 
-import { routesArray } from '../../../../../helpers';
+import { routes, routesArray } from '../../../../../helpers';
 import { NavItem } from '../../UI';
 
 import styles from './AccountCard.module.pcss';
@@ -33,14 +33,16 @@ export function AccountCard({ ...props }: AccountCardProps) {
       </div>
 
       <ul className={styles.navBlock} onClick={props.toggleDrawer}>
-        {routesArray.map((route, index) => (
-          <NavItem
-            key={index}
-            name={route.name}
-            to={route.to}
-            disabled={props.statusOrder !== null && props.statusOrder < route.order}
-          />
-        ))}
+        {props.statusOrder &&
+          props.statusOrder <= routes['documents'].order &&
+          routesArray.map((route, index) => (
+            <NavItem
+              key={index}
+              name={route.name}
+              to={route.to}
+              disabled={props.statusOrder !== null && props.statusOrder < route.order}
+            />
+          ))}
 
         <div className={styles.navBottom} onClick={props.handleLogout}>
           <NavItem name='Logout' />

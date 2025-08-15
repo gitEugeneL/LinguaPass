@@ -6,5 +6,7 @@ public sealed record Response(
     Guid? SchoolId,
     Guid? CourseId,
     Guid? ContactId,
-    Guid? PersonalId
+    Guid? PersonalId,
+    bool IsApplicationComplete,
+    string? ApplicationNote
 );

@@ -4,30 +4,64 @@ using Grpc.Net.Client;
 
 namespace Account.Grpc;
 
+public class CourseGrpcChannel(string address)
+{
+    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+}
+
+public class ProgressGrpcChannel(string address)
+{
+    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+}
+
+public class StorageGrpcChannel(string address)
+{
+    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+}
+
 public static class GrpcClientsConfig
 {
     public static IServiceCollection AddGrpcClients(this IServiceCollection services, IConfiguration configuration)
     {
         var courseServer = configuration["GrpcServers:Course"]!;
 
-        services.AddSingleton(provider =>
-            GrpcChannel.ForAddress(courseServer));
+        services.AddSingleton<CourseGrpcChannel>(provider =>
+            new CourseGrpcChannel(courseServer));
 
         services.AddSingleton<Courses.CoursesClient>(provider =>
         {
-            var channel = provider.GetRequiredService<GrpcChannel>();
-            return new Courses.CoursesClient(channel);
+            var channelWrapper = provider.GetRequiredService<CourseGrpcChannel>();
+            return new Courses.CoursesClient(channelWrapper.Channel);
         });
-
-        /*** Example **/
-        // services.AddSingleton<OtherService.OtherServiceClient>(provider =>
-        // {
-        //     var channel = provider.GetRequiredService<GrpcChannel>();
-        //     return new OtherService.OtherServiceClient(channel);
-        // });
-        // services.AddSingleton<OtherClient>();
-
         services.AddSingleton<CourseClient>();
+
+        // --------------------------------------------------------------
+
+        var progressServer = configuration["GrpcServers:Progress"]!;
+
+        services.AddSingleton<ProgressGrpcChannel>(provider =>
+            new ProgressGrpcChannel(progressServer));
+
+        services.AddSingleton<Progresses.ProgressesClient>(provider =>
+        {
+            var channelWrapper = provider.GetRequiredService<ProgressGrpcChannel>();
+            return new Progresses.ProgressesClient(channelWrapper.Channel);
+        });
+        services.AddSingleton<ProgressClient>();
+
+        // --------------------------------------------------------------
+
+        var storageServer = configuration["GrpcServers:Storage"]!;
+
+        services.AddSingleton<StorageGrpcChannel>(provider =>
+            new StorageGrpcChannel(storageServer));
+
+        services.AddSingleton<Storages.StoragesClient>(provider =>
+        {
+            var channelWrapper = provider.GetRequiredService<StorageGrpcChannel>();
+            return new Storages.StoragesClient(channelWrapper.Channel);
+        });
+        services.AddSingleton<StorageClient>();
 
         return services;
     }

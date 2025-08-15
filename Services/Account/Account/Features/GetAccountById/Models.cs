@@ -9,6 +9,7 @@ public sealed record Response(
     Guid? LanguageId,
     Guid? UserId,
     bool IsActive,
+    bool IsApplicationComplete,
     ContactResponse? Contact,
     PersonalResponse? Personal,
     DateTime CreatedAt,

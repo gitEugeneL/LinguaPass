@@ -10,6 +10,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Common\AuthConfig\AuthConfig.csproj"/>
         <ProjectReference Include="..\..\Common\MessageBroker\MessageBroker.csproj"/>
+        <ProjectReference Include="..\..\Common\GrpcProtos\GrpcProtos.csproj"/>
         <ProjectReference Include="..\..\Shared\Shared.csproj"/>
     </ItemGroup>
 
@@ -26,6 +27,7 @@
 
     <ItemGroup>
         <PackageReference Include="FastEndpoints" Version="5.35.0"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.70.0"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
             <PrivateAssets>all</PrivateAssets>

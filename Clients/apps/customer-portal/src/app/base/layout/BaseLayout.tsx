@@ -1,10 +1,10 @@
 import { Stepper } from '@clients/shared';
 import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
 import { MainFooter } from '../../../components/base';
-import { routesArray } from '../../../helpers';
+import { routes, routesArray } from '../../../helpers';
 import { Menu } from '../../../modules/base';
 import { useAccountStore, useProgressStore } from '../../../store';
 
@@ -27,7 +27,7 @@ export function BaseLayout() {
       getCurrentAccount: state.getCurrentAccount
     }))
   );
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +41,12 @@ export function BaseLayout() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (myStatus !== null && myStatus.order > routes['documents'].order) {
+      navigate('/processing');
+    }
+  }, [location.pathname, myStatus, navigate]);
 
   useEffect(() => {
     if (myStatus !== null) {

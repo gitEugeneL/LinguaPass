@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "Common.GrpcProtos";
+
+package progresses;
+
+
+service Progresses {
+  rpc CheckStatusToSendApplication(CheckStatusRequest) returns (CheckStatusResponse);
+
+  rpc CheckStatusToCompleteApplication(CheckStatusRequest) returns (CheckStatusResponse);
+}
+
+message CheckStatusRequest {
+  string userId = 1;
+}
+
+message CheckStatusResponse {
+  bool isStatusValid = 1;
+}
+

@@ -1,14 +1,38 @@
 import { Button, DangerCard } from '@clients/shared';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useShallow } from 'zustand/react/shallow';
 
-import { useDocumentsStore } from '../../../store';
+import { useAccountStore, useDocumentsStore, useProgressStore } from '../../../store';
 
 import styles from './ConfirmBlock.module.pcss';
 
 export function ConfirmBlock() {
   const [isModalShow, setIsModalShow] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
+  const { sendApplication, isLoading } = useAccountStore(
+    useShallow((state) => ({
+      sendApplication: state.sendApplication,
+      isLoading: state.isLoading
+    }))
+  );
+
+  const getMyStatus = useProgressStore((state) => state.getMyStatus);
   const uploadedFiles = useDocumentsStore((state) => state.uploadedFileNames);
+
+  const handleSubmit = async () => {
+    if (!isLoading) {
+      try {
+        await sendApplication();
+        await getMyStatus();
+        navigate('/processing');
+      } catch (error) {
+        console.error('Error sending application:');
+      }
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -26,14 +50,9 @@ export function ConfirmBlock() {
           description='Please carefully review your form before submitting the application. This action cannot be undone.'
           btn1Text='Send form'
           btn2Text='Close'
-          // todo send action
-          // todo send action
-          // todo send action
-          // todo send action
-          btn1Action={() => {
-            console.log('!!!!send action');
-          }}
+          btn1Action={handleSubmit}
           btn2Action={() => setIsModalShow(false)}
+          btn1IsLoading={isLoading}
         />
       )}
     </div>
