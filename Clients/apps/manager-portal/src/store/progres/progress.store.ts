@@ -7,7 +7,8 @@ import { useAuthStore } from '../index.ts';
 import type {
   EnhancedStatus,
   GetAllStatusesResponse,
-  GetStudentStatusResponse
+  GetStudentStatusResponse,
+  StatusType
 } from './progress.models.ts';
 import { progressUrls } from './progress.urls.ts';
 
@@ -34,11 +35,19 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
         headers: createAuthHeader(useAuthStore.getState().accessToken)
       });
 
-      set({
-        statuses: data.submission.map((item) => ({
+      const combinedStatuses: EnhancedStatus[] = [
+        ...data.submission.map((item) => ({
           ...item,
-          status: 'not done'
+          status: 'not done' as StatusType
+        })),
+        ...data.review.map((item) => ({
+          ...item,
+          status: 'not done' as StatusType
         }))
+      ];
+
+      set({
+        statuses: combinedStatuses
       });
     } catch (error) {
       if (error instanceof AxiosError) {

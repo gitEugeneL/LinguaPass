@@ -21,6 +21,7 @@ import {
   PersonalInfoPage,
   SchoolPage
 } from './app/base';
+import { ProcessingPage } from './app/base/pages/ProcessingPage.tsx';
 import { routes } from './helpers';
 
 const router = createBrowserRouter([
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: routes.documents.to,
         element: <DocumentsPage />
+      },
+      {
+        path: 'processing',
+        element: <ProcessingPage />
       }
     ]
   },

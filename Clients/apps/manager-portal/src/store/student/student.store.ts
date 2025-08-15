@@ -5,6 +5,8 @@ import { create } from 'zustand';
 import { useAuthStore } from '../index.ts';
 
 import type {
+  FinalizeApplicationRequest,
+  FinalizeApplicationResponse,
   GetStudentDetailResponse,
   GetStudentsResponse,
   StudentDetailResponse,
@@ -28,6 +30,12 @@ interface StudentStore {
 
   getAllStudents: (isActive: boolean, pageNumber?: number, pageSize?: number) => Promise<void>;
   getStudentDetail: (studentId: string) => Promise<void>;
+
+  finalizeApplication: (
+    studentId: string,
+    isApplicationValid: boolean,
+    message?: string | null
+  ) => Promise<void>;
 }
 
 export const useStudentStore = create<StudentStore>((set, get) => ({
@@ -63,23 +71,44 @@ export const useStudentStore = create<StudentStore>((set, get) => ({
   },
 
   getStudentDetail: async (studentId) => {
-    set({ isLoading: true, studentDetail: null });
+    set({ isLoading: true });
     try {
-      const student = get().studentDetail;
-      if (student && student.accountId === studentId) {
-        return;
-      } else {
-        set({ studentDetail: null });
-        const { data } = await axios.get<GetStudentDetailResponse>(
-          studentUrls.getStudentDetail(studentId),
-          { headers: createAuthHeader(useAuthStore.getState().accessToken) }
-        );
-        set({ studentDetail: data });
-      }
+      // const student = get().studentDetail;
+      // if (student && student.accountId === studentId) {
+      //   return;
+      // } else {
+      set({ studentDetail: null });
+      const { data } = await axios.get<GetStudentDetailResponse>(
+        studentUrls.getStudentDetail(studentId),
+        { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+      );
+      set({ studentDetail: data });
+      // }
     } catch (error) {
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });
       }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  finalizeApplication: async (studentId, isApplicationValid, message = null) => {
+    set({ isLoading: true });
+    try {
+      const request: FinalizeApplicationRequest = {
+        userId: studentId,
+        isApplicationValid: isApplicationValid,
+        message: message
+      };
+      await axios.patch<FinalizeApplicationResponse>(studentUrls.finalizeApplication, request, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
+      throw error;
     } finally {
       set({ isLoading: false });
     }

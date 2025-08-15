@@ -19,6 +19,8 @@ export function StepperItem({ ...props }: StepperItemProps) {
           {props.name === 'Contact' && 'Add contact details'}
           {props.name === 'Personal' && 'Add personal details'}
           {props.name === 'Documents' && 'Add documents'}
+          {props.name === 'Processing' && 'Application verification'}
+          {props.name === 'Complete' && 'Application reviewed'}
         </h3>
       )}
 

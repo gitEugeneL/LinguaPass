@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 
-import { type Route, routesArray } from '../../../../../helpers';
+import { type Route, routes, routesArray } from '../../../../../helpers';
 import { useProgressStore } from '../../../../../store';
 
 import { NavigatorItem } from './components';
@@ -13,7 +13,7 @@ export function Navigator() {
   const myStatus = useProgressStore((state) => state.myStatus);
 
   const [currentRoute, setCurrentRoute] = useState<Route | undefined>(undefined);
-  const [routes, setRoutes] = useState<Route[] | undefined>(undefined);
+  const [resultRoutes, setResultRoutes] = useState<Route[] | undefined>(undefined);
 
   useEffect(() => {
     if (myStatus) {
@@ -23,14 +23,14 @@ export function Navigator() {
 
   useEffect(() => {
     if (currentRoute) {
-      setRoutes(routesArray.filter((r) => currentRoute && r.order <= currentRoute.order));
+      setResultRoutes(routesArray.filter((r) => currentRoute && r.order <= currentRoute.order));
     }
   }, [currentRoute]);
 
   return (
     <div className={styles.card}>
       <NavLink
-        to='/home'
+        to={myStatus && myStatus.order <= routes['documents'].order ? '/home' : '/processing'}
         className={({ isActive }) =>
           cn(styles.home, {
             [styles.active]: isActive
@@ -40,13 +40,16 @@ export function Navigator() {
         <HomeIcon />
       </NavLink>
 
-      {routes && routes.length !== 0 && (
-        <div className={styles.wrapper}>
-          {routes.slice(1).map((route) => (
-            <NavigatorItem key={route.to} to={route.to} name={route.name} />
-          ))}
-        </div>
-      )}
+      {myStatus &&
+        myStatus.order <= routes['documents'].order &&
+        resultRoutes &&
+        resultRoutes.length !== 0 && (
+          <div className={styles.wrapper}>
+            {resultRoutes.slice(1).map((route) => (
+              <NavigatorItem key={route.to} to={route.to} name={route.name} />
+            ))}
+          </div>
+        )}
     </div>
   );
 }

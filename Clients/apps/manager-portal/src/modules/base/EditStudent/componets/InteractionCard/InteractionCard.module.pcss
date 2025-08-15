@@ -1,4 +1,5 @@
 .card {
+  height: fit-content;
   padding: 40px 40px 60px;
   width: 100%;
   margin-left: auto;
@@ -7,10 +8,49 @@
   background-color: var(--white-color);
   border-radius: var(--normal-radius);
 
+
   &:focus,
   &:hover {
     box-shadow: var(--shadow-1);
   }
+}
+
+.btnWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.problemsWrapper {
+  height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.text {
+  min-width: 350px;
+
+  @media (min-width: 850px) {
+    min-width: 450px;
+  }
+
+  @media (min-width: 1400px) {
+    min-width: 600px;
+  }
+}
+
+.activeWrapper {
+  margin-top: 40px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  gap: 20px;
+  transform: translateY(0);
 }
 
 .infoWrapper {
@@ -45,6 +85,7 @@
 }
 
 .contentWrapper {
+  margin-top: 20px;
   display: flex;
   gap: 15px;
   flex-direction: column;
@@ -59,6 +100,7 @@
 }
 
 .title {
+  text-align: center;
   margin-bottom: 20px;
   font-weight: var(--font-weight-regular);
   font-size: var(--font-size22);

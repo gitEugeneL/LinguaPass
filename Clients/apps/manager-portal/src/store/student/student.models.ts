@@ -16,6 +16,7 @@ export interface StudentDetailResponse {
   languageId: string | null;
   userId: string | null;
   isActive: boolean;
+  isApplicationComplete: boolean;
   contact: Contact | null;
   personal: Personal | null;
   createdAt: string;
@@ -69,3 +70,13 @@ export interface GetStudentsResponse {
 }
 
 export type GetStudentDetailResponse = StudentDetailResponse;
+
+export interface FinalizeApplicationRequest {
+  userId: string;
+  isApplicationValid: boolean;
+  message: string | null;
+}
+
+export interface FinalizeApplicationResponse {
+  userId: string;
+}
