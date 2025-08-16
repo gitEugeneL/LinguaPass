@@ -15,6 +15,7 @@ public class Endpoint(AppDbContext dbContext)
     public const string InvalidShortName = "This short name already exists";
     public const string InvalidLanguageId = "one or more languages are invalid";
     public const string InvalidData = "Nothing to change";
+    public const string InvalidDeactivation = "Cannot deactivate, it has active courses";
 
     public override void Configure()
     {
@@ -63,7 +64,11 @@ public class Endpoint(AppDbContext dbContext)
             school.City = city.Trim();
 
         if (req.IsActive is { } isActive && isActive != school.IsActive)
+        {
+            if (!isActive && school.Tracks.Any(t => t.IsActive))
+                return TypedResults.BadRequest(InvalidDeactivation);
             school.IsActive = isActive;
+        }
 
         var currentLanguageIds = school.Languages.Select(l => l.Id).ToHashSet();
 

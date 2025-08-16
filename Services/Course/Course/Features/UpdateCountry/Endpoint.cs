@@ -10,9 +10,10 @@ namespace Course.Features.UpdateCountry;
 public class Endpoint(AppDbContext dbContext)
     : Endpoint<Request, Results<Ok<CountryResponse>, NotFound<string>, Conflict<string>, BadRequest<string>>>
 {
-    public const string InvalidCountryId = "countryId is invalid";
+    public const string InvalidCountryId = "CountryId is invalid";
     public const string InvalidData = "Nothing to change";
     public const string InvalidName = "This name already exists";
+    public const string InvalidDeactivation = "Cannot deactivate, it has active schools";
 
     public override void Configure()
     {
@@ -44,7 +45,11 @@ public class Endpoint(AppDbContext dbContext)
         }
 
         if (req.IsActive is { } isActive && country.IsActive != isActive)
+        {
+            if (!isActive && country.Schools.Any(s => s.IsActive))
+                return TypedResults.BadRequest(InvalidDeactivation);
             country.IsActive = isActive;
+        }
 
         if (!dbContext.ChangeTracker.HasChanges())
             return TypedResults.BadRequest(InvalidData);
