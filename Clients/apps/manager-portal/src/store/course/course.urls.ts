@@ -9,5 +9,7 @@ export const courseUrls = {
 
   createCourse: `${COURSE}/courses`,
 
-  updateCourse: `${COURSE}/courses`
+  updateCourse: `${COURSE}/courses`,
+
+  deleteCourse: (courseId: string) => `${COURSE}/courses/${courseId}`
 };
