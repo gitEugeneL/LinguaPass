@@ -11,3 +11,5 @@ export { CourseDetailPage } from './pages/CourseDetailPage';
 
 export { CurrentStudentsPage } from './pages/CurrentStudentsPage';
 export { StudentDetailPage } from './pages/StudentDetailPage';
+
+export { HomePage } from './pages/HomePage';

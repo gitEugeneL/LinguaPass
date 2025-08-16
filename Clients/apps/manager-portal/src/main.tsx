@@ -11,10 +11,12 @@ import {
   CourseDetailPage,
   CoursesPage,
   CurrentStudentsPage,
+  HomePage,
   SchoolDetailPage,
   SchoolsPage,
   StudentDetailPage
 } from './app/base';
+import { ArchivedStudents } from './app/base/pages/ArchivedStudents.tsx';
 
 const router = createBrowserRouter([
   {
@@ -30,8 +32,8 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: 'home',
-        element: <div>Home</div>
+        path: '',
+        element: <HomePage />
       },
       {
         path: 'programs',
@@ -107,7 +109,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'archived',
-            element: <div>Archived Students</div>
+            element: <ArchivedStudents />
           },
           {
             path: 'current/:studentId',

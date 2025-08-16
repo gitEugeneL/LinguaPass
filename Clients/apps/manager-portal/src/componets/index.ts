@@ -5,3 +5,4 @@ export { EmptyCard } from './EmptyCard/EmptyCard';
 export { BackButton } from './BackButton/BackButton';
 export { LanguageFieldset } from './LanguageFieldset/LanguageFieldset';
 export { Paginator } from './Paginator/Paginator';
+export { StudentCard } from './StudentCard/StudentCard';

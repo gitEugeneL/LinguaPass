@@ -7,3 +7,4 @@ export { CourseList } from './CoursesList/CourseList';
 export { AddEditCourse } from './AddEditCourse/AddEditCourse';
 export { StudentsList } from './StudentsList/StudentsList';
 export { EditStudent } from './EditStudent/EditStudent';
+export { Dashboard } from './Dashboard/Dashboard';

@@ -7,5 +7,7 @@ export const studentUrls = {
 
   finalizeApplication: `${ACCOUNT}/complete-application`,
 
-  changeActive: (studentId: string) => `${ACCOUNT}/change-active/${studentId}`
+  changeActive: (studentId: string) => `${ACCOUNT}/change-active/${studentId}`,
+
+  dashboard: `${ACCOUNT}/dashboard`
 };

@@ -2,9 +2,9 @@ import { dateTimeToShortString } from '@clients/shared';
 import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { type Language, useLanguageStore, useSchoolStore } from '../../../../../store';
-import type { SchoolResponse } from '../../../../../store/school/school.models.ts';
-import { LanguageIcon } from '../../../../../UI';
+import { type Language, useLanguageStore, useSchoolStore } from '../../store';
+import type { SchoolResponse } from '../../store/school/school.models.ts';
+import { LanguageIcon } from '../../UI';
 
 import styles from './StudentCard.module.pcss';
 import type { StudentCardProps } from './StudentCard.props.ts';

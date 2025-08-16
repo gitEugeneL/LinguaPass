@@ -11,5 +11,7 @@ export const courseUrls = {
 
   updateCourse: `${COURSE}/courses`,
 
-  deleteCourse: (courseId: string) => `${COURSE}/courses/${courseId}`
+  deleteCourse: (courseId: string) => `${COURSE}/courses/${courseId}`,
+
+  dashboard: `${COURSE}/dashboard`
 };

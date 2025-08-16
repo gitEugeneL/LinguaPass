@@ -88,3 +88,9 @@ export interface ChangeActiveRequest {
 export interface ChangeActiveResponse {
   isSuccess: boolean;
 }
+
+export interface DashboardResponse {
+  currentApplicationCount: number;
+  archivedApplicationCount: number;
+  lastUpdated: Date | null;
+}

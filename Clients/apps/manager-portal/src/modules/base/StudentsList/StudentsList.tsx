@@ -3,11 +3,10 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { Paginator } from '../../../componets';
+import { Paginator, StudentCard } from '../../../componets';
 import { useStudentStore } from '../../../store';
 import { StatusArea } from '../../../widgets';
 
-import { StudentCard } from './components';
 import styles from './StudentsList.module.pcss';
 import type { StudentsListProps } from './StudentsList.props.ts';
 

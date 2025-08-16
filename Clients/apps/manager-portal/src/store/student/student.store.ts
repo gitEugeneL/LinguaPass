@@ -6,6 +6,7 @@ import { useAuthStore } from '../index.ts';
 
 import type {
   ChangeActiveRequest,
+  DashboardResponse,
   FinalizeApplicationRequest,
   FinalizeApplicationResponse,
   GetStudentDetailResponse,
@@ -16,6 +17,7 @@ import type {
 import { studentUrls } from './student.urls.ts';
 
 interface StudentStore {
+  dashboard: DashboardResponse | null;
   paginator: {
     totalItemsCount: number;
     pageNumber: number;
@@ -33,6 +35,7 @@ interface StudentStore {
   getStudentDetail: (studentId: string) => Promise<void>;
   toggleActive: (studentId: string, isActive: boolean) => Promise<void>;
   resetError: () => void;
+  getDashboardData: () => Promise<void>;
   finalizeApplication: (
     studentId: string,
     isApplicationValid: boolean,
@@ -41,6 +44,7 @@ interface StudentStore {
 }
 
 export const useStudentStore = create<StudentStore>((set, get) => ({
+  dashboard: null,
   paginator: null,
   students: [],
   studentDetail: null,
@@ -125,6 +129,22 @@ export const useStudentStore = create<StudentStore>((set, get) => ({
         set({ error: error.response?.data });
       }
       throw error;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  getDashboardData: async () => {
+    set({ isLoading: true, dashboard: null });
+    try {
+      const { data } = await axios.get<DashboardResponse>(studentUrls.dashboard, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      set({ dashboard: data });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
     } finally {
       set({ isLoading: false });
     }

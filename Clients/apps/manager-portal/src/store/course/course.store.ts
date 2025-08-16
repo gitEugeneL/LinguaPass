@@ -7,6 +7,7 @@ import { useAuthStore } from '../index.ts';
 import type {
   CourseResponse,
   CreateCourseRequest,
+  DashboardResponse,
   GetCourseByIdResponse,
   GetCoursesResponse,
   GetPaginatedCoursesResponse,
@@ -15,6 +16,8 @@ import type {
 import { courseUrls } from './course.urls.ts';
 
 interface CourseState {
+  dashboard: DashboardResponse | null;
+
   paginator: {
     totalItemsCount: number;
     pageNumber: number;
@@ -34,10 +37,12 @@ interface CourseState {
   updateCourse: (course: UpdateCourseRequest) => Promise<void>;
   toggleActive: (courseId: string, schoolId: string, isActive: boolean) => Promise<void>;
   deleteCountry: (courseId: string) => Promise<void>;
+  getDashboardData: () => Promise<void>;
   resetError: () => void;
 }
 
 export const useCourseStore = create<CourseState>((set, get) => ({
+  dashboard: null,
   paginator: null,
   courses: [],
   currentCourse: null,
@@ -205,6 +210,22 @@ export const useCourseStore = create<CourseState>((set, get) => ({
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });
         throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  getDashboardData: async () => {
+    set({ isLoading: true, dashboard: null });
+    try {
+      const { data } = await axios.get<DashboardResponse>(courseUrls.dashboard, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      set({ dashboard: data });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
       }
     } finally {
       set({ isLoading: false });

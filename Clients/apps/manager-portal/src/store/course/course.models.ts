@@ -50,3 +50,10 @@ export interface GetPaginatedCoursesResponse extends GetCoursesResponse {
 }
 
 export type GetCourseByIdResponse = CourseResponse;
+
+export interface DashboardResponse {
+  countryCount: number;
+  schoolCount: number;
+  courseCount: number;
+  topCountry: number;
+}
