@@ -1,20 +1,25 @@
 using AuthConfig.Tools;
 using Course.Data.Persistence;
 using Course.Features.Shared;
+using Course.Grpc.Clients;
 using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace Course.Features.UpdateTrack;
 
-public class Endpoint(AppDbContext dbContext) : Endpoint<Request,
-    Results<Ok<TrackResponse>, NotFound<string>, Conflict<string>, BadRequest<string>>>
+public class Endpoint(
+    AppDbContext dbContext,
+    AccountClient accountClient
+) : Endpoint<Request, Results<Ok<TrackResponse>, NotFound<string>, Conflict<string>, BadRequest<string>>>
 {
     public const string InvalidTrack = "course is invalid";
     public const string InvalidPrice = "price is invalid";
     public const string InvalidAdmissionFee = "admission fee is invalid";
     public const string InvalidLanguage = "language is invalid";
     public const string InvalidData = "Nothing to change";
+    public const string InvalidDeactivation = "Cannot deactivate, it has active students";
+
 
     public override void Configure()
     {
@@ -77,7 +82,13 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request,
         }
 
         if (req.IsActive is { } isActive && isActive != track.IsActive)
+        {
+            // gRPC request (server: account microservice)
+            if (!isActive && await accountClient.CheckIsTrackActive(trackId) is true or null)
+                return TypedResults.BadRequest(InvalidDeactivation);
+
             track.IsActive = isActive;
+        }
 
         if (req.WithAccommodation is { } withAccommodation && withAccommodation != track.WithAccommodation)
             track.WithAccommodation = withAccommodation;
