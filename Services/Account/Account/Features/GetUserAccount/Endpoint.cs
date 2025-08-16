@@ -28,15 +28,15 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<O
             .Where(a => a.UserId == userId)
             .Select(a =>
                 new Response(
-                    a.UserId, 
-                    a.LanguageId, 
-                    a.SchoolId, 
-                    a.CourseId, 
-                    a.ContactId, 
+                    a.UserId,
+                    a.LanguageId,
+                    a.SchoolId,
+                    a.CourseId,
+                    a.ContactId,
                     a.PersonalId,
                     a.IsApplicationComplete,
                     a.ApplicationNote
-                    ))
+                ))
             .FirstOrDefaultAsync(ct);
 
         return userAccount is not null

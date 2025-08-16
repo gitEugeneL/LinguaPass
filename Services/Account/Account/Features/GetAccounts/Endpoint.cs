@@ -12,7 +12,6 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Collection
     {
         Get("/api/customers");
         Policies(Constants.AdminPolicy);
-        ResponseCache(60);
     }
 
     public override async Task HandleAsync(QueryParams req, CancellationToken ct)
@@ -21,6 +20,7 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<QueryParams, Collection
             .CustomerAccounts
             .Include(a => a.Contact)
             .OrderByDescending(a => a.UpdatedAt)
+            .Where(c => c.IsActive == req.IsActive)
             .AsNoTracking()
             .AsQueryable();
 
