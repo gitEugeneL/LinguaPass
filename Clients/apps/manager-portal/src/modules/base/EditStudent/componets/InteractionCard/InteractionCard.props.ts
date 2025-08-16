@@ -1,1 +1,3 @@
-export interface InteractionCardProps {}
+export interface InteractionCardProps {
+  changeActive: () => void;
+}

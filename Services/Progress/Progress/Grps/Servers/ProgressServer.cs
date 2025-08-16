@@ -48,4 +48,15 @@ public class ProgressServer(AppDbContext dbContext) : Progresses.ProgressesBase
             ? new CheckStatusResponse { IsStatusValid = true }
             : new CheckStatusResponse { IsStatusValid = false };
     }
+
+    public override async Task<CheckStatusResponse> CheckStatusToArchiveApplication(
+        CheckStatusRequest request,
+        ServerCallContext context)
+    {
+        var progress = await FindUserProgress(request);
+
+        return progress.Step is Steps.SubmissionLanguage or Steps.ReviewComplete
+            ? new CheckStatusResponse { IsStatusValid = true }
+            : new CheckStatusResponse { IsStatusValid = false };
+    }
 }

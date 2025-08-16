@@ -5,6 +5,7 @@ import { create } from 'zustand';
 import { useAuthStore } from '../index.ts';
 
 import type {
+  ChangeActiveRequest,
   FinalizeApplicationRequest,
   FinalizeApplicationResponse,
   GetStudentDetailResponse,
@@ -30,7 +31,8 @@ interface StudentStore {
 
   getAllStudents: (isActive: boolean, pageNumber?: number, pageSize?: number) => Promise<void>;
   getStudentDetail: (studentId: string) => Promise<void>;
-
+  toggleActive: (studentId: string, isActive: boolean) => Promise<void>;
+  resetError: () => void;
   finalizeApplication: (
     studentId: string,
     isApplicationValid: boolean,
@@ -38,7 +40,7 @@ interface StudentStore {
   ) => Promise<void>;
 }
 
-export const useStudentStore = create<StudentStore>((set) => ({
+export const useStudentStore = create<StudentStore>((set, get) => ({
   paginator: null,
   students: [],
   studentDetail: null,
@@ -107,5 +109,26 @@ export const useStudentStore = create<StudentStore>((set) => ({
     } finally {
       set({ isLoading: false });
     }
-  }
+  },
+
+  toggleActive: async (studentId, isActive) => {
+    try {
+      const request: ChangeActiveRequest = {
+        isActive: isActive
+      };
+      await axios.patch(studentUrls.changeActive(studentId), request, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      await get().getStudentDetail(studentId);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+      }
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  resetError: () => set({ error: null })
 }));

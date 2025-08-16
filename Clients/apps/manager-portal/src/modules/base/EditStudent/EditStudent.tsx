@@ -1,9 +1,16 @@
-import { Button, formatElapsedTime, Stepper } from '@clients/shared';
+import { Button, formatElapsedTime, Notification, Stepper } from '@clients/shared';
+import cn from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useCourseStore, useLanguageStore, useProgressStore, useSchoolStore, useStudentStore } from '../../../store';
+import {
+  useCourseStore,
+  useLanguageStore,
+  useProgressStore,
+  useSchoolStore,
+  useStudentStore
+} from '../../../store';
 import { StatusArea } from '../../../widgets';
 import { KeyValueBlock } from '../../../widgets/StatusArea/UI';
 
@@ -14,15 +21,20 @@ import { InfoBlock } from './widgets';
 export function EditStudent() {
   const { studentId } = useParams<{ studentId?: string | undefined }>();
 
+  const [localError, setLocalError] = useState<string | undefined>(undefined);
   const [elapsedTime, setElapsedTime] = useState<string>('');
 
-  const { studentDetail, getStudentDetail, isLoading } = useStudentStore(
-    useShallow((state) => ({
-      studentDetail: state.studentDetail,
-      getStudentDetail: state.getStudentDetail,
-      isLoading: state.isLoading
-    }))
-  );
+  const { studentDetail, getStudentDetail, toggleActive, error, resetError, isLoading } =
+    useStudentStore(
+      useShallow((state) => ({
+        studentDetail: state.studentDetail,
+        getStudentDetail: state.getStudentDetail,
+        toggleActive: state.toggleActive,
+        isLoading: state.isLoading,
+        error: state.error,
+        resetError: state.resetError
+      }))
+    );
 
   const { studentStatuses, getStudentStatus, statusLoading } = useProgressStore(
     useShallow((state) => ({
@@ -35,6 +47,22 @@ export function EditStudent() {
   const getLanguageById = useLanguageStore((state) => state.getLanguageById);
   const getSchoolById = useSchoolStore((state) => state.getSchoolById);
   const getCourseById = useCourseStore((state) => state.getCourseById);
+
+  useEffect(() => {
+    if (localError) {
+      const timer = setTimeout(() => {
+        setLocalError(undefined);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [localError]);
+
+  useEffect(() => {
+    if (error) {
+      setLocalError(error);
+    }
+    resetError();
+  }, [error, resetError]);
 
   useEffect(() => {
     if (studentDetail?.updatedAt) {
@@ -83,8 +111,16 @@ export function EditStudent() {
     }
   };
 
+  const handleToggleActive = async () => {
+    if (studentDetail && studentDetail.userId && !isLoading) {
+      try {
+        await toggleActive(studentDetail.accountId, !studentDetail.isActive);
+      } catch (error) {}
+    }
+  };
+
   return (
-    <>
+    <div className={styles.main}>
       <StatusArea
         name={
           !isLoading
@@ -102,24 +138,52 @@ export function EditStudent() {
 
         {studentDetail?.isActive && (
           <div className={styles.btnWrapper}>
-            <Button name='Refresh' size='small' onClick={handleRefresh} />
-            <Button name='Archive' appearance='danger' size='small' />
+            {studentDetail.isActive && (
+              <>
+                <Button name='Refresh' size='small' onClick={handleRefresh} />
+                <Button
+                  name='Archive'
+                  appearance='danger'
+                  size='small'
+                  isLoading={isLoading}
+                  onClick={handleToggleActive}
+                />
+              </>
+            )}
           </div>
+        )}
+        {!studentDetail?.isActive && (
+          <Button
+            name='Activate'
+            appearance='primary'
+            size='small'
+            isLoading={isLoading}
+            onClick={handleToggleActive}
+          />
         )}
       </StatusArea>
 
-      <div className={styles.container}>
-        <div className={styles.mainWrapper}>
-          {<StudyCard />}
-          {<DocumentsCard />}
+      <div className={styles.wrapper}>
+        <div className={styles.notification}>
+          <Notification message={localError} />
         </div>
+        <div
+          className={cn(styles.container, {
+            [styles.error]: localError
+          })}
+        >
+          <div className={styles.mainWrapper}>
+            {<StudyCard />}
+            {<DocumentsCard />}
+          </div>
 
-        <InfoBlock />
+          <InfoBlock />
 
-        <Stepper isLoading={statusLoading} statuses={studentStatuses} />
+          <Stepper isLoading={statusLoading} statuses={studentStatuses} />
 
-        <InteractionCard />
+          <InteractionCard changeActive={handleToggleActive} />
+        </div>
       </div>
-    </>
+    </div>
   );
 }

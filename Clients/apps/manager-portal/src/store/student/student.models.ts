@@ -80,3 +80,11 @@ export interface FinalizeApplicationRequest {
 export interface FinalizeApplicationResponse {
   userId: string;
 }
+
+export interface ChangeActiveRequest {
+  isActive: boolean;
+}
+
+export interface ChangeActiveResponse {
+  isSuccess: boolean;
+}

@@ -11,7 +11,6 @@ public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Results<N
     public const string InvalidSchool = "SchoolId is invalid";
     public const string InvalidDelete = "Cannot delete, it has active courses";
 
-
     public override void Configure()
     {
         Delete("/api/schools/{schoolId}");

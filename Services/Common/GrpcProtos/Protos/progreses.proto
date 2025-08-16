@@ -9,6 +9,8 @@ service Progresses {
   rpc CheckStatusToSendApplication(CheckStatusRequest) returns (CheckStatusResponse);
 
   rpc CheckStatusToCompleteApplication(CheckStatusRequest) returns (CheckStatusResponse);
+  
+  rpc CheckStatusToArchiveApplication(CheckStatusRequest) returns (CheckStatusResponse);
 }
 
 message CheckStatusRequest {

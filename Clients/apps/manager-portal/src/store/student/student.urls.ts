@@ -5,5 +5,7 @@ export const studentUrls = {
 
   getStudentDetail: (studentId: string) => `${ACCOUNT}/customers/${studentId}`,
 
-  finalizeApplication: `${ACCOUNT}/complete-application`
+  finalizeApplication: `${ACCOUNT}/complete-application`,
+
+  changeActive: (studentId: string) => `${ACCOUNT}/change-active/${studentId}`
 };

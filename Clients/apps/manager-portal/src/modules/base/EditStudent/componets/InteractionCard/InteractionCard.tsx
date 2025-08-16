@@ -7,13 +7,11 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { useProgressStore, useStudentStore } from '../../../../../store';
 
-import {
-  type IntegrationCardSchema,
-  IntegrationCardValidationSchema
-} from './IntegrationCardSchema.ts';
+import { type IntegrationCardSchema, IntegrationCardValidationSchema } from './IntegrationCardSchema.ts';
 import styles from './InteractionCard.module.pcss';
+import type { InteractionCardProps } from './InteractionCard.props.ts';
 
-export function InteractionCard() {
+export function InteractionCard({ ...props }: InteractionCardProps) {
   const [statusName, setStatusName] = useState<string | undefined>(undefined);
   const [statusOrder, setStatusOrder] = useState<number | undefined>(undefined);
   const [elapsedTime, setElapsedTime] = useState<string>('');
@@ -110,7 +108,7 @@ export function InteractionCard() {
               <b>{studentDetail?.contact?.name ?? 'The user'}</b> has not submitted the application
               form yet :(
             </h3>
-            <Button name='Archive account' appearance='danger' />
+            <Button name='Archive account' appearance='danger' onClick={props.changeActive} />
           </>
         )}
         {statusOrder && statusOrder === 7 && (
