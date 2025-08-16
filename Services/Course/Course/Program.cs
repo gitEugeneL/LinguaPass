@@ -1,5 +1,6 @@
 using AuthConfig.Configs;
 using Course.Data.Persistence;
+using Course.Grpc;
 using Course.Grpc.Servers;
 using FastEndpoints;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,9 @@ builder.Services.ConfigureAuthPolicy();
 
 /*** Add gRPC functionality (server) ***/
 builder.Services.AddGrpc();
+
+/*** gRPC Clients ***/
+builder.Services.AddGrpcClients(builder.Configuration);
 
 /*** Add FastEndpoints functionality ***/
 builder.Services.AddFastEndpoints();

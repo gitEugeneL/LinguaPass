@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "Common.GrpcProtos";
+
+package accounts;
+
+service Accounts {
+  rpc CheckIsTrackActive (CheckIsTrackActiveRequest) returns (CheckIsTrackActiveResponse);
+}
+
+message CheckIsTrackActiveRequest {
+    string trackId = 1;
+}; 
+
+message CheckIsTrackActiveResponse {
+  bool IsActive = 1;
+}

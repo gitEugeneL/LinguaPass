@@ -1,5 +1,6 @@
 using Account.Data.Persistence;
 using Account.Grpc;
+using Account.Grpc.Servers;
 using Account.MessageBroker.Consumers;
 using Account.MessageBroker.Services;
 using Account.MessageBroker.Services.Interfaces;
@@ -29,6 +30,9 @@ builder.Services.ConfigureAuthPolicy();
 /*** Fast Endpoints ***/
 builder.Services.AddFastEndpoints();
 
+/*** Add gRPC functionality (server) ***/
+builder.Services.AddGrpc();
+
 /*** gRPC Clients ***/
 builder.Services.AddGrpcClients(builder.Configuration);
 
@@ -45,6 +49,9 @@ builder.Services.ConfigureMassTransit(builder.Configuration,
 builder.Services.AddScoped<IProgressService, ProgressService>();
 
 var app = builder.Build();
+
+/*** Add gRPC servers ***/
+app.MapGrpcService<AccountServer>();
 
 app.UseAuthentication();
 app.UseAuthorization();
