@@ -27,7 +27,9 @@ export function StepperItem({ ...props }: StepperItemProps) {
       <div className={styles.item}>
         <div
           className={cn(styles.progress, {
-            [styles.progress100]: props.status === 'complete' || props.name === 'Complete',
+            [styles.progress100]:
+              props.status === 'complete' ||
+              (props.status === 'active' && props.name === 'Complete'),
             [styles.progress50]: props.status === 'active'
           })}
         />

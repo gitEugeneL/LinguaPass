@@ -24,6 +24,8 @@ interface CountryState {
   getCountryById: (countryId: string) => Promise<void>;
   createCountry: (country: Country) => Promise<void>;
   updateCountry: (country: UpdateCountryRequest) => Promise<void>;
+  toggleActive: (countryId: string, isActive: boolean) => Promise<void>;
+  deleteCountry: (countryId: string) => Promise<void>;
   resetError: () => void;
 }
 
@@ -101,15 +103,67 @@ export const useCountryStore = create<CountryState>((set, get) => ({
       const { data } = await axios.patch<CreateUpdateCountryResponse>(
         countryUrls.updateCountry,
         country,
-        {
-          headers: createAuthHeader(useAuthStore.getState().accessToken)
-        }
+        { headers: createAuthHeader(useAuthStore.getState().accessToken) }
       );
       if (get().countries.length > 0) {
         set({
           countries: get().countries.map((response) =>
             response.countryId === country.countryId ? { ...data } : response
           )
+        });
+      } else {
+        await get().getAllCountries();
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  toggleActive: async (countryId, isActive) => {
+    set({ isLoading: true });
+    const request: UpdateCountryRequest = {
+      countryId: countryId,
+      isActive: isActive
+    };
+    try {
+      const { data } = await axios.patch<CreateUpdateCountryResponse>(
+        countryUrls.updateCountry,
+        request,
+        { headers: createAuthHeader(useAuthStore.getState().accessToken) }
+      );
+      if (get().countries.length > 0) {
+        set({
+          countries: get().countries.map((response) =>
+            response.countryId === request.countryId ? { ...data } : response
+          )
+        });
+      } else {
+        await get().getAllCountries();
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  deleteCountry: async (countryId) => {
+    set({ isLoading: true });
+    try {
+      await axios.delete(countryUrls.deleteCountry(countryId), {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      if (get().countries.length > 0) {
+        set({
+          countries: get().countries.filter((country) => country.countryId !== countryId)
         });
       } else {
         await get().getAllCountries();

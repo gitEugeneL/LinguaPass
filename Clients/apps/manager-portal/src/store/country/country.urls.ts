@@ -7,5 +7,7 @@ export const countryUrls = {
 
   createCountry: `${COURSE}/countries`,
 
-  updateCountry: `${COURSE}/countries`
+  updateCountry: `${COURSE}/countries`,
+
+  deleteCountry: (countryId: string) => `${COURSE}/countries/${countryId}`
 };

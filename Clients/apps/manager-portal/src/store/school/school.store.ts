@@ -32,6 +32,13 @@ interface SchoolState {
   getSchoolById: (schoolId: string) => Promise<void>;
   createSchool: (school: CreateSchoolRequest) => Promise<void>;
   updateSchool: (school: UpdateSchoolRequest) => Promise<void>;
+  toggleActive: (
+    schoolId: string,
+    countryId: string,
+    languageIds: string[],
+    isActive: boolean
+  ) => Promise<void>;
+  deleteSchool: (schoolId: string) => Promise<void>;
   resetError: () => void;
 }
 
@@ -152,5 +159,60 @@ export const useSchoolStore = create<SchoolState>((set, get) => ({
       set({ isLoading: false });
     }
   },
+
+  toggleActive: async (schoolId, countryId, languageIds, isActive) => {
+    set({ isLoading: true });
+    try {
+      const request: UpdateSchoolRequest = {
+        schoolId: schoolId,
+        countryId: countryId,
+        isActive: isActive,
+        languageIds: languageIds
+      };
+      const { data } = await axios.patch<SchoolResponse>(schoolUrls.updateSchool, request, {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      if (get().schools.length > 0) {
+        set({
+          schools: get().schools.map((response) =>
+            response.schoolId === request.schoolId ? { ...data } : response
+          )
+        });
+      } else {
+        await get().getSchoolsByCountryId(request.countryId);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  deleteSchool: async (schoolId) => {
+    set({ isLoading: true });
+    try {
+      await axios.delete(schoolUrls.deleteSchool(schoolId), {
+        headers: createAuthHeader(useAuthStore.getState().accessToken)
+      });
+      if (get().schools.length > 0) {
+        set({
+          schools: get().schools.filter((s) => s.schoolId !== schoolId)
+        });
+      } else {
+        await get().getAllSchools();
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        set({ error: error.response?.data });
+        throw error;
+      }
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
   resetError: () => set({ error: null })
 }));
