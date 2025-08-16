@@ -1,12 +1,18 @@
+import cn from 'classnames';
+
 import { Loader } from '../index.ts';
 
 import styles from './Stepper.module.pcss';
 import { type StepperProps } from './Stepper.props.ts';
 import { StepperItem } from './UI/idnex.ts';
 
-export function Stepper({ ...props }: StepperProps) {
+export function Stepper({ size = 'normal', ...props }: StepperProps) {
   return (
-    <div className={styles.container}>
+    <div
+      className={cn(styles.container, {
+        [styles.smallContainer]: size === 'small'
+      })}
+    >
       {props.isLoading && <Loader />}
 
       {!props.isLoading &&

@@ -38,7 +38,7 @@ interface StudentStore {
   ) => Promise<void>;
 }
 
-export const useStudentStore = create<StudentStore>((set, get) => ({
+export const useStudentStore = create<StudentStore>((set) => ({
   paginator: null,
   students: [],
   studentDetail: null,
@@ -73,17 +73,12 @@ export const useStudentStore = create<StudentStore>((set, get) => ({
   getStudentDetail: async (studentId) => {
     set({ isLoading: true });
     try {
-      // const student = get().studentDetail;
-      // if (student && student.accountId === studentId) {
-      //   return;
-      // } else {
       set({ studentDetail: null });
       const { data } = await axios.get<GetStudentDetailResponse>(
         studentUrls.getStudentDetail(studentId),
         { headers: createAuthHeader(useAuthStore.getState().accessToken) }
       );
       set({ studentDetail: data });
-      // }
     } catch (error) {
       if (error instanceof AxiosError) {
         set({ error: error.response?.data });

@@ -70,7 +70,11 @@ export function BaseLayout() {
     <div className={styles.container}>
       <Menu />
       <div className={styles.body}>
-        <Stepper isLoading={isLoading} statuses={statuses} />
+        <Stepper
+          isLoading={isLoading}
+          statuses={statuses}
+          size={myStatus && myStatus.order > routes['documents'].order ? 'small' : 'normal'}
+        />
         <Outlet />
       </div>
       <div className={styles.footer}>
