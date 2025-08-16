@@ -31,8 +31,8 @@ public class Handler(
             .Include(u => u.ConfirmationCode)
             .Include(u => u.Role)
             .FirstOrDefaultAsync(u => u.Email == command.Email.ToUpper()
-                                      && u.Role.Name == Constants.CustomerRole
-                                      && u.EmailConfirmed == true, ct);
+                                      && u.Role.Name == Constants.CustomerRole, ct); // only for dev
+        // && u.EmailConfirmed == true, ct);  
 
         if (user is null || lockoutService.IsConfirmLocked(user))
             return Result<Output>.Failure(new Error(InvalidUser));

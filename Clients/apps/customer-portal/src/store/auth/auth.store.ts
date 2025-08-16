@@ -209,6 +209,7 @@ export const useAuthStore = create<AuthState>()(
               headers: createAuthHeader(get().accessToken),
               withCredentials: true
             });
+            localStorage.clear();
           } catch (error) {
             if (error instanceof AxiosError) {
               set({ error: 'Invalid logout' });

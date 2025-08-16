@@ -2,6 +2,7 @@ using Carter.ModelBinding;
 using FluentValidation;
 using IdentityApi.Data;
 using IdentityApi.Domain.Entities;
+using IdentityApi.MessageBroker.Services.Interfaces;
 using IdentityApi.Services.Interfaces;
 using IdentityApi.Tools;
 using MediatR;
@@ -14,7 +15,8 @@ public class Handler(
     AppDbContext dbContext,
     IValidator<Command> validator,
     IConfirmationService confirmationService,
-    ILockoutService lockoutService
+    ILockoutService lockoutService,
+    IMailService mailService
 ) : IRequestHandler<Command, Result<Output>>
 {
     public const string InvalidData = "User is not found or account is locked";
@@ -60,6 +62,9 @@ public class Handler(
             confirmationCode.Code = code;
             confirmationCode.Expires = expires;
         }
+
+        // RabbitMQ request (consumer: mailSender microservice)
+        await mailService.SendConfirmationCode(user.Email, "confirmation code", code);
 
         await dbContext.SaveChangesAsync(ct);
 
