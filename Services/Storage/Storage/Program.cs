@@ -15,10 +15,10 @@ builder.Services
     .AddScoped<IStorageService, StorageService>();
 
 /*** Add common auth settings ***/
-builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), true, true);
 
 /*** Add common rabbitMQ settings ***/
-builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), true, true);
 
 /*** JWT auth configuration (Common config) ***/
 builder.Services.ConfigureAuthentication(builder.Configuration);

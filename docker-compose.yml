@@ -1,12 +1,239 @@
 services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Gateway/Gateway/Dockerfile
+    container_name: gateway
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=http://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/gateway-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/gateway-key.pem"
+
+      - "ReverseProxy__Clusters__identity-cluster__Destinations__destination1__Address=https://identity.service:8080/api"
+      - "ReverseProxy__Clusters__course-cluster__Destinations__destination1__Address=https://course.service:8080/api"
+      - "ReverseProxy__Clusters__account-cluster__Destinations__destination1__Address=https://account.service:8080/api"
+      - "ReverseProxy__Clusters__progress-cluster__Destinations__destination1__Address=https://progress.service:8080/api"
+      - "ReverseProxy__Clusters__storage-cluster__Destinations__destination1__Address=https://storage.service:8080/api"
+    ports:
+      - "5000:8080"
+    networks:
+      - linguaPass.backend
+
+  # ------------------------------------------------------------------------------
+
+  identity.service:
+    build:
+      context: .
+      dockerfile: Services/Identity/Identity/Dockerfile
+      args:
+        - DOMAIN=identity.service
+    container_name: identity.service
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=https://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/identity-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/identity-key.pem"
+
+      - "MessageBroker__Host=amqp://lingua-pass-rabbitmq:5672"
+      - "MessageBroker__Username=user"
+      - "MessageBroker__Password=password"
+
+      - "Authentication__Issuer=linguaPass-dev-identity-api"
+      - "Authentication__Audience=https://identity.service:8080"
+      - "Authentication__AccessToken.SecurityKey=OnlyDevSecurityKey123456789_DONT_USE_DONT_USE_DONT_USE_DONT_USE_!!!"
+
+      - "ConnectionStrings__PSQL=Host=identity.database;Port=5432;Database=identity;Username=user;Password=password;"
+    depends_on:
+      - identity.database
+      - rabbitmq
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    networks:
+      - linguaPass.backend
   
+  # ------------------------------------------------------------------------------
+  
+  account.service:
+    build:
+      context: .
+      dockerfile: Services/Account/Account/Dockerfile
+      args:
+        - DOMAIN=account.service
+    container_name: account.service
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=https://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/account-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/account-key.pem"
+
+      - "MessageBroker__Host=amqp://lingua-pass-rabbitmq:5672"
+      - "MessageBroker__Username=user"
+      - "MessageBroker__Password=password"
+
+      - "Authentication__Issuer=linguaPass-dev-identity-api"
+      - "Authentication__Audience=https://identity.service:8080"
+      - "Authentication__AccessToken.SecurityKey=OnlyDevSecurityKey123456789_DONT_USE_DONT_USE_DONT_USE_DONT_USE_!!!"
+
+      - "ConnectionStrings__PSQL=Host=account.database;Port=5432;Database=account;Username=user;Password=password;"
+
+      - "GrpcServers__Course=https://course.service:8080"
+      - "GrpcServers__Progress=https://progress.service:8080"
+      - "GrpcServers__Storage=https://storage.service:8080"
+    depends_on:
+      - account.database
+      - rabbitmq
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    networks:
+      - linguaPass.backend
+  
+  # ------------------------------------------------------------------------------
+
+  course.service:
+    build:
+      context: .
+      dockerfile: Services/Course/Course/Dockerfile
+      args:
+        - DOMAIN=course.service
+    container_name: course.service
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=https://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/course-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/course-key.pem"
+
+      - "Authentication__Issuer=linguaPass-dev-identity-api"
+      - "Authentication__Audience=https://identity.service:8080"
+      - "Authentication__AccessToken.SecurityKey=OnlyDevSecurityKey123456789_DONT_USE_DONT_USE_DONT_USE_DONT_USE_!!!"
+
+      - "ConnectionStrings__PSQL=Host=course.database;Port=5432;Database=course;Username=user;Password=password;"
+
+      - "GrpcServers__Account=https://account.service:8080"
+    depends_on:
+      - course.database
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    networks:
+      - linguaPass.backend
+
+  # ------------------------------------------------------------------------------
+
+  progress.service:
+    build:
+      context: .
+      dockerfile: Services/Progress/Progress/Dockerfile
+      args:
+        - DOMAIN=progress.service
+    container_name: progress.service
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=https://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/progress-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/progress-key.pem"
+
+      - "MessageBroker__Host=amqp://lingua-pass-rabbitmq:5672"
+      - "MessageBroker__Username=user"
+      - "MessageBroker__Password=password"
+
+      - "Authentication__Issuer=linguaPass-dev-identity-api"
+      - "Authentication__Audience=https://identity.service:8080"
+      - "Authentication__AccessToken.SecurityKey=OnlyDevSecurityKey123456789_DONT_USE_DONT_USE_DONT_USE_DONT_USE_!!!"
+
+      - "ConnectionStrings__PSQL=Host=progress.database;Port=5432;Database=progress;Username=user;Password=password;"
+    depends_on:
+      - progress.database
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    networks:
+      - linguaPass.backend
+  
+  # ------------------------------------------------------------------------------
+
+  storage.service:
+    build:
+      context: .
+      dockerfile: Services/Storage/Storage/Dockerfile
+      args:
+        - DOMAIN=storage.service
+    container_name: storage.service
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=https://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/storage-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/storage-key.pem"
+
+      - "MessageBroker__Host=amqp://lingua-pass-rabbitmq:5672"
+      - "MessageBroker__Username=user"
+      - "MessageBroker__Password=password"
+
+      - "Authentication__Issuer=linguaPass-dev-identity-api"
+      - "Authentication__Audience=https://identity.service:8080"
+      - "Authentication__AccessToken.SecurityKey=OnlyDevSecurityKey123456789_DONT_USE_DONT_USE_DONT_USE_DONT_USE_!!!"
+
+      - "MinIOStorage__Endpoint=minio.storage:9000"
+      - "MinIOStorage__AccessKey=user"
+      - "MinIOStorage__SecretKey=password"
+    depends_on:
+      - minio.storage
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    networks:
+      - linguaPass.backend
+  
+  # ------------------------------------------------------------------------------
+
+  mail-sender.service:
+    build:
+      context: .
+      dockerfile: Services/MailSender/MailSender/Dockerfile
+      args:
+        - DOMAIN=mail-sender.service
+    container_name: mail-sender.service
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=https://+:8080"
+
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path=/app/mail-sender-cert.pem"
+      - "ASPNETCORE_Kestrel__Certificates__Default__KeyPath=/app/mail-sender-key.pem"
+
+      - "MessageBroker__Host=amqp://lingua-pass-rabbitmq:5672"
+      - "MessageBroker__Username=user"
+      - "MessageBroker__Password=password"
+    depends_on:
+      - rabbitmq
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+    networks:
+      - linguaPass.backend
+  
+  # ------------------------------------------------------------------------------
+
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
-    hostname: invoice-manager-rabbitmq
+    hostname: lingua-pass-rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
@@ -15,7 +242,7 @@ services:
     volumes:
       - data.rabbitmq:/var/lib/rabbitmq:rw
 
-  #----------------------------------------------
+  # ------------------------------------------------------------------------------
 
   minio.storage:
     image: minio/minio:latest
@@ -31,9 +258,8 @@ services:
     networks:
       - linguaPass.backend
   
-  
-  #----------------------------------------------
-  
+  # ------------------------------------------------------------------------------
+
   identity.database:
     image: postgres:latest
     environment:
@@ -47,8 +273,8 @@ services:
     networks:
       - linguaPass.backend
   
-  #----------------------------------------------
-  
+  # ------------------------------------------------------------------------------
+
   course.database:
     image: postgres:latest
     environment:
@@ -61,8 +287,8 @@ services:
       - course.database:/var/lib/postgresql/data:rw
     networks:
       - linguaPass.backend
-  
-  #----------------------------------------------
+
+  # ------------------------------------------------------------------------------
 
   account.database:
     image: postgres:latest
@@ -76,9 +302,9 @@ services:
       - account.database:/var/lib/postgresql/data:rw
     networks:
       - linguaPass.backend
-
-  #----------------------------------------------
   
+  # ------------------------------------------------------------------------------
+
   progress.database:
     image: postgres:latest
     environment:
@@ -92,7 +318,7 @@ services:
     networks:
       - linguaPass.backend
 
-  #----------------------------------------------
+  # ------------------------------------------------------------------------------
 
 volumes:
   data.rabbitmq:

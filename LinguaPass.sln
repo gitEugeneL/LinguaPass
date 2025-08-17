@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		.gitignore = .gitignore
 		docker-compose.yml = docker-compose.yml
 		Makefile = Makefile
+		initDbs\initCourseDb.sql = initDbs\initCourseDb.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{0B87972B-042A-4CAF-BE23-81DE2EC53492}"

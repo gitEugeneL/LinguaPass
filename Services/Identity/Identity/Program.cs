@@ -18,7 +18,7 @@ builder.Services
     .AddScoped<ILockoutService, LockoutService>();
 
 /*** Add common rabbitMQ settings ***/
-builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), true, true);
 
 /*** RabbitMQ configuration (Common config) ***/
 builder.Services.ConfigureMassTransit(builder.Configuration);
@@ -30,7 +30,7 @@ builder.Services
     .AddScoped<IMailService, MailService>();
 
 /*** Add common auth settings ***/
-builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), false, true);
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "authsettings.json"), true, true);
 
 /*** Database connection ***/
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -6,7 +6,7 @@ using MessageBroker.Configs;
 var builder = WebApplication.CreateBuilder(args);
 
 /*** Add common rabbitMQ settings ***/
-builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), false, true);
+builder.Configuration.AddJsonFile(Path.Combine(AppContext.BaseDirectory, "brokersettings.json"), true, true);
 
 builder.Services.AddTransient<IMailService, MailService>();
 

@@ -1,5 +1,6 @@
-// const GATEWAY = 'http://localhost:5224';
-const GATEWAY = 'https://localhost:7161';
+// const GATEWAY = 'http://localhost:5224';  local -> local (http)
+// const GATEWAY = 'https://localhost:7161'; local -> local (https)
+const GATEWAY = 'http://localhost:5000'; // local -> docker
 
 export const IDENTITY = `${GATEWAY}/auth`;
 

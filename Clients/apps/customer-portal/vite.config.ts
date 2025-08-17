@@ -1,4 +1,3 @@
-import fs from 'fs';
 import path from 'path';
 
 import react from '@vitejs/plugin-react';
@@ -7,10 +6,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   server: {
-    https: {
-      key: fs.readFileSync('devCerts/localhost+2-key.pem'),
-      cert: fs.readFileSync('devCerts/localhost+2.pem')
-    }
+    // https: {
+    //   key: fs.readFileSync('devCerts/localhost+2-key.pem'),
+    //   cert: fs.readFileSync('devCerts/localhost+2.pem')
+    // }
+    port: 5173
   },
   resolve: {
     alias: {

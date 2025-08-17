@@ -4,19 +4,55 @@ using Grpc.Net.Client;
 
 namespace Account.Grpc;
 
-public class CourseGrpcChannel(string address)
+public class CourseGrpcChannel
 {
-    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+    public CourseGrpcChannel(string address)
+    {
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+        Channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
+        {
+            HttpHandler = handler
+        });
+    }
+
+    public GrpcChannel Channel { get; }
 }
 
-public class ProgressGrpcChannel(string address)
+public class ProgressGrpcChannel
 {
-    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+    public ProgressGrpcChannel(string address)
+    {
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+        Channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
+        {
+            HttpHandler = handler
+        });
+    }
+
+    public GrpcChannel Channel { get; }
 }
 
-public class StorageGrpcChannel(string address)
+public class StorageGrpcChannel
 {
-    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+    public StorageGrpcChannel(string address)
+    {
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+        Channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
+        {
+            HttpHandler = handler
+        });
+    }
+
+    public GrpcChannel Channel { get; }
 }
 
 public static class GrpcClientsConfig

@@ -4,9 +4,21 @@ using Grpc.Net.Client;
 
 namespace Course.Grpc;
 
-public class AccountGrpcChannel(string address)
+public class AccountGrpcChannel
 {
-    public GrpcChannel Channel { get; } = GrpcChannel.ForAddress(address);
+    public AccountGrpcChannel(string address)
+    {
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+        Channel = GrpcChannel.ForAddress(address, new GrpcChannelOptions
+        {
+            HttpHandler = handler
+        });
+    }
+
+    public GrpcChannel Channel { get; }
 }
 
 public static class GrpcClientsConfig
