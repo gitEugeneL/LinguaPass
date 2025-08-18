@@ -246,6 +246,7 @@ services:
 
   minio.storage:
     image: minio/minio:latest
+    container_name: minio.storage
     command: server --console-address ":9001" /data/
     ports:
       - "9001:9001"
@@ -261,11 +262,19 @@ services:
   # ------------------------------------------------------------------------------
 
   identity.database:
-    image: postgres:latest
+    build:
+      context: ./Databases/identity
+      dockerfile: Dockerfile
+    image: identity.database:latest
+    container_name: identity.database
     environment:
       POSTGRES_DB: identity
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
     ports:
       - "5432:5432"
     volumes:
@@ -276,11 +285,19 @@ services:
   # ------------------------------------------------------------------------------
 
   course.database:
-    image: postgres:latest
+    build:
+      context: ./Databases/course
+      dockerfile: Dockerfile
+    image: course.database:latest
+    container_name: course.database
     environment:
       POSTGRES_DB: course
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
     ports:
       - "5433:5432"
     volumes:
@@ -291,11 +308,19 @@ services:
   # ------------------------------------------------------------------------------
 
   account.database:
-    image: postgres:latest
+    build:
+      context: ./Databases/account
+      dockerfile: Dockerfile
+    image: account.database:latest
+    container_name: account.database
     environment:
       POSTGRES_DB: account
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
     ports:
       - "5434:5432"
     volumes:
@@ -306,11 +331,19 @@ services:
   # ------------------------------------------------------------------------------
 
   progress.database:
-    image: postgres:latest
+    build:
+      context: ./Databases/progress
+      dockerfile: Dockerfile
+    image: progress.database
+    container_name: progress.database
     environment:
       POSTGRES_DB: progress
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
     ports:
       - "5435:5432"
     volumes:

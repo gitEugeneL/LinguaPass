@@ -1,0 +1,923 @@
+-- Create Countries table
+DO
+$$
+BEGIN
+        IF
+NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Countries') THEN
+CREATE TABLE "Countries"
+(
+    "Id"       UUID PRIMARY KEY,
+    "Name"     VARCHAR(50) NOT NULL,
+    "IsActive" BOOLEAN     NOT NULL
+);
+CREATE UNIQUE INDEX "IX_Countries_Name" ON "Countries" ("Name");
+END IF;
+END
+$$;
+
+-- Create Languages table
+DO
+$$
+BEGIN
+        IF
+NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Languages') THEN
+CREATE TABLE "Languages"
+(
+    "Id"          UUID PRIMARY KEY,
+    "Name"        VARCHAR(50)  NOT NULL,
+    "Description" VARCHAR(100) NOT NULL,
+    "IsActive"    BOOLEAN      NOT NULL
+);
+CREATE UNIQUE INDEX "IX_Languages_Name" ON "Languages" ("Name");
+END IF;
+END
+$$;
+
+-- Create Schools table
+DO
+$$
+BEGIN
+        IF
+NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Schools') THEN
+CREATE TABLE "Schools"
+(
+    "Id"        UUID PRIMARY KEY,
+    "Name"      VARCHAR(100) NOT NULL,
+    "ShortName" VARCHAR(50)  NOT NULL,
+    "City"      VARCHAR(50)  NOT NULL,
+    "IsActive"  BOOLEAN      NOT NULL,
+    "CountryId" UUID         NOT NULL,
+    CONSTRAINT "FK_Schools_Countries_CountryId" FOREIGN KEY ("CountryId")
+        REFERENCES "Countries" ("Id") ON DELETE CASCADE
+);
+CREATE INDEX "IX_Schools_CountryId" ON "Schools" ("CountryId");
+CREATE UNIQUE INDEX "IX_Schools_Name" ON "Schools" ("Name");
+CREATE UNIQUE INDEX "IX_Schools_ShortName" ON "Schools" ("ShortName");
+END IF;
+END
+$$;
+
+-- Create LanguageSchool table
+DO
+$$
+BEGIN
+        IF
+NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'LanguageSchool') THEN
+CREATE TABLE "LanguageSchool"
+(
+    "LanguagesId" UUID NOT NULL,
+    "SchoolsId"   UUID NOT NULL,
+    CONSTRAINT "PK_LanguageSchool" PRIMARY KEY ("LanguagesId", "SchoolsId"),
+    CONSTRAINT "FK_LanguageSchool_Languages_LanguagesId" FOREIGN KEY ("LanguagesId")
+        REFERENCES "Languages" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_LanguageSchool_Schools_SchoolsId" FOREIGN KEY ("SchoolsId")
+        REFERENCES "Schools" ("Id") ON DELETE CASCADE
+);
+CREATE INDEX "IX_LanguageSchool_SchoolsId" ON "LanguageSchool" ("SchoolsId");
+END IF;
+END
+$$;
+
+-- Create Tracks table
+DO
+$$
+BEGIN
+        IF
+NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Tracks') THEN
+CREATE TABLE "Tracks"
+(
+    "Id"                UUID PRIMARY KEY,
+    "Name"              VARCHAR(50)   NOT NULL,
+    "Description"       VARCHAR(300)  NOT NULL,
+    "Activities"        VARCHAR(200)  NOT NULL,
+    "Duration"          VARCHAR(50)   NOT NULL,
+    "Price"             NUMERIC(7, 2) NOT NULL,
+    "AdmissionFee"      NUMERIC(7, 2) NOT NULL,
+    "IsActive"          BOOLEAN       NOT NULL,
+    "WithAccommodation" BOOLEAN       NOT NULL,
+    "LanguageId"        UUID          NOT NULL,
+    "SchoolId"          UUID          NOT NULL,
+    CONSTRAINT "FK_Tracks_Languages_LanguageId" FOREIGN KEY ("LanguageId")
+        REFERENCES "Languages" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_Tracks_Schools_SchoolId" FOREIGN KEY ("SchoolId")
+        REFERENCES "Schools" ("Id") ON DELETE CASCADE
+);
+CREATE INDEX "IX_Tracks_LanguageId" ON "Tracks" ("LanguageId");
+CREATE INDEX "IX_Tracks_SchoolId" ON "Tracks" ("SchoolId");
+END IF;
+END
+$$;
+
+-- Insert into "Languages" table
+DO
+$$
+BEGIN
+        IF
+EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Languages')
+                AND NOT EXISTS (SELECT 1 FROM "Languages") THEN
+
+            INSERT INTO "Languages" ("Id", "Name", "Description", "IsActive")
+            VALUES ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'English',
+                    'Start your learning journey and create a solid base for your studies with language course.', true),
+                   ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'Spanish',
+                    'Discover the rich Hispanic culture through this comprehensive Spanish language course.', true),
+                   ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', 'French',
+                    'Master the language of romance and diplomacy with our French course.', true),
+                   ('770e8400-e29b-41d4-a716-446655440002', 'German',
+                    'Learn German and unlock opportunities in Europe''s economic powerhouse.', true),
+                   ('660e8400-e29b-41d4-a716-446655440002',
+                    'Italian', 'Immerse yourself in the beauty of Italian language and culture.', true),
+                   ('660e8400-e29b-41d4-a716-446655440003', 'Japanese',
+                    'Explore the fascinating world of Japanese language and traditions.', true),
+                   ('660e8400-e29b-41d4-a716-446655440001', 'Chinese',
+                    'Master Mandarin Chinese and connect with over a billion speakers.', true),
+                   ('8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', 'Portugal',
+                    'Learn Portugal and discover a rich literary and cultural heritage.', true);
+END IF;
+END
+$$;
+
+-- Insert into "Countries" table
+DO
+$$
+BEGIN
+        IF
+EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Countries')
+                AND NOT EXISTS (SELECT 1 FROM "Countries") THEN
+
+            INSERT INTO "Countries" ("Id", "Name", "IsActive")
+            VALUES ('c9d4e7f2-1b6f-4e3d-8a5f-7f0c5b2d4e6a', 'Poland', true),
+                   ('d0e5f8a3-2c7a-4f4e-9b6a-8a1d6c3e5f7b', 'Malta', true),
+                   ('e1f6a9b4-3d8b-4f5f-9c7b-9b2e7d4f6a8c', 'United Kingdom', true),
+                   ('f2a7b0c5-4e9c-4f6a-9d8c-0c3f8e5a7b9d', 'United States', true),
+                   ('a3b8c1d6-5f0d-4f7b-9e9d-1d4a9f6b8c0e', 'Spain', true),
+                   ('b4c9d2e7-6a1e-4f8c-9f0e-2e5b0a7c9d1f', 'France', true),
+                   ('c5d0e3f8-7b2f-4f9d-0a1f-3f6c1b8d0e2a', 'Germany', true),
+                   ('d6e1f4a9-8c3a-4f0e-0b2a-4a7d2c9e1f3b', 'UAE', true);
+END IF;
+END
+$$;
+
+-- Insert into "Schools" table
+DO
+$$
+BEGIN
+        IF
+EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Schools')
+                AND NOT EXISTS (SELECT 1 FROM "Schools") THEN
+            INSERT INTO "Schools" ("Id", "Name", "ShortName", "City", "IsActive", "CountryId")
+            VALUES ('efca49e2-47e5-4f60-ae60-9b399dd2f939', 'Warsaw Language Academy', 'WLA', 'Warsaw', true,
+                    'c9d4e7f2-1b6f-4e3d-8a5f-7f0c5b2d4e6a'), -- Poland
+                   ('28e277ae-06fe-4924-b301-ad592cc29319', 'Krakow Language Institute', 'KLI', 'Krakow', true,
+                    'c9d4e7f2-1b6f-4e3d-8a5f-7f0c5b2d4e6a'), -- Poland
+                   ('02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', 'Global Language Academy', 'GLA', 'Warsaw', true,
+                    'c9d4e7f2-1b6f-4e3d-8a5f-7f0c5b2d4e6a'), -- Poland
+                   ('9e2017d8-615c-4ee6-9036-26c9e3027ef6', 'Lingua Bridge Institute', 'LBI', 'Warsaw', true,
+                    'c9d4e7f2-1b6f-4e3d-8a5f-7f0c5b2d4e6a'), -- Poland
+                   ('0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', 'International School of Languages', 'ISL', 'Krakow', true,
+                    'c9d4e7f2-1b6f-4e3d-8a5f-7f0c5b2d4e6a'),-- Poland
+                   ('123e4567-e89b-12d3-a456-426614174000', 'Middle-sex University Malta', 'MSUM', 'Valletta', true,
+                    'd0e5f8a3-2c7a-4f4e-9b6a-8a1d6c3e5f7b'), -- Malta
+                   ('123e4567-e89b-12d3-a456-426614174100', 'Cosmopolitan School of Languages', 'CSOL', 'Valletta',
+                    true,
+                    'd0e5f8a3-2c7a-4f4e-9b6a-8a1d6c3e5f7b'), -- Malta
+                   ('37b5d1b7-ec01-466d-837d-0098a175c250', 'Language Excellence Academy', 'LEA', 'Valletta', true,
+                    'd0e5f8a3-2c7a-4f4e-9b6a-8a1d6c3e5f7b'),-- Malta
+                   ('123e4567-e89b-12d3-a456-426614174001', 'London Language Institute', 'LEI', 'London', true,
+                    'e1f6a9b4-3d8b-4f5f-9c7b-9b2e7d4f6a8c'), -- UK
+                   ('db1239a3-1d58-4430-9eaa-e29fe6dee5e4', 'Academic Language Center', 'ACLC', 'Oxford', true,
+                    'e1f6a9b4-3d8b-4f5f-9c7b-9b2e7d4f6a8c'),-- UK
+                   ('123e4567-e89b-12d3-a456-426614174002', 'New York Language Center', 'NYLC', 'New York', true,
+                    'f2a7b0c5-4e9c-4f6a-9d8c-0c3f8e5a7b9d'), -- USA
+                   ('123e4567-e89b-12d3-a456-426614174003', 'Madrid Language School', 'MSS', 'Madrid', true,
+                    'a3b8c1d6-5f0d-4f7b-9e9d-1d4a9f6b8c0e'), --Spain
+                   ('123e4567-e89b-12d3-a456-426614174006', 'Dubai Language Hub', 'DLH', 'Dubai', true,
+                    'd6e1f4a9-8c3a-4f0e-0b2a-4a7d2c9e1f3b'), -- UAE
+                   ('123e4567-e89b-12d3-a456-426614174004', 'Paris French Academy', 'PFA', 'Paris', true,
+                    'b4c9d2e7-6a1e-4f8c-9f0e-2e5b0a7c9d1f'), -- France
+                   ('123e4567-e89b-12d3-a456-426614174005', 'Berlin Language Institute', 'BGI', 'Berlin', true,
+                    'c5d0e3f8-7b2f-4f9d-0a1f-3f6c1b8d0e2a'); -- Germany
+END IF;
+END
+$$;
+
+-- Insert into "LanguageSchool" table
+DO
+$$
+BEGIN
+        IF
+EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'LanguageSchool')
+                AND NOT EXISTS (SELECT 1 FROM "LanguageSchool") THEN
+            INSERT INTO "LanguageSchool" ("LanguagesId", "SchoolsId")
+            VALUES
+                -- Warsaw Language Academy
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('770e8400-e29b-41d4-a716-446655440002', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('660e8400-e29b-41d4-a716-446655440002', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('660e8400-e29b-41d4-a716-446655440003', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('660e8400-e29b-41d4-a716-446655440001', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', 'efca49e2-47e5-4f60-ae60-9b399dd2f939'),
+                -- Krakow Language Institute 
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '28e277ae-06fe-4924-b301-ad592cc29319'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '28e277ae-06fe-4924-b301-ad592cc29319'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '28e277ae-06fe-4924-b301-ad592cc29319'),
+                ('770e8400-e29b-41d4-a716-446655440002', '28e277ae-06fe-4924-b301-ad592cc29319'),
+                -- Global Language Academy
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f'),
+                ('660e8400-e29b-41d4-a716-446655440003', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f'),
+                ('660e8400-e29b-41d4-a716-446655440001', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f'),
+                -- Lingua Bridge Institute
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '9e2017d8-615c-4ee6-9036-26c9e3027ef6'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '9e2017d8-615c-4ee6-9036-26c9e3027ef6'),
+                ('770e8400-e29b-41d4-a716-446655440002', '9e2017d8-615c-4ee6-9036-26c9e3027ef6'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '9e2017d8-615c-4ee6-9036-26c9e3027ef6'),
+                -- International School of Languages
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452'),
+                ('660e8400-e29b-41d4-a716-446655440002', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452'),
+                ('660e8400-e29b-41d4-a716-446655440003', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452'),
+                -- Middle-sex University Malta
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174000'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174000'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174000'),
+                -- Cosmopolitan School of Languages
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174100'),
+                ('770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174100'),
+                ('660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174100'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '123e4567-e89b-12d3-a456-426614174100'),
+                -- Language Excellence Academy
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '37b5d1b7-ec01-466d-837d-0098a175c250'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '37b5d1b7-ec01-466d-837d-0098a175c250'),
+                ('660e8400-e29b-41d4-a716-446655440001', '37b5d1b7-ec01-466d-837d-0098a175c250'),
+                -- London Language Institute
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174001'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174001'),
+                ('770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174001'),
+                ('660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174001'),
+                -- Academic Language Center
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4'),
+                ('660e8400-e29b-41d4-a716-446655440003', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4'),
+                -- New York Language Center
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174002'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174002'),
+                ('660e8400-e29b-41d4-a716-446655440001', '123e4567-e89b-12d3-a456-426614174002'),
+                ('770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174002'),
+                -- Madrid Language School
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174003'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174003'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174003'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '123e4567-e89b-12d3-a456-426614174003'),
+                -- Dubai Language Hub
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174006'),
+                ('660e8400-e29b-41d4-a716-446655440001', '123e4567-e89b-12d3-a456-426614174006'),
+                ('660e8400-e29b-41d4-a716-446655440003', '123e4567-e89b-12d3-a456-426614174006'),
+                -- Paris French Academy
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174004'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174004'),
+                ('b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174004'),
+                -- Berlin Language Institute 
+                ('770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174005'),
+                ('8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174005'),
+                ('c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174005'),
+                ('660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174005');
+END IF;
+END
+$$;
+
+DO
+$$
+BEGIN
+        IF
+EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'Tracks')
+            AND NOT EXISTS (SELECT 1 FROM "Tracks") THEN
+            INSERT INTO "Tracks" ("Id", "Name", "Description", "Activities", "Duration", "Price", "AdmissionFee",
+                                  "IsActive", "LanguageId", "SchoolId", "WithAccommodation")
+            VALUES
+                -- Warsaw Language Academy (WLA)
+                ('a1b2c3d4-5e6f-7a8b-9c0d-1e2f3a4b5c6d', 'English Beginners Intensive',
+                 'Dive into English with this dynamic 8-week course! Master basic grammar, expand vocabulary, and gain confidence in speaking through interactive lessons and practical drills. Perfect for beginners eager to start their language journey.',
+                 'Grammar lessons, speaking practice, vocabulary drills',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('b1c2d3e4-6f7a-8b9c-0d1e-2f3a4b5c6d7f', 'English Advanced Speaking',
+                 'Elevate your English fluency in 10 weeks! Engage in debates, deliver presentations, and refine pronunciation with advanced techniques. Ideal for learners aiming to speak confidently in professional or social settings.',
+                 'Debates, presentations, pronunciation drills',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('c2d3e4f5-7a8b-9e0d-1e2f-3a4b5c6d7e8a', 'Spanish Conversation Mastery',
+                 'Boost your Spanish fluency in 12 weeks! Practice real-world conversations through role-playing, group discussions, and listening exercises. Perfect for intermediate learners seeking confidence in speaking.',
+                 'Role-playing, group discussions, listening exercises',
+                 '12 weeks', 1500.00, 75.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('d3e4f5a3-8b9c-0d1e-2f3a-4b5c6d7e8f9b', 'Spanish Grammar Intensive',
+                 'Master Spanish grammar in 10 weeks! Tackle exercises, writing tasks, and quizzes to build a strong foundation for all levels. Ideal for learners aiming to improve accuracy in written and spoken Spanish.',
+                 'Grammar exercises, writing practice, quizzes',
+                 '10 weeks', 1400.00, 60.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('e4f5a6b7-9c0d-1e2f-3a4b-5c6d7e8f9a0c', 'French Beginners',
+                 'Start your French adventure in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for beginners looking to build a solid foundation in French for travel or study.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('f5a6b7c8-0d1e-2f4a-4b5c-6d7e8f9a0b1d', 'French Conversation',
+                 'Enhance your French speaking skills in 10 weeks! Dive into role-playing, group discussions, and listening tasks to boost fluency. Ideal for learners ready to converse confidently in real-life situations.',
+                 'Role-playing, group discussions, listening',
+                 '10 weeks', 1400.00, 60.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('a6b7c8d9-1e2f-3a4b-5c6d-7e8f9a0b1c2e', 'German Beginners',
+                 'Begin your German journey in 8 weeks! Master basic grammar, vocabulary, and pronunciation with interactive lessons. Perfect for beginners eager to explore German language and culture for travel or study.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('b7c8d9e0-2f3a-4b5c-6d7e-8f9a0b1c2d3f', 'German Conversation',
+                 'Boost your German speaking skills in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice to gain fluency. Ideal for learners aiming to communicate confidently in German.',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('e7ad487c-639d-4ff4-a3d8-7099ebb2abe2', 'Italian Beginners',
+                 'Start learning Italian in 8 weeks! Explore basic grammar, vocabulary, and cultural lessons to build a strong foundation. Perfect for beginners excited to embrace Italian language and culture.',
+                 'Basic grammar, vocabulary, cultural lessons',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('07feb0f3-d45b-4d98-a418-af7e71f8f378', 'Italian Culture & Language',
+                 'Immerse yourself in Italian in 10 weeks! Learn through cultural workshops, conversation, and reading. Ideal for learners wanting to deepen their understanding of Italian language and heritage.',
+                 'Cultural workshops, conversation, reading',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('9c22827a-c2d0-4952-97ae-20a9bd22fcc1', 'Japanese for Travel',
+                 'Learn essential Japanese in 6 weeks! Master travel phrases, cultural tips, and basic writing for your next trip. Perfect for travelers seeking practical language skills and cultural insights.',
+                 'Phrase practice, cultural lessons, basic writing',
+                 '6 weeks', 900.00, 40.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('f2a2b3c4-6d7e-8f9a-0b1c-2d3e4f5a6b7d', 'Japanese Kanji Mastery',
+                 'Master Japanese kanji in 8 weeks! Focus on writing, reading, and vocabulary to build a strong foundation. Ideal for learners aiming to deepen their understanding of Japanese characters.',
+                 'Kanji writing, reading practice, vocabulary',
+                 '8 weeks', 1000.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('a2b3c4d5-7e8f-9a0b-1c2d-3e4f5a6b7c8e', 'Chinese Beginners',
+                 'Start your Chinese journey in 10 weeks! Learn pinyin, basic characters, and speaking through engaging lessons. Perfect for beginners exploring Mandarin language.',
+                 'Pinyin, basic characters, speaking practice',
+                 '10 weeks', 1300.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('b3c4d5e6-8f9a-0b1c-2d3e-4f5a6b7c8d9f', 'Chinese HSK Level 1 Prep',
+                 'Start your Chinese journey in 10 weeks! Learn pinyin, basic characters, and speaking skills through interactive lessons. Perfect for beginners eager to explore Mandarin for travel or study.',
+                 'Character writing, listening practice, mock tests',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('c4d5e6f7-9a0b-1c2d-3e4f-5a6b7c8d9e0a', 'Portuguese Immersion',
+                 'Prepare for HSK Level 1 in 10 weeks! Practice character writing, listening, and mock tests to ace the exam. Ideal for learners seeking certification in beginner-level Chinese proficiency.',
+                 'Speaking practice, music lessons, cultural workshops',
+                 '8 weeks', 1300.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+                ('d5e6f7a8-0b1c-2d3e-4f5a-6b7c8d9e0f1b', 'Portuguese for Travelers',
+                 'Dive into Portuguese in 8 weeks! Enhance speaking skills with music lessons and cultural workshops. Perfect for learners wanting an immersive experience in Portuguese language and culture.',
+                 'Travel phrases, pronunciation, cultural tips',
+                 '6 weeks', 900.00, 40.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', 'efca49e2-47e5-4f60-ae60-9b399dd2f939', true),
+
+                -- Krakow Language Institute (KLI)
+                ('e6f7a8b9-1c2d-3e4f-5a6b-7c8d9e0f1a2c', 'English for Beginners',
+                 'Begin your English journey in 8 weeks! Learn basic grammar, vocabulary, and speaking skills through engaging lessons. Perfect for newcomers aiming to build a strong foundation in English.',
+                 'Basic grammar, vocabulary, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('f8a8b9c0-2d3e-4f5a-6b7c-8d9e0f1a2b3d', 'English Business Communication',
+                 'Master English for work in 10 weeks! Learn business vocabulary, email writing, and presentation skills. Ideal for professionals aiming to excel in global workplaces.',
+                 'Business vocabulary, email writing, presentations',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('a9b9c0d1-3e4f-5a6b-7c8d-9e0f1a2b3c4e', 'Spanish Beginners',
+                 'Start learning Spanish in 8 weeks! Master basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners eager to explore Spanish for travel or study.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('b9c1d1e2-4f5a-6b7c-8d9e-0f1a2b3c4d5f', 'Spanish for Kids',
+                 'Fun Spanish for kids in 6 weeks! Learn through games, songs, and basic vocabulary in an interactive setting. Perfect for young learners starting their Spanish language adventure.',
+                 'Games, songs, basic vocabulary',
+                 '6 weeks', 800.00, 30.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('c0d1e2f3-5a6b-7c8d-9e0f-1a2b3c4d5e6a', 'French Intermediate',
+                 'Build on your French skills in 14 weeks! Review grammar, practice conversation, and improve reading comprehension. Ideal for learners ready to advance their French fluency.',
+                 'Grammar review, conversation, reading comprehension',
+                 '14 weeks', 1600.00, 80.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('d1e2f3a4-6b7c-8d9e-0f1a-2b3c4d5e6f7b', 'French Culture & Language',
+                 'Immerse in French culture in 12 weeks! Learn through workshops, reading, and speaking practice. Perfect for learners wanting to deepen their French language and cultural knowledge.',
+                 'Cultural workshops, reading, speaking practice',
+                 '12 weeks', 1500.00, 75.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('e3f3a4b5-7c8d-9e0f-1a2b-3c4d5e6f7a8c', 'German Business Communication',
+                 'Excel in German for work in 10 weeks! Master business vocabulary, email writing, and presentations. Ideal for professionals seeking to thrive in German-speaking workplaces.',
+                 'Business vocabulary, email writing, presentations',
+                 '10 weeks', 1800.00, 100.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+                ('f3a4b5c6-8d9e-0f1a-2b3c-4d5e6f7a8b9d', 'German Beginners',
+                 'Start your German journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for beginners eager to explore German language and culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '28e277ae-06fe-4924-b301-ad592cc29319', true),
+
+                -- Global Language Academy (GLA)
+                ('a4b5c6d7-9e0f-1a2b-3c4d-5e6f7a8b9c0e', 'English for Academic Purposes',
+                 'Boost your academic English in 16 weeks! Master essay writing, lectures, and critical reading. Perfect for students preparing for university studies in English.',
+                 'Essay writing, lectures, critical reading',
+                 '16 weeks', 2000.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('b5c6d7e8-0f1a-2b3c-4d5e-6f7a8b9c0d1f', 'English Conversation Skills',
+                 'Improve English fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for learners aiming to speak confidently in social settings.',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('c7d7e8f9-1a2b-3c4d-5e6f-7a8b9c0d1e2a', 'Japanese Beginners',
+                 'Start learning Japanese in 8 weeks! Master hiragana, basic grammar, and speaking skills through interactive lessons. Perfect for beginners exploring Japanese language and culture.',
+                 'Hiragana, basic grammar, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('d8e8f9a0-2b3c-4d5e-6f7a-8b9c0d1e2f3b', 'Japanese Culture',
+                 'Learn Japanese through culture in 10 weeks! Engage in workshops, conversation, and basic writing. Ideal for learners wanting to immerse in Japanese traditions and language.',
+                 'Cultural workshops, conversation, basic writing',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('e9f9a0b1-3c4d-5e6f-7a8b-9c0d1e2f3a4c', 'Chinese HSK Level 1 Prep',
+                 'Ace HSK Level 1 in 10 weeks! Practice character writing, listening, and mock tests for exam success. Perfect for learners seeking beginner-level Chinese certification.',
+                 'Character writing, listening practice, mock tests',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('f3a0b1c2-4d5e-6f7a-8b9c-0d1e2f3a4b5d', 'Chinese Beginners Intensive',
+                 'Fast-track Chinese learning in 8 weeks! Master pinyin, basic characters, and speaking drills. Ideal for beginners eager to accelerate their Mandarin skills for travel or study.',
+                 'Pinyin, basic characters, speaking drills',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('a0b1c2d3-5e6f-7a8b-9c0d-1e2f3a4b5c6e', 'French Beginners',
+                 'Begin your French journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for newcomers eager to explore French language and culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+                ('b1c2d3e4-6f7a-8b9c-0d1e-2f2a4b5c6d7f', 'French for Travel',
+                 'Learn French for travel in 6 weeks! Master travel phrases, role-playing, and cultural insights for your next trip. Ideal for travelers seeking practical French language skills.',
+                 'Travel phrases, role-playing, cultural insights',
+                 '6 weeks', 900.00, 40.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '02a4ae6c-6e18-452c-ae5a-6e6bd42ccb0f', false),
+
+                -- Lingua Bridge Institute (LBI)
+                ('c2d3e4f5-7a8b-9c1d-1e2f-3a4b5c6d7e8a', 'English Speaking Bootcamp',
+                 'Skyrocket your English fluency in 4 weeks! Focus on intensive speaking, pronunciation, and group activities. Perfect for learners wanting rapid improvement in speaking skills.',
+                 'Intensive speaking, pronunciation, group activities',
+                 '4 weeks', 900.00, 30.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('d3e4f5a6-8b9c-1d1e-2f3a-4b5c6d7e8f9b', 'English for Beginners',
+                 'Start your English journey in 8 weeks! Learn basic grammar, vocabulary, and speaking through interactive lessons. Perfect for beginners building a foundation in English.',
+                 'Basic grammar, vocabulary, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('e4f3a6b7-9c0d-1e2f-3a4b-5c6d7e8f9a0c', 'Spanish for Kids',
+                 'Fun Spanish for kids in 6 weeks! Learn through games, songs, and basic vocabulary in an engaging setting. Perfect for young learners starting their Spanish adventure.',
+                 'Games, songs, basic vocabulary',
+                 '6 weeks', 800.00, 30.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('f5a6b7c8-0d1e-2f3a-4b5c-6d9e8f9a0b1d', 'Spanish Conversation',
+                 'Boost your Spanish fluency in 10 weeks! Practice role-playing, group discussions, and listening tasks. Ideal for learners aiming to speak confidently in real-life scenarios.',
+                 'Role-playing, group discussions, listening',
+                 '10 weeks', 1400.00, 60.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('b8c8d9e0-2f3a-4b5c-6d7e-8f9a0b1c2d3f', 'German Beginners',
+                 'Start learning German in 8 weeks! Master basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners exploring German language and culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('4a868145-98b4-4a19-b701-bc4f6096637e', 'German for Travel',
+                 'Learn German for travel in 6 weeks! Master travel phrases, pronunciation, and cultural tips for your next trip. Ideal for travelers seeking practical German language skills.',
+                 'Travel phrases, pronunciation, cultural tips',
+                 '6 weeks', 900.00, 40.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('66355793-f655-4e01-9618-d89bd05807b4', 'Portuguese Immersion',
+                 'Dive into Portuguese in 8 weeks! Enhance speaking with music lessons and cultural workshops. Perfect for learners seeking an immersive Portuguese language and culture experience.',
+                 'Speaking practice, music lessons, cultural workshops',
+                 '8 weeks', 1300.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+                ('d9e0f1a2-4b5c-6d7e-8f9a-0b1c2d3e4f5b', 'Portuguese Beginners',
+                 'Begin your Portuguese journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for beginners exploring Portuguese language.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '9e2017d8-615c-4ee6-9036-26c9e3027ef6', false),
+
+                -- International School of Languages (ISL)
+                ('e0f1a2b3-5c6d-7e8f-9a0b-1c2d3e4f5a6c', 'English IELTS Prep',
+                 'Ace the IELTS exam in 10 weeks! Practice mock tests, writing, and speaking drills with expert guidance. Perfect for learners aiming for high scores in English proficiency tests.',
+                 'Mock tests, writing practice, speaking drills',
+                 '10 weeks', 1600.00, 70.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('f3a2b3c4-6d7e-8f9a-0b1c-2d3e4f5a6b7d', 'English Conversation',
+                 'Improve English speaking in 8 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for learners seeking confidence in everyday conversations.',
+                 'Group discussions, role-playing, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('a3b3c4d5-7e8f-9a0b-1c2d-3e4f5a6b7c8e', 'Italian Cooking & Language',
+                 'Learn Italian and cook in 12 weeks! Combine language lessons with cooking classes and recipe translation. Perfect for learners passionate about Italian culture and cuisine.',
+                 'Cooking classes, language lessons, recipe translation',
+                 '12 weeks', 1700.00, 85.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('b4c4d5e6-8f9a-0b1c-2d3e-4f5a6b7c8d9f', 'Italian Beginners',
+                 'Start your Italian journey in 8 weeks! Learn basic grammar, vocabulary, and cultural lessons through engaging lessons. Perfect for beginners eager to explore Italian language.',
+                 'Basic grammar, vocabulary, cultural lessons',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('c5d5e6f7-9a0b-1c2d-3e4f-5a6b7c8d9e0a', 'French Beginners',
+                 'Begin learning French in 8 weeks! Master basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for newcomers exploring French language and culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('d6e6f7a8-0b1c-2d3e-4f5a-6b7c8d9e0f1b', 'French Intermediate',
+                 'Advance your French in 12 weeks! Review grammar, practice conversation, and improve reading comprehension. Ideal for learners building on their French basics for fluency.',
+                 'Grammar review, conversation, reading comprehension',
+                 '12 weeks', 1500.00, 75.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('e7f7a8b9-1c2d-3e4f-5a6b-7c8d9e0f1a2c', 'Japanese Advanced',
+                 'Elevate your Japanese in 14 weeks! Study advanced kanji, grammar, and engage in discussions. Perfect for learners aiming to achieve high proficiency in Japanese language.',
+                 'Kanji study, advanced grammar, discussion',
+                 '14 weeks', 1900.00, 95.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+                ('f9a8b9c0-2d3e-4f5a-6b7c-8d9e0f1a2b3d', 'Japanese for Travel',
+                 'Learn Japanese for travel in 6 weeks! Master phrases, cultural lessons, and basic writing for your next trip. Ideal for travelers seeking practical Japanese language skills.',
+                 'Phrase practice, cultural lessons, basic writing',
+                 '6 weeks', 900.00, 40.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', '0ab6ef6f-bd0e-4a0a-a5a2-6b8e31c1e452', false),
+
+                -- Middle-sex University Malta (MSUM)
+                ('a8b1c0d1-3e4f-5a6b-7c8d-9e0f1a2b3c4e', 'English IELTS Prep',
+                 'Prepare for IELTS in 10 weeks! Practice mock tests, writing, and speaking drills with expert guidance. Perfect for learners aiming to excel in English proficiency exams.',
+                 'Mock tests, writing practice, speaking drills',
+                 '10 weeks', 1600.00, 70.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174000', false),
+                ('b9c2d1e2-4f5a-6b7c-8d9e-0f1a2b3c4d5f', 'English for Professionals',
+                 'Boost your career with English in 12 weeks! Master meetings, presentations, and networking skills. Ideal for professionals thriving in global business environments.',
+                 'Meetings, presentations, networking skills',
+                 '12 weeks', 1800.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174000', false),
+                ('c1d1e2f3-5a6b-7c8d-9e0f-1a2b3c4d5e6a', 'Spanish Beginners',
+                 'Start your Spanish journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for beginners exploring Spanish language and culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174000', false),
+                ('d2e2f3a4-6b7c-8d9e-0f1a-2b3c4d5e6f7b', 'Spanish Conversation',
+                 'Enhance Spanish fluency in 10 weeks! Practice role-playing, group discussions, and listening tasks. Ideal for learners seeking confidence in real-world Spanish conversations.',
+                 'Role-playing, group discussions, listening',
+                 '10 weeks', 1400.00, 60.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174000', false),
+                ('e4f3a4b5-7c8d-9e0f-1a2b-3c4d5e6f7a8c', 'French for Tourism',
+                 'Learn French for travel in 8 weeks! Master tourist phrases, role-playing, and cultural insights. Perfect for those in hospitality or planning French-speaking adventures.',
+                 'Tourist phrases, role-playing, cultural insights',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174000', false),
+                ('f4a4b5c6-8d9e-0f1a-2b3c-4d5e6f7a8b9d', 'French Beginners',
+                 'Start learning French in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners eager to explore French language.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174000', false),
+
+                -- Cosmopolitan School of Languages (CSOL)
+                ('a5b5c6d7-9e0f-1a2b-3c4d-5e6f7a8b9c0e', 'English Speaking Bootcamp',
+                 'Boost English fluency in 4 weeks! Focus on intensive speaking, pronunciation, and group activities. Perfect for learners seeking rapid improvement in English skills.',
+                 'Intensive speaking, pronunciation, group activities',
+                 '4 weeks', 900.00, 30.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('b6c6d7e8-0f1a-2b3c-4d5e-6f7a8b9c0d1f', 'English for Beginners',
+                 'Begin your English journey in 8 weeks! Learn basic grammar, vocabulary, and speaking through interactive lessons. Perfect for newcomers building a foundation in English.',
+                 'Basic grammar, vocabulary, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('c8d7e8f9-1a2b-3c4d-5e6f-7a8b9c0d1e2a', 'German Beginners',
+                 'Start your German journey in 8 weeks! Master basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for beginners exploring German language and culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('d9e8f9a0-2b3c-4d5e-6f7a-8b9c0d1e2f3b', 'German Conversation',
+                 'Improve German fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for learners aiming to speak German confidently.',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('e7f9a0b1-3c4d-5e6f-7a8b-9c0d1e2f3a4c', 'Italian Intermediate',
+                 'Advance your Italian in 12 weeks! Focus on conversation, grammar, and listening to build fluency. Perfect for learners ready to take their Italian skills to the next level.',
+                 'Conversation, grammar, listening practice',
+                 '12 weeks', 1500.00, 75.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('f4a0b1c2-4d5e-6f7a-8b9c-0d1e2f3a4b5d', 'Italian for Beginners',
+                 'Begin your Italian journey in 8 weeks! Learn basic grammar, vocabulary, and cultural lessons through engaging lessons. Perfect for newcomers to Italian language and culture.',
+                 'Basic grammar, vocabulary, cultural lessons',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('a1b1c2d3-5e6f-7a8b-9c0d-1e2f3a4b5c6e', 'Portuguese for Travelers',
+                 'Learn Portuguese for travel in 6 weeks! Master travel phrases, pronunciation, and cultural tips. Perfect for adventurers seeking practical Portuguese language skills.',
+                 'Travel phrases, pronunciation, cultural tips',
+                 '6 weeks', 900.00, 40.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '123e4567-e89b-12d3-a456-426614174100', true),
+                ('b1c2d3e4-6f7a-8b9c-0e1e-2f3a4b5c6d7f', 'Portuguese Immersion',
+                 'Dive into Portuguese in 8 weeks! Enhance speaking with music lessons and cultural workshops. Perfect for an immersive Portuguese language and culture experience.',
+                 'Speaking practice, music lessons, cultural workshops',
+                 '8 weeks', 1300.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '123e4567-e89b-12d3-a456-426614174100', true),
+
+                -- Language Excellence Academy (LEA)
+                ('c2d3e4f5-7a8b-9c0d-1e2f-3e4b5c6d7e8a', 'English Speaking Bootcamp',
+                 'Skyrocket English fluency in 4 weeks! Focus on intensive speaking, pronunciation, and group activities. Perfect for rapid improvement in English speaking skills.',
+                 'Intensive speaking, pronunciation, group activities',
+                 '4 weeks', 900.00, 30.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '37b5d1b7-ec01-466d-837d-0098a175c250', true),
+                ('d3e4f5a6-8b9c-0d1e-2e3a-4b5c6d7e8f9b', 'English for Professionals',
+                 'Boost your career with English in 12 weeks! Master meetings, presentations, and networking skills. Ideal for professionals in global business environments.',
+                 'Meetings, presentations, networking skills',
+                 '12 weeks', 1800.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '37b5d1b7-ec01-466d-837d-0098a175c250', true),
+                ('e4f5a6e7-9c0d-1e2f-3a4b-5c6d7e8f9a0c', 'Spanish Beginners',
+                 'Start learning Spanish in 8 weeks! Master basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners exploring Spanish language.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '37b5d1b7-ec01-466d-837d-0098a175c250', true),
+                ('f5a6b7c8-0d1e-2f3a-4b5c-dd7e8f9a0b1d', 'Spanish Conversation',
+                 'Boost Spanish fluency in 10 weeks! Practice role-playing, group discussions, and listening tasks. Ideal for confident real-world Spanish conversations.',
+                 'Role-playing, group discussions, listening',
+                 '10 weeks', 1400.00, 60.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '37b5d1b7-ec01-466d-837d-0098a175c250', true),
+                ('a6b7c8d9-1e2f-3adb-5c6d-7e8f9a0b1c2e', 'Chinese for Business',
+                 'Learn Chinese for work in 14 weeks! Master business terms, negotiation, and cultural norms. Perfect for professionals seeking opportunities in Chinese markets.',
+                 'Business terms, negotiation practice, cultural norms',
+                 '14 weeks', 2000.00, 100.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '37b5d1b7-ec01-466d-837d-0098a175c250', true),
+                ('3bbb771f-4295-42b9-927d-9df434415f4d', 'Chinese Beginners',
+                 'Start your Chinese journey in 10 weeks! Learn pinyin, basic characters, and speaking through engaging lessons. Perfect for beginners exploring Mandarin language.',
+                 'Pinyin, basic characters, speaking practice',
+                 '10 weeks', 1300.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '37b5d1b7-ec01-466d-837d-0098a175c250', true),
+
+                -- London Language Institute (LEI)
+                ('c8d9e0f1-3a4b-5c6d-7e8f-9a0b1c2d3e4a', 'English Creative Writing',
+                 'Unleash creativity in English in 12 weeks! Join writing workshops, storytelling, and peer reviews. Perfect for learners passionate about crafting stories in English.',
+                 'Writing workshops, storytelling, peer reviews',
+                 '12 weeks', 1800.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('76663340-04b4-4b3a-a362-31750abbbd98', 'English IELTS Prep',
+                 'Ace IELTS in 10 weeks! Practice mock tests, writing, and speaking drills with expert guidance. Perfect for learners aiming for high English proficiency scores.',
+                 'Mock tests, writing practice, speaking drills',
+                 '10 weeks', 1600.00, 70.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('6624a51c-2e6e-4293-8199-24fb61600f0d', 'French Beginners',
+                 'Begin your French journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for newcomers to French language.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('f4a2b3c4-6d7e-8f9a-0b1c-2d3e4f5a6b7d', 'French for Travel',
+                 'Learn French for travel in 6 weeks! Master travel phrases, role-playing, and cultural insights. Perfect for travelers seeking practical French language skills.',
+                 'Travel phrases, role-playing, cultural insights',
+                 '6 weeks', 900.00, 40.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('a4b3c4d5-7e8f-9a0b-1c2d-3e4f5a6b7c8e', 'German Beginners',
+                 'Start learning German in 8 weeks! Master basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for beginners exploring German culture.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('b5c4d5e6-8f9a-0b1c-2d3e-4f5a6b7c8d9f', 'German Business Communication',
+                 'Excel in German for work in 10 weeks! Master business vocabulary, email writing, and presentations. Ideal for thriving in German-speaking workplaces.',
+                 'Business vocabulary, email writing, presentations',
+                 '10 weeks', 1800.00, 100.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('c6d5e6f7-9a0b-1c2d-3e4f-5a6b7c8d9e0a', 'Italian Beginners',
+                 'Begin your Italian journey in 8 weeks! Learn basic grammar, vocabulary, and cultural lessons through engaging lessons. Perfect for newcomers to Italian language.',
+                 'Basic grammar, vocabulary, cultural lessons',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174001', false),
+                ('d7e6f7a8-0b1c-2d3e-4f5a-6b7c8d9e0f1b', 'Italian Culture & Language',
+                 'Immerse in Italian culture in 10 weeks! Learn through workshops, conversation, and reading. Perfect for deepening Italian language and heritage knowledge.',
+                 'Cultural workshops, conversation, reading',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174001', false),
+
+                -- Academic Language Center (ACLC)
+                ('e8f7a8b9-1c2d-3e4f-5a6b-7c8d9e0f1a2c', 'English for Academic Purposes',
+                 'Boost academic English in 16 weeks! Master essay writing, lectures, and critical reading. Perfect for students preparing for university studies in English.',
+                 'Essay writing, lectures, critical reading',
+                 '16 weeks', 2000.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4', false),
+                ('f1a8b9c0-2d3e-4f5a-6b7c-8d9e0f1a2b3d', 'English Conversation Skills',
+                 'Improve English fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for confident social conversations.',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4', false),
+                ('a8b2c0d1-3e4f-5a6b-7c8d-9e0f1a2b3c4e', 'Spanish Beginners',
+                 'Start your Spanish journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners exploring Spanish.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4', false),
+                ('b9c3d1e2-4f5a-6b7c-8d9e-0f1a2b3c4d5f', 'Spanish for Kids',
+                 'Fun Spanish for kids in 6 weeks! Learn through games, songs, and basic vocabulary in an engaging setting. Perfect for young learners starting Spanish.',
+                 'Games, songs, basic vocabulary',
+                 '6 weeks', 800.00, 30.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4', false),
+                ('c2d1e2f3-5a6b-7c8d-9e0f-1a2b3c4d5e6a', 'Japanese Beginners',
+                 'Begin learning Japanese in 8 weeks! Master hiragana, basic grammar, and speaking through interactive lessons. Perfect for newcomers to Japanese culture.',
+                 'Hiragana, basic grammar, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4', false),
+                ('d3e2f3a4-6b7c-8d9e-0f1a-2b3c4d5e6f7b', 'Japanese for Travel',
+                 'Learn Japanese for travel in 6 weeks! Master phrases, cultural lessons, and basic writing. Perfect for travelers seeking practical Japanese language skills.',
+                 'Phrase practice, cultural lessons, basic writing',
+                 '6 weeks', 900.00, 40.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', 'db1239a3-1d58-4430-9eaa-e29fe6dee5e4', false),
+
+                -- New York Language Center (NYLC)
+                ('e5f3a4b5-7c8d-9e0f-1a2b-3c4d5e6f7a8c', 'English Speaking Bootcamp',
+                 'Skyrocket English fluency in 4 weeks! Focus on intensive speaking, pronunciation, and group activities. Perfect for rapid English speaking improvement.',
+                 'Intensive speaking, pronunciation, group activities',
+                 '4 weeks', 900.00, 30.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('f5a4b5c6-8d9e-0f1a-2b3c-4d5e6f7a8b9d', 'English for Professionals',
+                 'Boost your career with English in 12 weeks! Master meetings, presentations, and networking skills. Ideal for thriving in global business settings.',
+                 'Meetings, presentations, networking skills',
+                 '12 weeks', 1800.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('a6b5c6d7-9e0f-1a2b-3c4d-5e6f7a8b9c0e', 'Spanish Conversation Mastery',
+                 'Boost Spanish fluency in 12 weeks! Practice real-world conversations through role-playing and listening. Perfect for intermediate learners seeking confidence.',
+                 'Role-playing, group discussions, listening exercises',
+                 '12 weeks', 1500.00, 75.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('b7c6d7e8-0f1a-2b3c-4d5e-6f7a8b9c0d1f', 'Spanish Beginners',
+                 'Start learning Spanish in 8 weeks! Master basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners exploring Spanish.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('c9d7e8f9-1a2b-3c4d-5e6f-7a8b9c0d1e2a', 'Chinese HSK Level 1 Prep',
+                 'Ace HSK Level 1 in 10 weeks! Practice character writing, listening, and mock tests for exam success. Perfect for beginner-level Chinese certification.',
+                 'Character writing, listening practice, mock tests',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('d2e8f9a0-2b3c-4d5e-6f7a-8b9c0d1e2f3b', 'Chinese Beginners',
+                 'Begin your Chinese journey in 10 weeks! Learn pinyin, basic characters, and speaking through engaging lessons. Perfect for newcomers to Mandarin language.',
+                 'Pinyin, basic characters, speaking practice',
+                 '10 weeks', 1300.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('e5f9a0b1-3c4d-5e6f-7a8b-9c0d1e2f3a4c', 'German Beginners',
+                 'Start learning German in 8 weeks! Master basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for beginners exploring German.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174002', false),
+                ('f9a0b1c2-4d5e-6f7a-8b9c-0d1e2f3a4b5d', 'German for Travel',
+                 'Learn German for travel in 6 weeks! Master travel phrases, pronunciation, and cultural tips. Perfect for travelers seeking practical German language skills.',
+                 'Travel phrases, pronunciation, cultural tips',
+                 '6 weeks', 900.00, 40.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174002', false),
+
+                -- Madrid Language School (MSS)
+                ('a2b1c2d3-5e6f-7a8b-9c0d-1e2f3a4b5c6e', 'Spanish Immersion',
+                 'Dive into Spanish culture in 12 weeks! Enhance speaking with workshops and reading. Perfect for immersive Spanish language and cultural learning.',
+                 'Speaking practice, cultural workshops, reading',
+                 '12 weeks', 1600.00, 80.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('b1c2d3e4-6f7a-8b9c-0d1e-2f3a4b5d6d7f', 'Spanish DELE Prep',
+                 'Prepare for DELE in 10 weeks! Practice mock tests, writing, and speaking drills for exam success. Perfect for learners aiming for Spanish proficiency certification.',
+                 'Mock tests, writing practice, speaking drills',
+                 '10 weeks', 1500.00, 70.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('c2d3e4f5-7a8b-9c0d-1e2f-3a4b5c6d7e8a', 'English Beginners',
+                 'Start learning English in 8 weeks! Master basic grammar, vocabulary, and speaking through interactive lessons. Perfect for beginners building English skills.',
+                 'Basic grammar, vocabulary, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('d3e4f5a6-8b9c-0d1e-2f3a-4b5c6d7e8f9b', 'English Conversation',
+                 'Improve English fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for confident everyday conversations.',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('e4f5a6b7-9c0d-ae2f-3a4b-5c6d7e8f9a0c', 'French Beginners',
+                 'Begin your French journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for newcomers to French.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('f5a6b7c8-0d1e-2f3a-4b5c-6d7e8f9a0b1d', 'French Intermediate',
+                 'Begin your French journey in 8 weeks! Learn basic grammar, vocabulary, and pronunciation through engaging lessons. Perfect for newcomers eager to explore French language and culture.',
+                 'Grammar review, conversation, reading comprehension',
+                 '12 weeks', 1500.00, 75.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('8fb7ec7b-1433-4e95-af4e-c2e72870487b', 'Portuguese Beginners',
+                 'Advance your French in 12 weeks! Review grammar, practice conversation, and improve reading. Ideal for learners building on French basics for fluency.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '123e4567-e89b-12d3-a456-426614174003', false),
+                ('90116f8f-da08-439a-8998-8afc468db612', 'Portuguese for Travelers',
+                 'Learn Portuguese for travel in 6 weeks! Master travel phrases, pronunciation, and cultural tips for your next adventure. Ideal for travelers seeking practical language skills.',
+                 'Travel phrases, pronunciation, cultural tips',
+                 '6 weeks', 900.00, 40.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0d4e5a7d9b', '123e4567-e89b-12d3-a456-426614174003', false),
+
+
+                ----------------------------------------------------------------------------------
+                -- Dubai Language Hub (DLH)
+                ('a756f9aa-4409-4aee-9829-7d9a819876a7', 'English for Business',
+                 'Skyrocket your English fluency in 4 weeks! Focus on intensive speaking, pronunciation, and group activities. Perfect for learners wanting rapid improvement in speaking skills.',
+                 'Business vocabulary, email writing, presentations',
+                 '12 weeks', 1800.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174006', true),
+                ('a66137d2-fd70-4257-b81d-efd6bb7f708e', 'English Speaking Bootcamp',
+                 'Improve English fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for learners aiming to speak confidently in social settings.',
+                 'Intensive speaking, pronunciation, group activities',
+                 '4 weeks', 900.00, 30.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174006', true),
+                ('68d59b75-5b9b-43e2-a3c7-5788f39cfdb7', 'Chinese for Business',
+                 'Fast-track Chinese learning in 8 weeks! Master pinyin, basic characters, and speaking drills. Ideal for beginners eager to accelerate their Mandarin skills for travel or study.',
+                 'Business terms, negotiation practice, cultural norms',
+                 '14 weeks', 2000.00, 100.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '123e4567-e89b-12d3-a456-426614174006', true),
+                ('f1a2b3c4-6d7e-8f9a-0b1c-2d3e4f5a6b7d', 'Chinese Beginners',
+                 'Ace HSK Level 1 in 10 weeks! Practice character writing, listening, and mock tests for exam success. Perfect for learners seeking beginner-level Chinese certification.',
+                 'Pinyin, basic characters, speaking practice',
+                 '10 weeks', 1300.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440001', '123e4567-e89b-12d3-a456-426614174006', true),
+                ('a5b3c4d5-7e8f-9a0b-1c2d-3e4f5a6b7c8e', 'Japanese Beginners',
+                 'Learn Japanese for travel in 6 weeks! Master phrases, cultural lessons, and basic writing. Perfect for travelers seeking practical Japanese language skills.',
+                 'Hiragana, basic grammar, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', '123e4567-e89b-12d3-a456-426614174006', true),
+                ('b6c4d5e6-8f9a-0b1c-2d3e-4f5a6b7c8d9f', 'Japanese Culture',
+                 'Begin learning Japanese in 8 weeks! Master hiragana, basic grammar, and speaking through interactive lessons. Perfect for newcomers to Japanese culture.',
+                 'Cultural workshops, conversation, basic writing',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440003', '123e4567-e89b-12d3-a456-426614174006', true),
+
+                -- Paris French Academy (PFA)
+                ('c7d5e6f7-9a0b-1c2d-3e4f-5a6b7c8d9e0a', 'French Immersion',
+                 'Begin your French journey in 12 weeks! Learn basic grammar, vocabulary, and pronunciation through interactive lessons. Perfect for newcomers to French.',
+                 'Speaking practice, cultural workshops, reading',
+                 '12 weeks', 1600.00, 80.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174004', false),
+                ('d8e6f7a8-0b1c-2d3e-4f5a-6b7c8d9e0f1b', 'French DELF Prep',
+                 'Advance your French in 10 weeks! Review grammar, practice conversation, and improve reading. Ideal for learners building on French basics for fluency.',
+                 'Mock tests, writing practice, speaking drills',
+                 '10 weeks', 1500.00, 70.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174004', false),
+                ('e6f9a8b9-1c2d-3e4f-5a6b-7c8d9e0f1a2c', 'English Beginners',
+                 'Improve English fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for learners aiming to speak confidently in social settings.',
+                 'Basic grammar, vocabulary, speaking practice',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174004', false),
+                ('f7a8b9c0-2d3e-4f5a-6b7c-8d9e0f1a2b3d', 'English Conversation',
+                 'Boost your academic English in 16 weeks! Master essay writing, lectures, and critical reading. Perfect for students preparing for university studies in English.',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174004', false),
+                ('a8b9c0d1-3e4f-5a6b-7c8d-9e0f1a2b3c4e', 'Spanish Beginners',
+                 'Boost your Spanish fluency in 8 weeks! Practice real-world conversations through role-playing, group discussions, and listening exercises. Perfect for intermediate learners seeking confidence in speaking.',
+                 'Role-playing, group discussions, listening',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174004', false),
+                ('b9c0d1e2-4f5a-6b7c-8d9e-0f1a2b3c4d5f', 'Spanish Conversation',
+                 'Master Spanish grammar in 10 weeks! Tackle exercises, writing tasks, and quizzes to build a strong foundation for all levels. Ideal for learners aiming to improve accuracy in written and spoken Spanish.',
+                 'Role-playing, group discussions, listening',
+                 '10 weeks', 1400.00, 60.00, true,
+                 'b7e2c9a4-5f1d-4e3b-8a6c-2d9f0e4b7c1a', '123e4567-e89b-12d3-a456-426614174004', false),
+
+                -- Berlin Language Institute (BGI)
+                ('c3d1e2f3-5a6b-7c8d-9e0f-1a2b3c4d5e6a', 'German Immersion',
+                 'Start your German journey in 8 weeks! Master basic grammar and pronunciation through engaging lessons. Perfect for beginners exploring German language and culture.',
+                 'Speaking practice, cultural workshops, reading',
+                 '12 weeks', 1600.00, 80.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('d4e2f3a4-6b7c-8d9e-0f1a-2b3c4d5e6f7b', 'German Goethe-Zertifikat Prep',
+                 'Begin your German journey in 12 weeks! Master basic grammar, vocabulary, and pronunciation with interactive lessons. Perfect for beginners eager to explore German language and culture for travel or study.',
+                 'Mock tests, writing practice, speaking drills',
+                 '10 weeks', 1500.00, 70.00, true,
+                 '770e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('e2f4a4b5-7c8d-9e0f-1a2b-3c4d5e6f7a8c', 'English for Professionals',
+                 'Improve English fluency in 10 weeks! Engage in group discussions, role-playing, and pronunciation practice. Ideal for learners aiming to speak confidently in social settings.',
+                 'Meetings, presentations, networking skills',
+                 '12 weeks', 1800.00, 90.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('f7a4b5c6-8d9e-0f1a-2b3c-4d5e6f7a8b9d', 'English Conversation',
+                 'Boost your academic English in 16 weeks! Master essay writing, lectures, and critical reading. Perfect for students preparing for university studies in English',
+                 'Group discussions, role-playing, pronunciation',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '8a4f2d1b-3e5c-4a7d-9b2e-1c0f3e5a7d9b', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('a7b5c6d7-9e0f-1a2b-3c4d-5e6f7a8b9c0e', 'French Beginners',
+                 'Build on your French skills in 8 weeks! Review grammar, practice conversation, and improve reading comprehension. Ideal for learners ready to advance their French fluency.',
+                 'Basic grammar, vocabulary, pronunciation',
+                 '8 weeks', 1200.00, 50.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('b8c6d7e8-0f1a-2b3c-4d5e-6f7a8b9c0d1f', 'French for Travel',
+                 'French Culture & Language: Immerse in French culture in 6 weeks! Learn through workshops, reading, and speaking practice. Perfect for learners wanting to deepen their French language and cultural knowledge.',
+                 'Travel phrases, role-playing, cultural insights',
+                 '6 weeks', 900.00, 40.00, true,
+                 'c3d8f6e1-2a9b-4f5c-7e0d-9b1a3f6c8e2d', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('c6d7e8f9-1a2b-3c4d-5e6f-7a8b9c0d1e2a', 'Italian Beginners',
+                 'Start your Italian journey in 8 weeks! Learn basic grammar, vocabulary, and cultural lessons through engaging lessons. Perfect for beginners eager to explore Italian language.',
+                 'Basic grammar, vocabulary, cultural lessons',
+                 '8 weeks', 1200.00, 50.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174005', false),
+                ('d7e8f9a0-2b3c-4d5e-6f7a-8b9c0d1e2f3b', 'Italian Culture & Language',
+                 'Begin your Italian journey in 10 weeks! Learn basic grammar, vocabulary, and cultural lessons through engaging lessons. Perfect for newcomers to Italian language and culture.',
+                 'Cultural workshops, conversation, reading',
+                 '10 weeks', 1400.00, 60.00, true,
+                 '660e8400-e29b-41d4-a716-446655440002', '123e4567-e89b-12d3-a456-426614174005', false);
+END IF;
+END
+$$;
