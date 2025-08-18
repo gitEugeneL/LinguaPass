@@ -20,7 +20,6 @@ public sealed class User
 
     public DateTime CreateAt { get; init; } = DateTime.UtcNow;
     public DateTime UpdateAt { get; init; }
-    public DateTime DeleteAt { get; init; }
 
     /*** Relations ***/
 
