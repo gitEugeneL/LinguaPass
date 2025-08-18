@@ -31,6 +31,7 @@ interface AccountState {
   updateContactId: (contactId: string) => void;
   updatePersonalId: (personalId: string) => void;
 
+  resetApplication: () => Promise<void>;
   sendApplication: () => Promise<void>;
 }
 
@@ -121,6 +122,22 @@ export const useAccountStore = create<AccountState>()(
             {},
             { headers: createAuthHeader(useAuthStore.getState().accessToken) }
           );
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            set({ error: error.response?.data });
+            throw error;
+          }
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      resetApplication: async () => {
+        set({ isLoading: true });
+        try {
+          await axios.get(accountUrls.resetApplication, {
+            headers: createAuthHeader(useAuthStore.getState().accessToken)
+          });
         } catch (error) {
           if (error instanceof AxiosError) {
             set({ error: error.response?.data });

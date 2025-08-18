@@ -33,6 +33,8 @@ interface SchoolsState {
   getCountries: (languageId: string) => Promise<void>;
   getSchools: (languageId: string, countryId: string) => Promise<void>;
   chooseSchool: (languageId: string, schoolId: string, countryId: string) => Promise<void>;
+
+  restState: () => void;
 }
 
 export const useSchoolsStore = create<SchoolsState>()(
@@ -142,6 +144,18 @@ export const useSchoolsStore = create<SchoolsState>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+
+      restState: () => {
+        set({
+          countries: [],
+          schools: [],
+          currentSchool: null,
+          chosenCountryId: null,
+          chosenLanguageId: null,
+          currentCountryId: null,
+          error: null
+        });
       }
     }),
 

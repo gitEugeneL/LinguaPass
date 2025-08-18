@@ -212,7 +212,7 @@ export const useAuthStore = create<AuthState>()(
             localStorage.clear();
           } catch (error) {
             if (error instanceof AxiosError) {
-              set({ error: 'Invalid logout' });
+              console.log('Invalid logout');
             }
           } finally {
             set({ isLoading: false });

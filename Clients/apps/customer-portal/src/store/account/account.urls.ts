@@ -5,5 +5,7 @@ export const accountUrls = {
 
   getShortUserInfo: `${ACCOUNT}/short-info`,
 
-  sendApplication: `${ACCOUNT}/send-application`
+  sendApplication: `${ACCOUNT}/send-application`,
+
+  resetApplication: `${ACCOUNT}/reset-application`
 };

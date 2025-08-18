@@ -108,7 +108,12 @@ export function InteractionCard({ ...props }: InteractionCardProps) {
               <b>{studentDetail?.contact?.name ?? 'The user'}</b> has not submitted the application
               form yet :(
             </h3>
-            <Button name='Archive account' appearance='danger' onClick={props.changeActive} />
+            {studentDetail?.isActive && (
+              <Button name='Archive account' appearance='danger' onClick={props.changeActive} />
+            )}
+            {!studentDetail?.isActive && (
+              <Button name='Activate account' appearance='primary' onClick={props.changeActive} />
+            )}
           </>
         )}
         {statusOrder && statusOrder === 7 && (

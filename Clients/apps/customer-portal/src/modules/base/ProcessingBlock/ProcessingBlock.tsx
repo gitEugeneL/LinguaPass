@@ -1,26 +1,43 @@
 import { Button } from '@clients/shared';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/react/shallow';
 
-import { useAccountStore, useProgressStore } from '../../../store';
+import { routes } from '../../../helpers';
+import {
+  useAccountStore,
+  useCoursesStore,
+  useLanguagesStore,
+  useProgressStore,
+  useSchoolsStore
+} from '../../../store';
 
 import { ErrorProcessingIcon } from './icons/ErrorProcessingIcon.tsx';
 import { ProcessingIcon } from './icons/ProcessingIcon.tsx';
 import styles from './ProcessingBlock.module.pcss';
 
 export function ProcessingBlock() {
-  const { myStatus, getMyStatus } = useProgressStore(
+  const navigate = useNavigate();
+
+  const { changeStep, myStatus, getMyStatus } = useProgressStore(
     useShallow((state) => ({
       getMyStatus: state.getMyStatus,
+      changeStep: state.changeStep,
       myStatus: state.myStatus
     }))
   );
-  const { account, getCurrentAccount } = useAccountStore(
+
+  const { account, getCurrentAccount, resetApplication } = useAccountStore(
     useShallow((state) => ({
+      resetApplication: state.resetApplication,
       getCurrentAccount: state.getCurrentAccount,
       account: state.account
     }))
   );
+
+  const resetSchool = useSchoolsStore((state) => state.restState);
+  const resetCourse = useCoursesStore((state) => state.resetCurrentCourse);
+  const resetLanguage = useLanguagesStore((state) => state.resetState);
 
   useEffect(() => {
     if (myStatus?.order === 8) {
@@ -35,13 +52,18 @@ export function ProcessingBlock() {
     return () => clearInterval(interval);
   }, [getMyStatus]);
 
-  const handleUpdateApplication = () => {
-    // todo create logic
-    // todo create logic
-    // todo create logic
-    // todo create logic
-    // todo create logic
-    // todo create logic
+  const handleUpdateApplication = async () => {
+    try {
+      await resetApplication();
+      changeStep(routes.language.order);
+      resetSchool();
+      resetCourse();
+      resetLanguage();
+      navigate(routes.language.to);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error resetting application:', error);
+    }
   };
 
   return (
