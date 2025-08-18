@@ -7,11 +7,8 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [react()],
   server: {
-    // https: {
-    //   key: fs.readFileSync('devCerts/localhost+2-key.pem'),
-    //   cert: fs.readFileSync('devCerts/localhost+2.pem')
-    // },
-    port: 5174
+    port: 5174,
+    host: true
   },
   resolve: {
     alias: {

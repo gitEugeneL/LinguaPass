@@ -1,0 +1,25 @@
+services:
+  customer-portal:
+    build:
+      context: ./Clients
+      dockerfile: Dockerfile
+    command: pnpm exec serve -s apps/customer-portal/dist -l 5173
+    ports:
+      - "5173:5173"
+    container_name: customer-portal
+    volumes:
+      - pnpm-store:/root/.local/share/pnpm/store
+
+  manager-portal:
+    build:
+      context: ./Clients
+      dockerfile: Dockerfile
+    command: pnpm exec serve -s apps/manager-portal/dist -l 5174
+    ports:
+      - "5174:5174"
+    container_name: manager-portal
+    volumes:
+      - pnpm-store:/root/.local/share/pnpm/store
+
+volumes:
+  pnpm-store:

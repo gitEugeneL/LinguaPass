@@ -16,7 +16,7 @@ interface DocumentState {
   openFile: (userId: string, fileName: string) => Promise<void>;
 }
 
-export const useDocumentStore = create<DocumentState>((set, get) => ({
+export const useDocumentStore = create<DocumentState>((set) => ({
   fileNames: [],
   isLoading: false,
   error: null,
