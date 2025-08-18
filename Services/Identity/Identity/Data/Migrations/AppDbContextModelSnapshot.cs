@@ -22,7 +22,7 @@ namespace IdentityApi.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Identity.Domain.Entities.ConfirmationCode", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.ConfirmationCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -46,7 +46,7 @@ namespace IdentityApi.Data.Migrations
                     b.ToTable("ConfirmationCodes");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace IdentityApi.Data.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.Role", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,17 +86,17 @@ namespace IdentityApi.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                            Name = "ADMIN"
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Name = "CUSTOMER"
                         },
                         new
                         {
-                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                            Name = "CUSTOMER"
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Name = "ADMIN"
                         });
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,9 +112,6 @@ namespace IdentityApi.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("CreateAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DeleteAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
@@ -161,20 +158,20 @@ namespace IdentityApi.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.ConfirmationCode", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.ConfirmationCode", b =>
                 {
-                    b.HasOne("Identity.Domain.Entities.User", "User")
+                    b.HasOne("IdentityApi.Domain.Entities.User", "User")
                         .WithOne("ConfirmationCode")
-                        .HasForeignKey("Identity.Domain.Entities.ConfirmationCode", "UserId")
+                        .HasForeignKey("IdentityApi.Domain.Entities.ConfirmationCode", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Identity.Domain.Entities.User", "User")
+                    b.HasOne("IdentityApi.Domain.Entities.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,9 +180,9 @@ namespace IdentityApi.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.User", b =>
                 {
-                    b.HasOne("Identity.Domain.Entities.Role", "Role")
+                    b.HasOne("IdentityApi.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -194,12 +191,12 @@ namespace IdentityApi.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.Role", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Identity.Domain.Entities.User", b =>
+            modelBuilder.Entity("IdentityApi.Domain.Entities.User", b =>
                 {
                     b.Navigation("ConfirmationCode");
 

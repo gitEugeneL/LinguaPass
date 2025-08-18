@@ -43,7 +43,6 @@ namespace IdentityApi.Data.Migrations
                     ConfirmLockExpires = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeleteAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
