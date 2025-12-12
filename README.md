@@ -177,23 +177,23 @@ SQL scripts automatically create tables and populate databases with test data wh
 
 - Account.database **(*Account.service*)**
 
-![Account database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/account.database.png?raw=true)
+![Account database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/account.database.png?raw=true)
 
 - Course.database **(*Course.service*)**
 
-![Course database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/course.database.png?raw=true)
+![Course database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/course.database.png?raw=true)
 
 - Identity.database **(*Identity.service*)**
 
-![Identity database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/identity.database.png?raw=true)
+![Identity database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/identity.database.png?raw=true)
 
 - Progress.database **(*Progress.service*)**
 
-![Progress database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/progress.database.png?raw=true)
+![Progress database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/progress.database.png?raw=true)
 
 - MinIO Storage **(*Storage.service*)**
 
-![MinIO Storage](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/storage.png?raw=true)
+![MinIO Storage](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/storage.png?raw=true)
 
 
 ## 🎡️ Clients screenshots
