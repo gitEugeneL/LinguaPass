@@ -193,8 +193,7 @@ SQL scripts automatically create tables and populate databases with test data wh
 
 - MinIO Storage **(*Storage.service*)**
 
-![MinIO Storage](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/storage.png?raw=true)
-
+<img src="https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/storage.png?raw=true" alt="MinIO Storage" width="300">
 
 ## 🎡️ Clients screenshots
 
