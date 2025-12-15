@@ -200,7 +200,7 @@ SQL scripts automatically create tables and populate databases with test data wh
 ### Responsive interface with the ability to adapt to any device
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
-    <img src="Presentation/clients/responsive-1.png" alt="responsive-1" style="width: 830px; height: auto;" />
+    <img src="Presentation/clients/responsive-1.png" alt="responsive-1" style="width: 825px; height: auto;" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
@@ -211,26 +211,26 @@ SQL scripts automatically create tables and populate databases with test data wh
 ### Authorization and Authentication
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/authorization-1.png" alt="authorization-1" style="width: 583px; height: auto;" />
-    <img src="Presentation/clients/authorization-2.png" alt="authorization-2" style="width: 282px; height: auto;" />
-    <img src="Presentation/clients/authorization-3.png" alt="authorization-3" style="width: 280px; height: auto;" />
+    <img src="Presentation/clients/authorization-1.png" alt="authorization-1" style="width: 410px; height: auto;" />
+    <img src="Presentation/clients/authorization-2.png" alt="authorization-2" style="width: 199px; height: auto;" />
+    <img src="Presentation/clients/authorization-3.png" alt="authorization-3" style="width: 199px; height: auto;" />
 </div>
 
 
 ### Dynamic adaptation to step and user selection
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/dynamic-1.png" alt="dynamic-1" style="width: 583px; height: auto;" />
-    <img src="Presentation/clients/dynamic-2.png" alt="dynamic-2" style="width: 583px; height: auto;" />
+    <img src="Presentation/clients/dynamic-1.png" alt="dynamic-1" style="width: 407px; height: auto;" />
+    <img src="Presentation/clients/dynamic-2.png" alt="dynamic-2" style="width: 407px; height: auto;" />
 </div>
 
 ### User selection and information input forms
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/form-1.png" alt="form-1" style="width: 638px; height: auto;" />
+    <img src="Presentation/clients/form-1.png" alt="form-1" style="width: 427px; height: auto;" />
     <div style="display: flex; justify-content: center; gap: 10px; flex-direction: column;">
-        <img src="Presentation/clients/form-2.png" alt="form-2" style="width: 583px; height: auto;" />
-        <img src="Presentation/clients/form-3.png" alt="form-3" style="width: 583px; height: auto;" />
+        <img src="Presentation/clients/form-2.png" alt="form-2" style="width: 388px; height: auto;" />
+        <img src="Presentation/clients/form-3.png" alt="form-3" style="width: 388px; height: auto;" />
     </div>    
 </div>
 
@@ -238,50 +238,50 @@ SQL scripts automatically create tables and populate databases with test data wh
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
     <div style="display: flex; justify-content: center; gap: 10px; flex-direction: column;">
-        <img src="Presentation/clients/files-1.png" alt="files-1" style="width: 583px; height: auto;" />
-        <img src="Presentation/clients/files-2.png" alt="files-2" style="width: 583px; height: auto;" />
+        <img src="Presentation/clients/files-1.png" alt="files-1" style="width: 398px; height: auto;" />
+        <img src="Presentation/clients/files-2.png" alt="files-2" style="width: 398px; height: auto;" />
     </div>    
-    <img src="Presentation/clients/files-3.png" alt="files-3" style="width: 605px; height: auto;" />
+    <img src="Presentation/clients/files-3.png" alt="files-3" style="width: 418px; height: auto;" />
 </div>
 
 ### Summary and application submission
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/submission-1.png" alt="submission-1.png" style="width: 583px; height: auto;" />
-    <img src="Presentation/clients/submission-2.png" alt="submission-2.png" style="width: 400px; height: auto;" />
+    <img src="Presentation/clients/submission-1.png" alt="submission-1.png" style="width: 477px; height: auto;" />
+    <img src="Presentation/clients/submission-2.png" alt="submission-2.png" style="width: 333px; height: auto;" />
 </div>
 
 ### Administrator login to the system and administrator main page
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/administratorMain-1.png" alt="administratorMain-1.png" style="width: 261px; height: auto;" />
-    <img src="Presentation/clients/administratorMain-2.png" alt="administratorMain-2.png" style="width: 700px; height: auto;" />
+    <img src="Presentation/clients/administratorMain-1.png" alt="administratorMain-1.png" style="width: 220px; height: auto;" />
+    <img src="Presentation/clients/administratorMain-2.png" alt="administratorMain-2.png" style="width: 590px; height: auto;" />
 </div>
 
 ### Managing available programs in the system for the user
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
-    <img src="Presentation/clients/managin-1.png" alt="managin-1" style="width: 1000px; height: auto;" />
+    <img src="Presentation/clients/managin-1.png" alt="managin-1" style="width: 825px; height: auto;" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/managin-2.png" alt="managin-2" style="width: 495px; height: auto;" />
-    <img src="Presentation/clients/managin-3.png" alt="managin-3" style="width: 490px; height: auto;" />
+    <img src="Presentation/clients/managin-2.png" alt="managin-2" style="width: 409px; height: auto;" />
+    <img src="Presentation/clients/managin-3.png" alt="managin-3" style="width: 405px; height: auto;" />
 </div>
 
 ### List of current and archived students with filtering by update date
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
-    <img src="Presentation/clients/list-1.png" alt="list-1" style="width: 1000px; height: auto;" />
+    <img src="Presentation/clients/list-1.png" alt="list-1" style="width: 825px; height: auto;" />
 </div>
 
 ### A page for managing student applications and request status, with real-time interaction
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
-    <img src="Presentation/clients/interaction-1.png" alt="interaction-1" style="width: 985px; height: auto;" />
+    <img src="Presentation/clients/interaction-1.png" alt="interaction-1" style="width: 825px; height: auto;" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <img src="Presentation/clients/interaction-2.png" alt="interaction-2" style="width: 485px; height: auto;" />
-    <img src="Presentation/clients/interaction-3.png" alt="interaction-3" style="width: 490px; height: auto;" />
+    <img src="Presentation/clients/interaction-2.png" alt="interaction-2" style="width: 405px; height: auto;" />
+    <img src="Presentation/clients/interaction-3.png" alt="interaction-3" style="width: 409px; height: auto;" />
 </div>
