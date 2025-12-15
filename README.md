@@ -227,25 +227,15 @@ SQL scripts automatically create tables and populate databases with test data wh
 ### User selection and information input forms
 
 <div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-<div style="width: 415px; display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
     <img src="Presentation/clients/form-1.png" alt="form-1" style="width: 415px; height: auto;" />
-</div>    
-
-<div style="width: 376px; display: flex; justify-content: center; gap: 10px; flex-direction: column;">
-    <img src="Presentation/clients/form-2.png" alt="form-2" style="width: 376px; height: auto;" />
-    <img src="Presentation/clients/form-3.png" alt="form-3" style="width: 376px; height: auto;" />
-</div>    
+    <img src="Presentation/clients/form-2-3.png" alt="form-2-3" style="width: 376px; height: auto;" />
 </div>
 
 
 ### Loading, checking and validation of user files
 
-<div style=" display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
-    <div style="width: 390px; display: flex; justify-content: center; gap: 10px; flex-direction: column;">
-        <img src="Presentation/clients/files-1.png" alt="files-1" style="width: 390px; height: auto;" />
-        <img src="Presentation/clients/files-2.png" alt="files-2" style="width: 390px; height: auto;" />
-    </div>    
-<div style="width: 410px; display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/files-1-2.png" alt="files-1-2" style="width: 390px; height: auto;" />
     <img src="Presentation/clients/files-3.png" alt="files-3" style="width: 410px; height: auto;" />
 </div>
 </div>
