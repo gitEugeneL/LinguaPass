@@ -189,11 +189,99 @@ SQL scripts automatically create tables and populate databases with test data wh
 
 - Progress.database **(*Progress.service*)**
 
-![Progress database](https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/progress.database.png?raw=true)
+<img src="https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/progress.database.png?raw=true" alt="Progress database" width="350">
 
 - MinIO Storage **(*Storage.service*)**
 
-<img src="https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/storage.png?raw=true" alt="MinIO Storage" width="300">
+<img src="https://github.com/gitEugeneL/LinguaPass/blob/dev/Presentation/databases/storage.png?raw=true" alt="MinIO Storage" width="350">
 
 ## 🎡️ Clients screenshots
 
+### Responsive interface with the ability to adapt to any device
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
+    <img src="Presentation/clients/responsive-1.png" alt="responsive-1" style="max-width: 823px; height: auto;" />
+</div>
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/responsive-2.png" alt="responsive-2" style="max-width: 563px; height: auto;" />
+    <img src="Presentation/clients/responsive-3.png" alt="responsive-3" style="max-width: 250px; height: auto;" />
+</div>
+
+### Authorization and Authentication
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/authorization-1.png" alt="authorization-1" style="max-width: 583px; height: auto;" />
+    <img src="Presentation/clients/authorization-2.png" alt="authorization-2" style="max-width: 282px; height: auto;" />
+    <img src="Presentation/clients/authorization-3.png" alt="authorization-3" style="max-width: 280px; height: auto;" />
+</div>
+
+
+### Dynamic adaptation to step and user selection
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/dynamic-1.png" alt="dynamic-1" style="max-width: 583px; height: auto;" />
+    <img src="Presentation/clients/dynamic-2.png" alt="dynamic-2" style="max-width: 583px; height: auto;" />
+</div>
+
+### User selection and information input forms
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/form-1.png" alt="form-1" style="max-width: 638px; height: auto;" />
+    <div style="display: flex; justify-content: center; gap: 10px; flex-direction: column;">
+        <img src="Presentation/clients/form-2.png" alt="form-2" style="max-width: 583px; height: auto;" />
+        <img src="Presentation/clients/form-3.png" alt="form-3" style="max-width: 583px; height: auto;" />
+    </div>    
+</div>
+
+### Loading, checking and validation of user files
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <div style="display: flex; justify-content: center; gap: 10px; flex-direction: column;">
+        <img src="Presentation/clients/files-1.png" alt="files-1" style="max-width: 583px; height: auto;" />
+        <img src="Presentation/clients/files-2.png" alt="files-2" style="max-width: 583px; height: auto;" />
+    </div>    
+    <img src="Presentation/clients/files-3.png" alt="files-3" style="max-width: 605px; height: auto;" />
+</div>
+
+### Summary and application submission
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/submission-1.png" alt="submission-1.png" style="max-width: 583px; height: auto;" />
+    <img src="Presentation/clients/submission-2.png" alt="submission-2.png" style="max-width: 400px; height: auto;" />
+</div>
+
+### Administrator login to the system and administrator main page
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/administratorMain-1.png" alt="administratorMain-1.png" style="max-width: 261px; height: auto;" />
+    <img src="Presentation/clients/administratorMain-2.png" alt="administratorMain-2.png" style="max-width: 700px; height: auto;" />
+</div>
+
+### Managing available programs in the system for the user
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
+    <img src="Presentation/clients/managin-1.png" alt="managin-1" style="max-width: 1000px; height: auto;" />
+</div>
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/managin-2.png" alt="managin-2" style="max-width: 495px; height: auto;" />
+    <img src="Presentation/clients/managin-3.png" alt="managin-3" style="max-width: 490px; height: auto;" />
+</div>
+
+### List of current and archived students with filtering by update date
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
+    <img src="Presentation/clients/list-1.png" alt="list-1" style="max-width: 1000px; height: auto;" />
+</div>
+
+### A page for managing student applications and request status, with real-time interaction
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-start; ">
+    <img src="Presentation/clients/interaction-1.png" alt="interaction-1" style="max-width: 985px; height: auto;" />
+</div>
+
+<div style="display: flex; justify-content: center; gap: 10px; flex-direction: row; flex-wrap: wrap; margin-bottom: 20px; align-items: flex-start; ">
+    <img src="Presentation/clients/interaction-2.png" alt="interaction-2" style="max-width: 485px; height: auto;" />
+    <img src="Presentation/clients/interaction-3.png" alt="interaction-3" style="max-width: 490px; height: auto;" />
+</div>
