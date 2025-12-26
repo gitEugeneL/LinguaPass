@@ -30,6 +30,7 @@ A YARP-based API Gateway provides centralized routing, request pre-processing, a
 
 - [.NET](https://github.com/dotnet/core)
 - [C#](https://github.com/dotnet/csharplang)
+- [FastEndpoints](https://fast-endpoints.com/)
 - [xUnit](https://github.com/xunit/xunit)
 - [Yarp.ReverseProxy](https://github.com/microsoft/reverse-proxy)
 - [ASP.NET Core](https://github.com/dotnet/aspnetcore)
