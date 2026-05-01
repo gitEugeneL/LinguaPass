@@ -1,0 +1,36 @@
+name: Docker CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  
+  docker-compose:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Docker
+        run: docker --version
+
+      - name: Up backend
+        run: make up-backend
+
+      - name: Up frontend
+        run: make up-frontend
+
+      - name: Wait for services
+        run: sleep 10
+
+      - name: Down backend
+        run: make down-backend
+
+      - name: Down and clean backend
+        run: make down-backend-clean-volumes
+
+      - name: Down frontend
+        run: make down-frontend

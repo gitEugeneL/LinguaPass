@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		Makefile = Makefile
 		.github\workflows\backend.yml = .github\workflows\backend.yml
 		docker-compose.frontend.yml = docker-compose.frontend.yml
+		.github\workflows\docker.yml = .github\workflows\docker.yml
+		.github\workflows\frontend.yml = .github\workflows\frontend.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{0B87972B-042A-4CAF-BE23-81DE2EC53492}"

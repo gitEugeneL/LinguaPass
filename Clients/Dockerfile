@@ -2,17 +2,19 @@ FROM node:20-slim
 
 WORKDIR /app
 
-RUN npm install -g pnpm@9 serve
+RUN corepack enable
+RUN corepack prepare pnpm@9 --activate
+
+RUN npm install -g serve
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/*/package.json ./apps/
-COPY packages/*/package.json ./packages/
 
-RUN --mount=type=cache,target=/root/.local/share/pnpm/store pnpm install --frozen-lockfile --loglevel verbose
+COPY apps ./apps
+COPY packages ./packages
 
-COPY . /app
+RUN pnpm install --frozen-lockfile
+
+COPY . .
 
 RUN pnpm run build:customer-portal
 RUN pnpm run build:manager-portal
-
-
