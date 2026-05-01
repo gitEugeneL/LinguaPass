@@ -7,7 +7,8 @@
     "dev:customer-portal": "pnpm --filter customer-portal dev",
     "dev:manager-portal": "pnpm --filter manager-portal dev",
     "build:customer-portal": "pnpm --filter customer-portal build",
-    "build:manager-portal": "pnpm --filter manager-portal build"
+    "build:manager-portal": "pnpm --filter manager-portal build",
+    "build:all": "pnpm --filter manager-portal build && pnpm --filter customer-portal build"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -21,6 +22,7 @@
     "globals": "^15.15.0",
     "prettier": "^3.6.2",
     "serve": "^14.2.4",
+    "typescript": "~5.8.3",
     "typescript-eslint": "^8.24.1"
   }
 }

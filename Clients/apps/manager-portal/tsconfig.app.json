@@ -24,13 +24,8 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@clients/shared/*": [
-        "../shared/src/*"
-      ]
+      "@clients/shared/*": ["../shared/src/*"]
     }
   },
-  "include": [
-    "src",
-    "../shared/declarations.d.ts"
-  ]
+  "include": ["src", "../shared/declarations.d.ts"]
 }

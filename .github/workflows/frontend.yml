@@ -1,0 +1,46 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  monorepo:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: Clients
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+          cache-dependency-path: Clients/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Types check
+        run: pnpm -r exec tsc --noEmit
+
+      - name: Lint
+        run: pnpm eslint .
+
+      - name: Prettier check
+        run: pnpm prettier . --check
+
+      - name: Build
+        run: pnpm build:all

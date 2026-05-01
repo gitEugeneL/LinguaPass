@@ -28,7 +28,7 @@ export function ConfirmBlock() {
         await sendApplication();
         await getMyStatus();
         navigate('/processing');
-      } catch (error) {
+      } catch {
         console.error('Error sending application:');
       }
     }

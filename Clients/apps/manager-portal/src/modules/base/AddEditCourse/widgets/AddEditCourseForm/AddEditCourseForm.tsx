@@ -12,7 +12,10 @@ import { useCourseStore, useLanguageStore, useSchoolStore } from '../../../../..
 
 import styles from './AddEditCourseForm.module.pcss';
 import type { AddEditCourseFormProps } from './AddEditCourseForm.props.ts';
-import { type AddEditCourseFormSchema, AddEditCourseFormValidationSchema } from './AddEditCourseFormSchema.ts';
+import {
+  type AddEditCourseFormSchema,
+  AddEditCourseFormValidationSchema
+} from './AddEditCourseFormSchema.ts';
 
 export function AddEditCourseForm({ courseId = undefined }: AddEditCourseFormProps) {
   const [localError, setLocalError] = useState<string | undefined>(undefined);

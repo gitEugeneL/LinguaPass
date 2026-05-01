@@ -60,7 +60,7 @@ export function AddEditSchool() {
           !currentSchool.isActive
         );
         await getSchoolById(currentSchool.schoolId);
-      } catch (error) {}
+      } catch {}
     }
   };
 
@@ -69,7 +69,7 @@ export function AddEditSchool() {
       try {
         await deleteSchool(currentSchool.schoolId);
         navigate(`/programs/schools/${currentSchool.countryId}`);
-      } catch (error) {}
+      } catch {}
     }
   };
 

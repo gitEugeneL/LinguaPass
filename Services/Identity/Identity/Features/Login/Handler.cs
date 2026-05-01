@@ -23,7 +23,10 @@ public class Handler(
     {
         var validationResult = await validator.ValidateAsync(command, ct);
         if (!validationResult.IsValid)
+        {
+            var r = validationResult.GetValidationProblems();
             return Result<Output>.Failure(new Error(validationResult.GetValidationProblems()));
+        }
 
         var user = await dbContext
             .Users

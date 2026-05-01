@@ -1,7 +1,15 @@
 export default function EnableIcon() {
   return (
     <svg xmlns='http://www.w3.org/2000/svg' width='20' height='21' fill='none' viewBox='0 0 20 21'>
-      <rect width='19' height='19' x='0.5' y='1.156' fill='#60BFA8' stroke='#60BFA8' rx='3.5'></rect>
+      <rect
+        width='19'
+        height='19'
+        x='0.5'
+        y='1.156'
+        fill='#60BFA8'
+        stroke='#60BFA8'
+        rx='3.5'
+      ></rect>
       <path
         fill='#fff'
         stroke='#fff'

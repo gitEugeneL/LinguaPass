@@ -3,9 +3,16 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import importPlugin from 'eslint-plugin-import';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist/**', 'dev-dist/**', '**/*.js', '**/*.d.ts', '**/workbox-*.js'] },
+
+  ...tseslint.configs.recommended,
+
+  prettierConfig,
+
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -16,24 +23,29 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      import: importPlugin
+      import: importPlugin,
+      prettier: prettierPlugin
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+
+      'react-hooks/exhaustive-deps': 'off',
+
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+
       '@typescript-eslint/no-explicit-any': 'off',
-      semi: ['error', 'always'],
-      'comma-dangle': ['error', 'never'],
-      quotes: ['error', 'single'],
-      'jsx-quotes': ['error', 'prefer-single'],
-      'no-unused-vars': [
+
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
         'warn',
         {
-          vars: 'all',
-          args: 'after-used',
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
           ignoreRestSiblings: true
         }
       ],
+
+      'prettier/prettier': 'error',
 
       'import/no-restricted-paths': [
         'error',
@@ -62,7 +74,7 @@ export default tseslint.config(
                 '../**/*.tsx',
                 '../**/*.store.ts'
               ],
-              message: "'Only import through index.ts from global src folders"
+              message: 'Only import through index.ts from global src folders'
             }
           ]
         }

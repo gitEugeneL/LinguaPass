@@ -5,7 +5,6 @@ import { Controller } from 'react-hook-form';
 import styles from './DateInput.module.pcss';
 import { type DateInputProps } from './DateInput.props.ts';
 
-
 export function DateInput({ ...props }: DateInputProps) {
   return (
     <div className={styles.container}>

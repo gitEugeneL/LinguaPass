@@ -1,4 +1,3 @@
-using AuthConfig.Tools;
 using Course.Data.Persistence;
 using Course.Domain.Entities;
 using Course.Features.Shared;
@@ -19,7 +18,7 @@ public class Endpoint(AppDbContext dbContext)
     public override void Configure()
     {
         Post("/api/schools");
-        Policies(Constants.AdminPolicy);
+        Policies();
     }
 
     public override async Task<Results<Ok<SchoolAdminResponse>, Conflict<string>, BadRequest<string>>> ExecuteAsync(

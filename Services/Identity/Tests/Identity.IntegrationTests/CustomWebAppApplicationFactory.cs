@@ -1,6 +1,7 @@
 using IdentityApi.Data;
 using IdentityApi.IntegrationTests.FakeServices;
 using IdentityApi.Services.Interfaces;
+using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -26,8 +27,8 @@ public class CustomWebAppApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureTestServices(services =>
         {
             // Remove dbContext (.net9 solution)
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(IDbContextOptionsConfiguration<AppDbContext>));
+            var descriptor =
+                services.SingleOrDefault(d => d.ServiceType == typeof(IDbContextOptionsConfiguration<AppDbContext>));
             if (descriptor != null)
                 services.Remove(descriptor);
 
@@ -41,6 +42,15 @@ public class CustomWebAppApplicationFactory : WebApplicationFactory<Program>
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             db.Database.EnsureCreated();
             SeedTestData(db);
+
+            // Add Fake MassTransit
+            var massTransitDescriptors = services
+                .Where(d => d.ServiceType.Namespace?.StartsWith("MassTransit") == true)
+                .ToList();
+            foreach (var d in massTransitDescriptors)
+                services.Remove(d);
+
+            services.AddMassTransit(x => { x.UsingInMemory(); });
 
             // Add fake confirmation service (generate confirm code)
             services.AddScoped<IConfirmationService, FakeConfirmationService>();

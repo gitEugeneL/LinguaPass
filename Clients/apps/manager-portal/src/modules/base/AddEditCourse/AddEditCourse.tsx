@@ -55,7 +55,7 @@ export function AddEditCourse() {
       try {
         await toggleActive(currentCourse.courseId, currentCourse.schoolId, !currentCourse.isActive);
         await getCourseById(currentCourse.courseId);
-      } catch (error) {}
+      } catch {}
     }
   };
 
@@ -64,7 +64,7 @@ export function AddEditCourse() {
       try {
         await deleteCountry(currentCourse.courseId);
         navigate(`/programs/courses/${currentCourse.schoolId}`);
-      } catch (error) {}
+      } catch {}
     }
   };
 

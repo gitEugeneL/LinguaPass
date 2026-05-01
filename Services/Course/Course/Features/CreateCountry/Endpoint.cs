@@ -13,7 +13,6 @@ public class Endpoint(AppDbContext dbContext)
 {
     public const string ConflictCountry = "This country already exists";
 
-
     public override void Configure()
     {
         Post("/api/countries");

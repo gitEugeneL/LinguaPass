@@ -115,7 +115,7 @@ export function EditStudent() {
     if (studentDetail && studentDetail.userId && !isLoading) {
       try {
         await toggleActive(studentDetail.accountId, !studentDetail.isActive);
-      } catch (error) {}
+      } catch {}
     }
   };
 

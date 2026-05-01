@@ -36,7 +36,7 @@ export function AddEditCountry() {
       try {
         await toggleActive(currentCountry.countryId, !currentCountry.isActive);
         await getCountryById(currentCountry.countryId);
-      } catch (error) {}
+      } catch {}
     }
   };
 
@@ -45,7 +45,7 @@ export function AddEditCountry() {
       try {
         await deleteCountry(currentCountry.countryId);
         navigate('/programs/countries');
-      } catch (error) {}
+      } catch {}
     }
   };
 

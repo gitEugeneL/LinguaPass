@@ -7,7 +7,10 @@ import { useShallow } from 'zustand/react/shallow';
 
 import { useProgressStore, useStudentStore } from '../../../../../store';
 
-import { type IntegrationCardSchema, IntegrationCardValidationSchema } from './IntegrationCardSchema.ts';
+import {
+  type IntegrationCardSchema,
+  IntegrationCardValidationSchema
+} from './IntegrationCardSchema.ts';
 import styles from './InteractionCard.module.pcss';
 import type { InteractionCardProps } from './InteractionCard.props.ts';
 

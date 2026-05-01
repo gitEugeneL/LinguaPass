@@ -7,7 +7,7 @@ up-backend:
 down-backend:
 	docker compose -f docker-compose.backend.yml down
 
-down-backend-clean-volumens:
+down-backend-clean-volumes:
 	docker compose -f docker-compose.backend.yml down -v
 
 

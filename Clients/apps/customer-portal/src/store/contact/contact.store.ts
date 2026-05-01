@@ -5,7 +5,11 @@ import { persist } from 'zustand/middleware';
 
 import { useAccountStore, useAuthStore } from '../index.ts';
 
-import { type Contact, type CreateContactResponse, type GetCurrentContactResponse } from './contact.models.ts';
+import {
+  type Contact,
+  type CreateContactResponse,
+  type GetCurrentContactResponse
+} from './contact.models.ts';
 import { contactUrls } from './contact.urls.ts';
 
 interface ContactState {

@@ -2,7 +2,6 @@ import { Title } from '@clients/shared';
 
 import { ContactForm, ResultBlock } from '../../../modules/base';
 
-
 export function ContactInfoPage() {
   return (
     <>
